@@ -22,7 +22,7 @@ const PopperComponent = ({
   return (
     <Popper open={viewPopper} anchorEl={anchorRef.current} placement="bottom">
       <ClickAwayListener onClickAway={handleClose}>
-        <div> {children}</div>
+        <div className="dark:text-white text-black"> {children}</div>
       </ClickAwayListener>
     </Popper>
   );

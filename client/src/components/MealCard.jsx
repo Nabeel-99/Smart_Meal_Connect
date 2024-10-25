@@ -43,7 +43,7 @@ const MealCard = ({
                     />
                     {meal.images.length > 1 && (
                       <div className="absolute right-2 top-2 text-xl font-bold">
-                        <HiSquare2Stack />
+                        <HiSquare2Stack className="text-white" />
                       </div>
                     )}
                   </div>
@@ -76,14 +76,12 @@ const MealCard = ({
                   </p>
                 )}
                 {showTrash && (
-                  <div className="flex flex-col mt-2 gap-1">
-                    <button
-                      onClick={() => openDialog(meal._id)}
-                      className="hover:text-red-400 transition-all duration-200"
-                    >
-                      <FaTrash />
-                    </button>
-                  </div>
+                  <button
+                    onClick={() => openDialog(meal._id)}
+                    className="hover:text-red-500  text-gray-500 transition-all duration-200"
+                  >
+                    <FaTrash className="" />
+                  </button>
                 )}
               </div>
             )
@@ -112,11 +110,11 @@ const MealCard = ({
                             : "default"
                         }
                         alt=""
-                        className={`h-full xl:h-44 object-cover  w-full md:w-96  lg:w-72 rounded-md bg-[#595959] border border-[#7d7d7d]`}
+                        className={`h-full xl:h-44 object-cover  w-full md:w-96  lg:w-72 rounded-md  border `}
                       />
                       {meal.images.length > 1 && (
                         <div className="absolute right-2 top-2 text-xl font-bold">
-                          <HiSquare2Stack />
+                          <HiSquare2Stack className="text-white" />
                         </div>
                       )}
                     </Link>
@@ -141,7 +139,7 @@ const MealCard = ({
                     {showTrash && (
                       <button
                         onClick={() => openDialog(meal._id)}
-                        className="hover:text-red-400 transition-all duration-200"
+                        className="hover:text-red-500  text-gray-500  transition-all duration-200"
                       >
                         <FaTrash />
                       </button>

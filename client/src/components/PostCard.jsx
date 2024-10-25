@@ -49,7 +49,7 @@ const PostCard = ({ post, likeRecipe, isLiked, openModal, images }) => {
     <div className="flex pt-8 lg:px-10 flex-col w-full lg:w-[650px] gap-3">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full font-bold text-sm text-center flex items-center justify-center bg-[#B678F0]">
+          <div className="w-8 h-8 rounded-full font-bold text-sm text-white text-center flex items-center justify-center bg-[#B678F0]">
             {post.firstName.slice(0, 1)}
           </div>
           <div className="text-sm font-semibold">
@@ -60,16 +60,16 @@ const PostCard = ({ post, likeRecipe, isLiked, openModal, images }) => {
         </div>
         <Link
           to={`/recipe-details/${post.posts._id}`}
-          className="text-sm text-nowrap text-gray-400 hover:text-white"
+          className="text-sm text-nowrap text-gray-400 hover:text-black dark:hover:text-white"
         >
           View full details
         </Link>
       </div>
 
-      <div className="relative bg-[#0c0c0c] border border-[#171717] rounded-lg">
+      <div className="relative bg-[#0c0c0c] border dark:border-[#171717] rounded-lg">
         <Tooltip title="previous">
           <button
-            className={`absolute flex  backdrop-blur-md hover:bg-[#484848]  p-2  rounded-full items-center justify-center top-[50%] ${
+            className={`absolute flex  backdrop-blur-md dark:hover:bg-[#484848] hover:bg-[#dadada]  p-2  rounded-full items-center justify-center top-[50%] ${
               isFirstImage ? "hidden" : ""
             }`}
             onClick={() => handlePreviousImage(post)}
@@ -88,14 +88,14 @@ const PostCard = ({ post, likeRecipe, isLiked, openModal, images }) => {
 
         <Tooltip title="next">
           <button
-            className={`absolute flex  backdrop-blur-md hover:bg-[#484848]  p-2  rounded-full right-0 items-center justify-center top-[50%] ${
+            className={`absolute flex  backdrop-blur-md dark:hover:bg-[#484848] hover:bg-[#dadada]  p-2  rounded-full right-0 items-center justify-center top-[50%] ${
               isLastImage ? "hidden" : ""
             }`}
             type="button"
             onClick={() => handleNextImage(post)}
             disabled={isLastImage}
           >
-            <FaChevronRight />
+            <FaChevronRight className="" />
           </button>
         </Tooltip>
       </div>
@@ -153,7 +153,7 @@ const PostCard = ({ post, likeRecipe, isLiked, openModal, images }) => {
         ) : (
           <button
             onClick={() => openModal(post)}
-            className="text-sm text-gray-500 hover:text-white"
+            className="text-sm text-gray-500 hover:text-black dark:hover:text-white"
           >
             Add a comment
           </button>

@@ -45,7 +45,7 @@ const PreviewCard = ({
     <div className="flex h-full ">
       <Tooltip title="previous">
         <button
-          className={`absolute flex  backdrop-blur-md hover:bg-[#484848]  p-2  rounded-full  items-center justify-center top-[50%] ${
+          className={`absolute flex  backdrop-blur-md dark:hover:bg-[#484848] hover:bg-[#dadada]   p-2  rounded-full  items-center justify-center top-[50%] ${
             isFirstImage ? "hidden" : ""
           }`}
           onClick={handlePreviousImage}
@@ -61,7 +61,7 @@ const PreviewCard = ({
           <button
             type="button"
             onClick={() => removeImage(images[currentImageIndex])}
-            className="flex border hover:bg-[#484848] border-[#676767] p-2 bg-[#1d1d1d] rounded-full items-center  justify-center  "
+            className="flex border hover:bg-[#dadada] dark:hover:bg-[#484848] dark:border-[#676767] p-2 dark:bg-[#1d1d1d] rounded-full items-center  justify-center  "
           >
             <FaTrash />
           </button>
@@ -71,7 +71,7 @@ const PreviewCard = ({
             <label
               type="button"
               htmlFor="file-upload"
-              className="flex flex-col cursor-pointer border hover:bg-[#484848] border-[#676767] p-2 bg-[#1d1d1d] rounded-full items-center  justify-center  "
+              className="flex flex-col cursor-pointer hover:bg-[#dadada] border dark:hover:bg-[#484848] dark:border-[#676767] p-2 dark:bg-[#1d1d1d]  rounded-full items-center  justify-center  "
             >
               <HiOutlineSquare2Stack />
             </label>
@@ -94,7 +94,7 @@ const PreviewCard = ({
       />
       <Tooltip title="next">
         <button
-          className={`absolute flex  backdrop-blur-md hover:bg-[#484848]  p-2  rounded-full right-0 items-center justify-center top-[50%] ${
+          className={`absolute flex  backdrop-blur-md dark:hover:bg-[#484848] hover:bg-[#dadada]  p-2  rounded-full right-0 items-center justify-center top-[50%] ${
             isLastImage ? "hidden" : ""
           }`}
           type="button"

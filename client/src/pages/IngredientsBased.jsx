@@ -301,33 +301,7 @@ const IngredientsBased = ({ userData }) => {
                 </div>
               ))}
             </div>
-            {/* <div className="pt-4 border-t border-t-[#343333]">
-              <div className="flex items-center justify-center gap-4">
-                <button
-                  onClick={decrementCount}
-                  type="button"
-                  className="md:hidden"
-                >
-                  <BiSolidLeftArrow className="text-2xl" />
-                </button>
-                <TextInput
-                  label={"Specify number of recipes"}
-                  type={"number"}
-                  min={0}
-                  max={9}
-                  value={ingredientCount}
-                  onChange={(e) => setIngredientCount(e.target.value)}
-                  className=" px-3"
-                />
-                <button
-                  onClick={incrementCount}
-                  type="button"
-                  className="md:hidden"
-                >
-                  <BiSolidRightArrow className="text-2xl" />
-                </button>
-              </div>
-            </div> */}
+
             <div className="pt-10">
               <button
                 type="submit"

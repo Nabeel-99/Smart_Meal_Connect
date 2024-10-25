@@ -23,7 +23,13 @@ import PostHeader from "../../components/PostHeader";
 import PostComment from "../../components/PostComment";
 import AutoHideSnackbar from "../../components/AutoHideSnackbar";
 
-const DashboardHome = ({ anchorRef, showNotifications, currentUserId }) => {
+const DashboardHome = ({
+  anchorRef,
+  showNotifications,
+  currentUserId,
+  showPostModal,
+  theme,
+}) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
   const [posts, setPosts] = useState([]);
@@ -107,6 +113,9 @@ const DashboardHome = ({ anchorRef, showNotifications, currentUserId }) => {
   };
 
   const postUserComment = async (postId) => {
+    if (!comment) {
+      return;
+    }
     try {
       const response = await axios.post(
         "http://localhost:8000/api/recipes/post-comment",
@@ -176,7 +185,7 @@ const DashboardHome = ({ anchorRef, showNotifications, currentUserId }) => {
   return (
     <>
       <div className="px-4 lg:px-10 pt-14 lg:pt-0 flex flex-col gap-8 w-full">
-        <div className="hidden  lg:flex gap-2 items-center justify-between border-b border-b-[#1d1d1d] w-full pb-2">
+        <div className="hidden  lg:flex gap-2 items-center justify-between border-b dark:border-b-[#1d1d1d] border-b-[#E0E0E0] w-full pb-2">
           For you
           <div className="lg:block  xl:hidden">
             <button ref={anchorRef} onClick={showNotifications}>
@@ -187,21 +196,38 @@ const DashboardHome = ({ anchorRef, showNotifications, currentUserId }) => {
         <div className="flex w-full  ">
           {/* post cards */}
           <div className="flex flex-col gap-4 w-full">
-            {posts.map((post, index) => {
-              const images = post.posts.images;
-              const isLiked = likedPosts[post.postId];
+            {posts.length > 0 ? (
+              posts.map((post, index) => {
+                const images = post.posts.images;
+                const isLiked = likedPosts[post.postId];
 
-              return (
-                <PostCard
-                  key={index}
-                  post={post}
-                  likeRecipe={likeRecipe}
-                  isLiked={isLiked}
-                  images={images}
-                  openModal={openModal}
-                />
-              );
-            })}
+                return (
+                  <PostCard
+                    key={index}
+                    post={post}
+                    likeRecipe={likeRecipe}
+                    isLiked={isLiked}
+                    images={images}
+                    openModal={openModal}
+                  />
+                );
+              })
+            ) : (
+              <div className="flex  flex-col gap-4 items-center justify-center h-full">
+                <p className="text-center">
+                  No feeds yet.{" "}
+                  <span className="block">
+                    Be the first to share your recipe and inspire others!
+                  </span>
+                </p>
+                <button
+                  onClick={showPostModal}
+                  className="bg-blue-600 hover:bg-blue-700 text-white rounded-md py-2 px-4"
+                >
+                  Create post
+                </button>
+              </div>
+            )}
           </div>
           {/* notification card */}
           <div className="mt-16 ">
@@ -210,7 +236,11 @@ const DashboardHome = ({ anchorRef, showNotifications, currentUserId }) => {
         </div>
       </div>
       {showModal && (
-        <ModalComponent showModal={showModal} setShowModal={setShowModal}>
+        <ModalComponent
+          theme={theme}
+          showModal={showModal}
+          setShowModal={setShowModal}
+        >
           <div className="flex flex-col gap-4 lg:flex-row justify-between items-center overflow-scroll lg:items-stretch p-8 h-[40rem]  lg:h-[35rem] xl:h-[45rem] w-full">
             <ImageCard selectedPost={selectedPost} />
 

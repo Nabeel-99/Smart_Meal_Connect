@@ -31,10 +31,11 @@ export const exerciseOptions = [
   { label: "Very Active", value: "very_active" },
   { label: "Extra Active", value: "extra_active" },
 ];
-export const themeOptions = ["Light", "Dark", "System theme"].map((theme) => ({
-  label: theme,
-  value: theme.toLowerCase(),
-}));
+export const themeOptions = [
+  { value: "light", label: "Light" },
+  { value: "dark", label: "Dark" },
+  { value: "system", label: "System" },
+];
 
 export const mapText = {
   maintenance: "Maintenance",

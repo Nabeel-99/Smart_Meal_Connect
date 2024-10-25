@@ -20,7 +20,7 @@ router.post("/signup", createUser);
 router.post("/login", loginUser);
 router.post("/logout", logout);
 router.patch("/update", verifyUser, updateUser);
-router.delete("/delete", verifyUser, deleteUser);
+router.delete("/delete-user", verifyUser, deleteUser);
 router.post("/request-reset-password", requestResetPassword);
 router.post("/reset-password", resetPassword);
 router.get("/", verifyUser, getUserData);

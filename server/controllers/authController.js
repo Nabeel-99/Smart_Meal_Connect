@@ -65,6 +65,45 @@ export const requestResetPassword = async (req, res) => {
   }
 };
 
+// verify-email
+export const verifyEmail = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email: email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const verifyEmailToken = jwt.sign(
+      { userId: user._id },
+      process.env.SECRET_KEY,
+      {
+        expiresIn: "1h",
+      }
+    );
+    const verifyEmailLink = `${process.env.FRONTEND_URL}/verify-email/${verifyEmailToken}`;
+    const templatePath = path.join(
+      __dirname,
+      "../emailTemplates/verify-email.html"
+    );
+    let htmlContent;
+    try {
+      htmlContent = fs.readFileSync(templatePath, "utf-8");
+    } catch (error) {
+      console.log("Error reading template file", error);
+      return res.status(500).json({ message: "Internal Server Error" });
+    }
+    htmlContent = htmlContent
+      .replace("{{firstName}}", user.firstName)
+      .replace("{{verificationLink}}", verifyEmailLink)
+      .replace("{{APP_NAME}}", process.env.APP_NAME);
+
+    await sendEmail(user.email, "Verify your email", htmlContent);
+    return res.status(200).json({ message: "Verification email sent" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
 // resetPassword
 export const resetPassword = async (req, res) => {
   try {

@@ -140,7 +140,10 @@ const ForgotPassword = () => {
               labelClassName="lg:text-lg"
               className="lg:w-96"
               value={email}
+              bgColor="bg-[#171717]"
+              borderColor="border-[#343333]"
               onChange={(e) => setEmail(e.target.value)}
+              applyDarkMode={true}
             />
             <div className="pt-4">
               <button

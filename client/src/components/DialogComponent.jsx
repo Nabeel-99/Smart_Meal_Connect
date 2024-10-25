@@ -6,6 +6,7 @@ const DialogComponent = ({
   setShowDialog,
   handleAction,
   title,
+  theme,
 }) => {
   const handleClose = () => setShowDialog(false);
   return (
@@ -16,7 +17,7 @@ const DialogComponent = ({
         aria-labelledby="alert-dialog-title"
         PaperProps={{
           style: {
-            backgroundColor: "#1C1C1E",
+            backgroundColor: "#444444",
             color: "white",
           },
         }}
@@ -25,13 +26,13 @@ const DialogComponent = ({
         <DialogActions>
           <button
             onClick={handleAction}
-            className="rounded-md py-2 px-3 bg-[#444444] hover:bg-[#646464] transition-all duration-150"
+            className="rounded-md py-2 px-3 bg-[#2c2c2c] text-white hover:bg-[#646464] transition-all duration-150"
           >
             Yes
           </button>
           <button
             onClick={handleClose}
-            className="rounded-md py-2 px-3 bg-[#444444] hover:bg-[#646464] transition-all duration-150"
+            className="rounded-md py-2 px-3 bg-[#2c2c2c] text-white hover:bg-[#646464] transition-all duration-150"
           >
             No
           </button>

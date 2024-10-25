@@ -116,6 +116,9 @@ const ResetPassword = () => {
                 className="lg:w-96 pr-10"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                applyDarkMode={true}
+                bgColor="bg-[#171717]"
+                borderColor="border-[#343333]"
               />
               <button
                 type="button"
@@ -134,7 +137,10 @@ const ResetPassword = () => {
                 labelClassName="lg:text-sm"
                 className="lg:w-96 pr-10"
                 value={confirmPassword}
+                bgColor="bg-[#171717]"
+                borderColor="border-[#343333]"
                 onChange={(e) => setConfirmPassword(e.target.value)}
+                applyDarkMode={true}
               />
               <button
                 type="button"

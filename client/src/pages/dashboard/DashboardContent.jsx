@@ -74,17 +74,17 @@ const DashboardContent = ({
   return (
     <div className="flex flex-col h-full gap-8 pt-28 px-6 lg:px-10">
       <div className="flex flex-col xl:flex-row lg:items-center gap-4 w-full lg:gap-10">
-        <div className="flex flex-col gap-5  md:grid grid-cols-2 w-full items-center lg:gap-10">
+        <div className="flex flex-col gap-5  md:grid grid-cols-2 w-full items-center lg:gap-10 ">
           <Link
             to={"/ingredients-based"}
-            className="border border-[#1d1d1d] bg-[#2e2e2e] hover:bg-[#5a4bc8] w-full rounded-lg h-20 xl:w-64 flex items-center justify-center gap-3"
+            className="border dark:border-[#1d1d1d] border-[#e0e0e0] dark:bg-[#2e2e2e] bg-[#ededed] dark:hover:bg-[#5a4bc8] hover:bg-[#5a4bc8] transition-all duration-300 hover:text-white w-full rounded-lg h-20 xl:w-64 flex items-center justify-center gap-3"
           >
             <SiGreasyfork className="text-3xl " />
             <div className="font-semibold">Get Meal By Ingredients</div>
           </Link>
           <Link
             to={"/metrics-based"}
-            className="border border-[#1d1d1d] bg-[#2e2e2e] hover:bg-[#d08824] w-full rounded-lg h-20 xl:w-64 flex items-center justify-center gap-3"
+            className="border dark:border-[#1d1d1d] border-[#e0e0e0] dark:bg-[#2e2e2e] bg-[#ededed] dark:hover:bg-[#d08824]  hover:bg-[#d08824] transition-all duration-300 hover:text-white w-full rounded-lg h-20 xl:w-64 flex items-center justify-center gap-3"
           >
             <SiGreasyfork className="text-3xl" />
             <div className="font-semibold">Get Meal By Body Metrics</div>
@@ -92,7 +92,7 @@ const DashboardContent = ({
         </div>
         <div className="flex flex-col xl:flex-row items-center w-full gap-3">
           <div className="font-semibold">Calories Target</div>
-          <div className="border border-[#1d1d1d] pl-1 w-full xl:w-96 h-10  flex items-center rounded-full">
+          <div className="border dark:border-[#1d1d1d] border-[#e0e0e0] px-1 w-full xl:w-96 h-10  flex items-center rounded-full">
             <div
               style={{ width: `${caloriePercentage}%` }}
               className="h-8 rounded-full bg-gradient-to-r from-red-500  via-orange-400 via-10%  to-green-600 to-90% flex items-center justify-center transition-all duration-500 ease-in-out"
@@ -105,33 +105,39 @@ const DashboardContent = ({
           </div>
         </div>
       </div>
-      <div className="flex flex-col w-full sticky top-[60px] lg:top-[40px] z-10 bg-[#0c0c0c] pb-3 lg:pb-5  h-full gap-4">
+      <div className="flex flex-col w-full sticky top-[60px] lg:top-[40px] z-10 dark:bg-[#0c0c0c] bg-[#F7F7F8] pb-3 lg:pb-5  h-full gap-4">
         <div className="text-xl lg:text-3xl font-bold pt-6 lg:pt-10">
           Personalized Meal Suggestions for You
         </div>
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center  lg:justify-between">
           <div className="flex items-center justify-between   lg:justify-normal gap-4">
-            <div className="relative">
+            <div className="relative flex items-center gap-2">
               <button
                 onClick={showBreakfast}
-                className={` px-3 py-1  rounded-md ${
-                  breakfast ? "border border-[#1d1d1d] bg-[#2e2e2e]" : ""
+                className={` px-3 py-1  rounded-md dark:hover:bg-[#181818] hover:bg-[#dadada] ${
+                  breakfast
+                    ? "border dark:border-[#1d1d1d] dark:bg-[#2e2e2e] border-[#e0e0e0] bg-[#dadada]  "
+                    : ""
                 }`}
               >
                 Breakfast
               </button>
               <button
                 onClick={showLunch}
-                className={` px-3 py-1  rounded-md ${
-                  lunch ? "border border-[#1d1d1d] bg-[#2e2e2e]" : ""
+                className={` px-3 py-1  rounded-md dark:hover:bg-[#181818] hover:bg-[#dadada] ${
+                  lunch
+                    ? "border dark:border-[#1d1d1d] dark:bg-[#2e2e2e] border-[#e0e0e0] bg-[#dadada] "
+                    : ""
                 }`}
               >
                 Lunch
               </button>
               <button
                 onClick={showDinner}
-                className={` px-3 py-1  rounded-md ${
-                  dinner ? "border border-[#1d1d1d] bg-[#2e2e2e]" : ""
+                className={` px-3 py-1  rounded-md dark:hover:bg-[#181818] hover:bg-[#dadada] ${
+                  dinner
+                    ? "border dark:border-[#1d1d1d] dark:bg-[#2e2e2e] border-[#e0e0e0] bg-[#dadada] "
+                    : ""
                 }`}
               >
                 Dinner
@@ -147,7 +153,7 @@ const DashboardContent = ({
                   anchorRef={anchorRef}
                   setViewPopper={setViewOptions}
                 >
-                  <MenuList className="absolute right-0 top-10 p-4 bg-[#08090a] border border-[#1d1d1d] flex flex-col gap-4 rounded-md">
+                  <MenuList className="absolute right-0 top-10 p-4 dark:bg-[#08090a] bg-[#F7F7F8] text-black dark:text-white border dark:border-[#1d1d1d] border-[#e0e0e0] flex flex-col gap-4 rounded-md">
                     <MenuItem
                       onClick={showGridView}
                       className="flex items-center text-sm gap-4"
@@ -169,7 +175,7 @@ const DashboardContent = ({
           </div>
           <div className="flex items-center gap-10">
             {selectedRecipes.length > 0 && (
-              <div className="text-sm border py-2 border-[#1d1d1d] bg-[#2e2e2e] font-semibold  px-4 rounded-md">
+              <div className="text-sm  py-2 border dark:border-[#1d1d1d] dark:bg-[#2e2e2e] dark:hover:bg-[#181818] hover:bg-[#bebdbd] border-[#e0e0e0] bg-[#dadada] font-semibold  px-4 rounded-md">
                 <button onClick={uncheckAllRecipes}>Uncheck All</button>
               </div>
             )}

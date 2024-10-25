@@ -29,9 +29,9 @@ const Profile = ({ userData }) => {
     fetchUserPosts();
   }, []);
   return (
-    <div className="flex flex-col  h-full gap-8 pt-28 px-6 md:px-10 lg:px-20">
+    <div className="flex flex-col  h-full gap-8 pt-28 px-6 md:px-10 dark:text-white lg:px-20">
       <div className="flex pl-4 md:pl-52 lg:pl-24 xl:pl-64 items-center gap-6 xl:gap-10">
-        <div className="h-20 w-20 md:h-32 md:w-32 xl:w-44 xl:h-44 bg-[#B678F0] rounded-full flex items-center justify-center ">
+        <div className="h-20 w-20 md:h-32 md:w-32 xl:w-44 xl:h-44 bg-[#B678F0] text-white rounded-full flex items-center justify-center ">
           <div className="text-2xl md:text-4xl xl:text-6xl font-bold">
             {userData.firstName.slice(0, 1)}
           </div>

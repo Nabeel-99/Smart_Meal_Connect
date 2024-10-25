@@ -16,7 +16,7 @@ import { HiOutlineSquare2Stack } from "react-icons/hi2";
 import axios from "axios";
 import PreviewCard from "./PreviewCard";
 
-const CreatePost = ({ setCreatePost }) => {
+const CreatePost = ({ setCreatePost, theme }) => {
   const [title, setTitle] = useState("");
   const [instructions, setInstructions] = useState([]);
   const [images, setImages] = useState([]);
@@ -106,11 +106,11 @@ const CreatePost = ({ setCreatePost }) => {
           message={snackbarMessage}
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
-          <div className="flex flex-col gap-3 bg-[#1d1d1d] p-8 rounded-md">
+          <div className="flex flex-col gap-3 dark:bg-[#1d1d1d] bg-[#e2e2e2] border-[#08090a] p-8 rounded-md">
             <div>{snackbarMessage}</div>
             <div className="flex items-end justify-end mt-4">
               <button
-                className="bg-blue-600 py-1 w-14 px-2 text-sm rounded-md"
+                className="bg-blue-600 text-white hover:bg-blue-800 py-1 w-14 px-2 text-sm rounded-md"
                 onClick={handleCloseSnackbar}
               >
                 OK
@@ -130,7 +130,7 @@ const CreatePost = ({ setCreatePost }) => {
           </button>
         </div>
 
-        <div className="relative w-[15rem] lg:w-[200rem] xl:w-[230rem]  border border-[#2a2a2a] rounded-md">
+        <div className="relative w-[15rem] lg:w-[200rem] xl:w-[230rem]  border border-[#e0e0e0] dark:border-[#2a2a2a] rounded-md">
           {imagePreviews.length > 0 ? (
             <PreviewCard
               imagePreviews={imagePreviews}
@@ -166,7 +166,7 @@ const CreatePost = ({ setCreatePost }) => {
         <div className="flex flex-col  pt-8 gap-3  w-full lg:px-4 l lg:w-[200rem] xl:w-[230rem] h-full lg:overflow-scroll">
           <TextInput
             label={"Title"}
-            bgColor="bg-[#0c0c0c]"
+            bgColor="dark:bg-[#0c0c0c] bg-[#e9e9e9]"
             className=""
             type={"text"}
             value={title}
@@ -178,7 +178,7 @@ const CreatePost = ({ setCreatePost }) => {
               className="w-full"
               type={"number"}
               min={0}
-              bgColor="bg-[#0c0c0c]"
+              bgColor="dark:bg-[#0c0c0c] bg-[#e9e9e9]"
               value={prepTime}
               onChange={(e) => setPrepTime(e.target.value)}
             />
@@ -186,7 +186,7 @@ const CreatePost = ({ setCreatePost }) => {
               label={"Category"}
               options={mealCategories}
               id={"category"}
-              bgColor="bg-[#0c0c0c]"
+              bgColor="dark:bg-[#0c0c0c] bg-[#e9e9e9]"
               className=" w-full"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
@@ -194,10 +194,7 @@ const CreatePost = ({ setCreatePost }) => {
           </div>
           <div className="flex flex-col gap-3 ">
             <div className="flex flex-col  items-start w-full gap-2">
-              <label
-                htmlFor="ingredients-autocomplete"
-                className="text-sm text-white"
-              >
+              <label htmlFor="ingredients-autocomplete" className="text-sm ">
                 Ingredients
               </label>
               <div className="flex items-center justify-between w-full gap-2">
@@ -209,23 +206,23 @@ const CreatePost = ({ setCreatePost }) => {
                   sx={{
                     width: 300,
                     "& .MuiInputBase-root": {
-                      backgroundColor: "#0c0c0c",
+                      backgroundColor: theme === "dark" ? "#0c0c0c" : "#e9e9e9",
                       borderRadius: "8px",
                       paddingLeft: "12px",
                       paddingRight: "12px",
-                      color: "white",
+                      color: theme === "dark" ? "white" : "black",
                     },
                     "& .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "#1d1d1d",
+                      borderColor: theme === "dark" ? "#1d1d1d" : "#e0e0e0",
                     },
                     "&:hover .MuiOutlinedInput-notchedOutline": {
                       borderColor: "#ffffff",
                     },
                     "& .MuiAutocomplete-popupIndicator": {
-                      color: "#ffffff",
+                      color: theme === "dark" ? "#ffffff" : "#333333",
                     },
                     "& .MuiAutocomplete-clearIndicator": {
-                      color: "#ffffff",
+                      color: theme === "dark" ? "#ffffff" : "#333333",
                     },
                   }}
                   renderInput={(params) => (
@@ -236,10 +233,11 @@ const CreatePost = ({ setCreatePost }) => {
                       sx={{
                         "& .MuiInputBase-input": {
                           height: 15,
-                          backgroundColor: "#0c0c0c",
+                          backgroundColor:
+                            theme === "dark" ? "#0c0c0c" : "e9e9e9",
                           borderRadius: "8px",
                           padding: "8px 12px",
-                          color: "white",
+                          color: theme === "dark" ? "white" : "black",
                         },
                       }}
                     />
@@ -253,19 +251,19 @@ const CreatePost = ({ setCreatePost }) => {
                 <button
                   onClick={addIngredient}
                   type="button"
-                  className="bg-[#D9D9D9]  px-6 h-10 rounded-xl text-black"
+                  className="bg-[#B678F0] hover:bg-[#813ebf] text-white px-6 h-10 rounded-xl"
                 >
                   Add
                 </button>
               </div>
             </div>
-            <div className=" rounded-md bg-[#0c0c0c] border border-[#1d1d1d] h-44 max-h-44 w-full p-8  overflow-auto  ">
+            <div className=" rounded-md dark:bg-[#0c0c0c] bg-[#e9e9e9] border dark:border-[#1d1d1d] border-[#e0e0e0] h-44 max-h-44 w-full p-8  overflow-auto  ">
               {" "}
               <div className="grid  gap-2">
                 {ingredients.length > 0 &&
                   ingredients.map((ingredient, index) => (
                     <div
-                      className="bg-[#2d2d2d] border border-[#444544] px-3 py-2 rounded-xl text-white flex items-center w-full justify-between"
+                      className="dark:bg-[#2d2d2d] bg-[#c4c4c4] border-[#dadada] border dark:border-[#444544] px-3 py-2 rounded-xl dark:text-white flex items-center w-full justify-between"
                       key={index}
                     >
                       <p className="pr-4">{ingredient}</p>
@@ -292,7 +290,7 @@ const CreatePost = ({ setCreatePost }) => {
             <textarea
               id="instructions"
               placeholder="Type instructions here"
-              className="bg-[#0c0c0c] w-full min-h-52 overflow-scroll border text-sm border-[#1d1d1d] rounded-md px-2 py-2"
+              className="dark:bg-[#0c0c0c] bg-[#e9e9e9] w-full min-h-52 overflow-scroll border text-sm dark:border-[#1d1d1d] border-[#e0e0e0] rounded-md px-2 py-2"
               value={instructions}
               onChange={(event) => setInstructions(event.target.value)}
             />

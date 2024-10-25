@@ -1,32 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import { CiBookmark } from "react-icons/ci";
-import { SiGreasyfork } from "react-icons/si";
-import { CiGrid41 } from "react-icons/ci";
-import { IoIosLogOut } from "react-icons/io";
-import {
-  MdOutlineKeyboardArrowDown,
-  MdOutlineKeyboardArrowUp,
-} from "react-icons/md";
-import { LuArrowDownWideNarrow } from "react-icons/lu";
-import { CiSettings } from "react-icons/ci";
-import { HiBars3 } from "react-icons/hi2";
-import Food1 from "../../assets/food1.jpg";
-import Food2 from "../../assets/food2.jpg";
-import Food3 from "../../assets/food3.jpg";
-import {
-  FaBarsStaggered,
-  FaFile,
-  FaHeart,
-  FaRegHeart,
-  FaXmark,
-} from "react-icons/fa6";
-import { IoCloudUploadOutline } from "react-icons/io5";
-import SkeletonLoader from "../../components/SkeletonLoader";
-import food from "../../assets/food4.jpg";
+import { FaBarsStaggered, FaRegHeart, FaXmark } from "react-icons/fa6";
 import DashboardContent from "./DashboardContent";
 import SavedMeals from "./SavedMeals";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import CookingChoice from "./CookingChoice";
 import MobileSideMenu from "../../components/menuCards/MobileSideMenu";
 import SideMenu from "../../components/menuCards/SideMenu";
 import Settings from "./Settings";
@@ -37,17 +13,12 @@ import PantryPage from "./PantryPage";
 import DialogComponent from "../../components/DialogComponent";
 import DashboardHome from "./DashboardHome";
 import PopperComponent from "../../components/PopperComponent";
-
 import ModalComponent from "../../components/ModalComponent";
-import TextInput from "../../components/formInputs/TextInput";
-import SelectInput from "../../components/formInputs/SelectInput";
-import { mealCategories } from "../../../../server/utils/helper";
-import { Autocomplete, TextField } from "@mui/material";
-import ingredientsData from "../../../../server/utils/ingredientsHelper.json";
 import CreatePost from "../../components/CreatePost";
 import Profile from "./Profile";
 import MobileNotificationCard from "../../components/MobileNotificationCard";
-const DashboardLayout = ({ userData, fetchUserData }) => {
+
+const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
   const [loading, setLoading] = useState(true);
   const [preferences, setPreferences] = useState(false);
   const [sideMenu, setSideMenu] = useState(false);
@@ -178,6 +149,8 @@ const DashboardLayout = ({ userData, fetchUserData }) => {
               anchorRef={anchorRef}
               showNotifications={showNotifications}
               currentUserId={userData._id}
+              showPostModal={showPostModal}
+              theme={theme}
             />
           }
         />
@@ -216,10 +189,12 @@ const DashboardLayout = ({ userData, fetchUserData }) => {
               refreshUserData={fetchUserData}
               userMetrics={userMetrics}
               refreshSideMenu={getUserMetrics}
+              updateTheme={updateTheme}
+              theme={theme}
             />
           }
         />
-        <Route path="pantry-items" element={<PantryPage />} />
+        <Route path="pantry-items" element={<PantryPage theme={theme} />} />
       </Routes>
     );
   };
@@ -262,10 +237,11 @@ const DashboardLayout = ({ userData, fetchUserData }) => {
   }
   return (
     <>
-      <div className="flex flex-col lg:flex-row bg-[#08090a] w-full  gap-10">
+      <div className="flex flex-col lg:flex-row dark:bg-[#0c0c0c] dark:text-white bg-[#F7F7F8] text-black w-full  gap-10">
         {/* side Menu */}
         {userData && userMetrics && (
           <SideMenu
+            theme={theme}
             userData={userData}
             userMetrics={userMetrics}
             showPreferences={showPreferences}
@@ -275,7 +251,7 @@ const DashboardLayout = ({ userData, fetchUserData }) => {
           />
         )}
 
-        <div className="lg:hidden pt-6 pl-6 flex items-center text-sm gap-4 border-b pb-3 border-b-[#343333] fixed bg-[#0c0c0c] z-50 w-full">
+        <div className="lg:hidden pt-6 pl-6 flex items-center text-sm gap-4 border-b pb-3 dark:border-b-[#343333] border-b-[#E0E0E0] fixed  dark:bg-[#0c0c0c] bg-white z-50 w-full">
           <div className="flex items-center">
             <button onClick={showSideMenu} className="">
               {sideMenu ? (
@@ -308,6 +284,7 @@ const DashboardLayout = ({ userData, fetchUserData }) => {
         {/* mobile side menu */}
         {sideMenu && userData && userMetrics && (
           <MobileSideMenu
+            theme={theme}
             userData={userData}
             userMetrics={userMetrics}
             showPreferences={showPreferences}
@@ -318,12 +295,12 @@ const DashboardLayout = ({ userData, fetchUserData }) => {
           />
         )}
         {/* Outlet */}
-        <div className="bg-[#0c0c0c] lg:pl-64 flex flex-col min-h-screen pb-8 w-full">
+        <div className="dark:bg-[#0c0c0c] dark:text-white bg-[#F7F7F8] lg:pl-64 flex flex-col min-h-screen pb-8 w-full">
           <div
             className={`hidden lg:block   pb-6  z-30 w-full ${
               location.pathname === "/home"
                 ? ""
-                : "border-b border-b-[#1d1d1d] fixed bg-[#0c0c0c]  pt-6"
+                : "border-b dark:border-b-[#1d1d1d] border-b-[#E0E0E0] fixed dark:bg-[#0c0c0c] bg-[#F7F7F8]   pt-6"
             }`}
           >
             <div className="px-10 text-sm">{getCurrentView()}</div>
@@ -340,8 +317,12 @@ const DashboardLayout = ({ userData, fetchUserData }) => {
         />
       )}
       {createPost && (
-        <ModalComponent showModal={createPost} setShowModal={setCreatePost}>
-          <CreatePost setCreatePost={setCreatePost} />
+        <ModalComponent
+          theme={theme}
+          showModal={createPost}
+          setShowModal={setCreatePost}
+        >
+          <CreatePost theme={theme} setCreatePost={setCreatePost} />
         </ModalComponent>
       )}
     </>

@@ -98,6 +98,9 @@ const Login = ({ authenticateUser }) => {
               type={"email"}
               labelClassName="lg:text-lg"
               className="lg:w-96"
+              applyDarkMode={true}
+              bgColor="bg-[#171717]"
+              borderColor="border-[#343333]"
             />
             <div className="relative">
               <TextInput
@@ -109,6 +112,9 @@ const Login = ({ authenticateUser }) => {
                 className="lg:w-96 pr-10"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                applyDarkMode={true}
+                bgColor="bg-[#171717]"
+                borderColor="border-[#343333]"
               />
               <button
                 type="button"

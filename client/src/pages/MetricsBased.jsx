@@ -172,6 +172,9 @@ const MetricsBased = ({ userData }) => {
                 value={gender}
                 onChange={(e) => setGender(e.target.value)}
                 className="w-72 cursor-pointer"
+                applyDarkMode={true}
+                bgColor="bg-[#171717]"
+                borderColor="border-[#343333]"
               />
               <TextInput
                 label={"Age"}
@@ -181,6 +184,8 @@ const MetricsBased = ({ userData }) => {
                 value={age}
                 onChange={(e) => setAge(e.target.value)}
                 className="w-72 cursor-pointer"
+                bgColor="bg-[#171717]"
+                borderColor="border-[#343333]"
               />
             </div>
             <div className="text-sm border-b pb-2 border-b-[#343333] w-full">
@@ -196,6 +201,8 @@ const MetricsBased = ({ userData }) => {
                 onChange={(e) => setHeight(e.target.value)}
                 type={"number"}
                 className="w-72 cursor-pointer"
+                bgColor="bg-[#171717]"
+                borderColor="border-[#343333]"
               />
               <TextInput
                 label={"Weight(kg)"}
@@ -206,6 +213,8 @@ const MetricsBased = ({ userData }) => {
                 onChange={(e) => setWeight(e.target.value)}
                 type={"number"}
                 className="w-72 cursor-pointer"
+                bgColor="bg-[#171717]"
+                borderColor="border-[#343333]"
               />
               <SelectInput
                 label={"Goal"}
@@ -214,6 +223,9 @@ const MetricsBased = ({ userData }) => {
                 value={goal}
                 onChange={(e) => setGoal(e.target.value)}
                 className="w-72 cursor-pointer"
+                applyDarkMode={true}
+                bgColor="bg-[#171717]"
+                borderColor="border-[#343333]"
               />
               <SelectInput
                 label={"Exercise Level"}
@@ -222,6 +234,9 @@ const MetricsBased = ({ userData }) => {
                 value={exerciseLevel}
                 onChange={(e) => setExerciseLevel(e.target.value)}
                 className="w-72 cursor-pointer"
+                applyDarkMode={true}
+                bgColor="bg-[#171717]"
+                borderColor="border-[#343333]"
               />
             </div>
 
@@ -262,7 +277,9 @@ const MetricsBased = ({ userData }) => {
                   max={30}
                   value={ingredientCount}
                   onChange={(e) => setIngredientCount(e.target.value)}
-                  className=" px-3"
+                  className="md:w-44 px-3"
+                  bgColor="bg-[#171717]"
+                  borderColor="border-[#343333]"
                 />
                 <button
                   onClick={incrementCount}

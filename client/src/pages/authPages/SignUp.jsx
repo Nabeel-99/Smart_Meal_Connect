@@ -103,6 +103,9 @@ const SignUp = () => {
               onChange={(e) => setFirstName(e.target.value)}
               labelClassName="lg:text-lg"
               className="lg:w-96"
+              bgColor="bg-[#171717]"
+              borderColor="border-[#343333]"
+              applyDarkMode={true}
             />
             <TextInput
               label={"Last name"}
@@ -113,6 +116,9 @@ const SignUp = () => {
               onChange={(e) => setLastName(e.target.value)}
               labelClassName="lg:text-lg"
               className="lg:w-96"
+              bgColor="bg-[#171717]"
+              borderColor="border-[#343333]"
+              applyDarkMode={true}
             />
             <TextInput
               label={"Email"}
@@ -123,6 +129,9 @@ const SignUp = () => {
               onChange={(e) => setEmail(e.target.value)}
               labelClassName="lg:text-lg"
               className="lg:w-96"
+              bgColor="bg-[#171717]"
+              borderColor="border-[#343333]"
+              applyDarkMode={true}
             />
             <div className="relative">
               <TextInput
@@ -134,6 +143,9 @@ const SignUp = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 labelClassName="lg:text-lg"
                 className="lg:w-96"
+                bgColor="bg-[#171717]"
+                borderColor="border-[#343333]"
+                applyDarkMode={true}
               />
               <button
                 type="button"

@@ -23,12 +23,12 @@ const ImageCard = ({ selectedPost }) => {
     currentImageIndex === selectedPost.posts.images.length - 1;
   const isFirstImage = currentImageIndex === 0;
   return (
-    <div className="relative w-[15rem] lg:w-[200rem] xl:w-[230rem]  border border-[#2a2a2a] rounded-md">
+    <div className="relative w-[15rem] lg:w-[200rem] xl:w-[230rem]  border dark:border-[#2a2a2a]  border-[#e0e0e0] rounded-md">
       <span>
         <Tooltip title="previous">
           <span>
             <button
-              className={`absolute flex  backdrop-blur-md hover:bg-[#484848]  p-2  rounded-full  items-center justify-center top-[50%] ${
+              className={`absolute flex  backdrop-blur-md dark:hover:bg-[#484848] hover:bg-[#dadada] border bg-[#dadada] dark:border-white p-2  rounded-full  items-center justify-center top-[50%] ${
                 isFirstImage ? "hidden" : ""
               }`}
               onClick={handlePreviousImage}
@@ -48,7 +48,7 @@ const ImageCard = ({ selectedPost }) => {
         <Tooltip title="next">
           <span>
             <button
-              className={`absolute flex  backdrop-blur-md hover:bg-[#484848]  p-2  rounded-full right-0 items-center justify-center top-[50%] ${
+              className={`absolute flex  backdrop-blur-md dark:hover:bg-[#484848] hover:bg-[#dadada]  p-2  rounded-full right-0 items-center justify-center top-[50%] ${
                 isLastImage ? "hidden" : ""
               }`}
               type="button"

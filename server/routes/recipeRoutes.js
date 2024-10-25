@@ -37,7 +37,7 @@ const checkIfUserHasPantry = async (req, res, next) => {
   }
 };
 
-// storing imgaes
+// storing images
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     return cb(null, "uploads");

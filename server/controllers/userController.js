@@ -2,7 +2,14 @@ import User from "../models/userModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { validate, validateUpdate } from "../utils/validation.js";
-
+import UserDashboard from "../models/userDashboardModel.js";
+import SavedRecipe from "../models/savedRecipeModel.js";
+import UserPost from "../models/userPostModel.js";
+import Metrics from "../models/metricsModel.js";
+import Pantry from "../models/pantryModel.js";
+import Recipe from "../models/recipeModel.js";
+import path from "path";
+import * as fs from "node:fs/promises";
 // create user
 export const createUser = async (req, res) => {
   try {
@@ -145,11 +152,49 @@ export const deleteUser = async (req, res) => {
   try {
     const userId = req.userId;
     const deletedUser = await User.findByIdAndDelete(userId);
+    const userDashboard = await UserDashboard.findOneAndDelete({
+      userId: userId,
+    });
+    const recipeIds = [
+      ...userDashboard.generatedMeals.breakfast.map((meal) => meal.recipeId),
+      ...userDashboard.generatedMeals.lunch.map((meal) => meal.recipeId),
+      ...userDashboard.generatedMeals.dinner.map((meal) => meal.recipeId),
+    ];
+
+    for (const recipeId of recipeIds) {
+      const recipe = await Recipe.findById(recipeId);
+      if (recipe && recipe.images) {
+        for (const image of recipe.images) {
+          const filePath = path.join(
+            __dirname,
+            "uploads",
+            path.basename(image)
+          );
+          try {
+            await fs.unlink(filePath);
+          } catch (error) {
+            console.log(`error deleting image: ${image}}`, error);
+          }
+        }
+      }
+      await Recipe.findByIdAndDelete(recipeId);
+    }
+
+    const userPosts = await UserPost.find({ userId: userId }, "recipeId");
+    for (const post of userPosts) {
+      await Recipe.findByIdAndDelete(post.recipeId);
+    }
+    await UserPost.deleteMany({ userId: userId });
+
+    await SavedRecipe.findOneAndDelete({ userId: userId });
+    await Metrics.findOneAndDelete({ userId: userId });
+    await Pantry.findOneAndDelete({ userId: userId });
     if (deletedUser) {
       res.clearCookie("token");
     }
     return res.status(200).json(deletedUser);
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };

@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 import {
   BrowserRouter as Router,
@@ -20,14 +18,8 @@ import Home from "./pages/Home";
 import MetricsBased from "./pages/MetricsBased";
 import ScrollToTop from "./components/ScrollToTop";
 import RecipeDetails from "./pages/RecipeDetails";
-
-import SavedMeals from "./pages/dashboard/SavedMeals";
-import DashboardContent from "./pages/dashboard/DashboardContent";
-import CookingChoice from "./pages/dashboard/CookingChoice";
-import Settings from "./pages/dashboard/Settings";
 import Preferences from "./pages/Preferences";
 import axios from "axios";
-import AnimationComponent from "./components/AnimationComponent";
 import PantryItems from "./pages/PantryItems";
 import DashboardLayout from "./pages/dashboard/DashboardLayout";
 
@@ -35,13 +27,7 @@ const App = () => {
   const [userData, setUserData] = useState(null);
   const [isFetching, setIsFetching] = useState(false);
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "system");
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    const storedTheme = localStorage.getItem("theme");
-    if (storedTheme) {
-      return storedTheme === "dark";
-    }
-    return window.matchMedia("(prefers-color-scheme: dark)").matches;
-  });
+
   const authenticateUser = async () => {
     if (isFetching) return;
     setIsFetching(true);
@@ -74,21 +60,16 @@ const App = () => {
     const isSystemDark = window.matchMedia(
       "(prefers-color-scheme: dark)"
     ).matches;
-    setIsDarkMode(isSystemDark);
-    localStorage.removeItem("theme");
     applyTheme(isSystemDark ? "dark" : "light");
   };
 
   const updateTheme = (selectedTheme) => {
     setTheme(selectedTheme);
-    if (selectedTheme === "light") {
-      applyTheme("light");
-      setIsDarkMode(false);
-    } else if (selectedTheme === "dark") {
-      applyTheme("dark");
-      setIsDarkMode(true);
+    if (selectedTheme === "light" || selectedTheme === "dark") {
+      applyTheme(selectedTheme);
     } else {
       systemMode();
+      localStorage.removeItem("theme");
     }
   };
   useEffect(() => {
@@ -109,6 +90,7 @@ const App = () => {
       mediaQuery.removeEventListener("change", handleChange);
     };
   }, [theme]);
+
   useEffect(() => {
     authenticateUser();
   }, []);
@@ -133,6 +115,8 @@ const App = () => {
               <DashboardLayout
                 userData={userData}
                 fetchUserData={authenticateUser}
+                theme={theme}
+                updateTheme={updateTheme}
               />
             }
           />

@@ -5,8 +5,9 @@ import ingredientsData from "../../../../server/utils/ingredientsHelper.json";
 import { FaXmark } from "react-icons/fa6";
 import pantryItems from "../../../../server/utils/pantry.json";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import AutoHideSnackbar from "../../components/AutoHideSnackbar";
 
-const PantryPage = () => {
+const PantryPage = ({ theme }) => {
   const [loading, setLoading] = useState(false);
   const [item, setItem] = useState("");
   const [selectedItems, setSelectedItems] = useState([]);
@@ -17,7 +18,8 @@ const PantryPage = () => {
   const [updateError, setUpdateError] = useState("");
   const [showUpdateSuccess, setShowUpdateSuccess] = useState(false);
   const [showUpdateError, setShowUpdateError] = useState(false);
-
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
   const showEditPantry = () => setIsEditingPantry(!isEditingPantry);
   const fetchPantryItems = async () => {
     try {
@@ -42,7 +44,11 @@ const PantryPage = () => {
         },
         { withCredentials: true }
       );
-      console.log(response.data);
+      if (response.status === 200) {
+        setIsEditingPantry(false);
+        setShowSnackbar(true);
+        setSnackbarMessage("Pantry updated");
+      }
     } catch (error) {
       console.log(error);
     } finally {
@@ -89,7 +95,10 @@ const PantryPage = () => {
   return (
     <div className="flex flex-col  w-full h-full  px-8 ">
       <div className="pt-32 md:pt-28   w-full   ">
-        <button onClick={showEditPantry} className="text-blue-400 text-sm">
+        <button
+          onClick={showEditPantry}
+          className="dark:text-blue-400  text-blue-600 text-sm"
+        >
           {isEditingPantry ? "Cancel" : "Edit Pantry"}
         </button>
       </div>
@@ -137,18 +146,21 @@ const PantryPage = () => {
                     },
                     maxWidth: "400px",
                     "& .MuiInputBase-root": {
-                      backgroundColor: "#171717",
-                      border: "1px solid #343333",
-                      color: "white",
+                      backgroundColor: theme === "dark" ? "#171717" : "#F7F7F8",
+                      border:
+                        theme === "dark"
+                          ? "1px solid #343333"
+                          : "1px solid #E0E0E0",
+                      color: theme === "dark" ? "white" : "#333333",
                     },
                     "& .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "#343333",
+                      borderColor: theme === "dark" ? "#343333" : "#E0E0E0",
                     },
                     "&:hover .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "#ffffff",
+                      borderColor: theme === "dark" ? "#ffffff" : "#333333",
                     },
                     "& .MuiAutocomplete-popupIndicator": {
-                      color: "#ffffff",
+                      color: theme === "dark" ? "#ffffff" : "#333333",
                     },
                   }}
                   renderInput={(params) => (
@@ -173,7 +185,7 @@ const PantryPage = () => {
                 />
                 <button
                   onClick={addToPantry}
-                  className="bg-[#199224] mb-2 hover:bg-[#1ead2a] py-2 text-center px-6 rounded-lg"
+                  className="bg-[#199224] mb-2 hover:bg-[#1ead2a] text-white py-2 text-center px-6 rounded-lg"
                 >
                   Add
                 </button>
@@ -182,7 +194,7 @@ const PantryPage = () => {
                 <button
                   onClick={updatePantry}
                   disabled={loading}
-                  className="bg-[#B678F0] py-1 text-center w-44 flex items-center justify-center  rounded-md"
+                  className="bg-[#B678F0] py-1 text-center w-44 flex items-center justify-center text-white rounded-md"
                 >
                   {loading ? (
                     <AiOutlineLoading3Quarters className="spin text-2xl" />
@@ -196,7 +208,7 @@ const PantryPage = () => {
         )}
 
         <div
-          className={` rounded-md bg-[#0f0f0f] max-h-[650px] p-8 w-full border border-[#1d1d1d] overflow-auto  `}
+          className={` rounded-md dark:bg-[#0f0f0f] bg-[#dadada] max-h-[650px] p-8 w-full border dark:border-[#1d1d1d] border-[#e0e0e0] overflow-auto  `}
         >
           {" "}
           <div
@@ -207,7 +219,7 @@ const PantryPage = () => {
             {selectedItems.length > 0 &&
               selectedItems.map((item, index) => (
                 <div
-                  className="bg-[#2d2d2d] border border-[#444544] px-3 py-2 rounded-xl text-white flex items-center w-full justify-between"
+                  className="dark:bg-[#2d2d2d] bg-[#c4c4c4] border-[#dadada] border dark:border-[#444544] px-3 py-2 rounded-xl dark:text-white flex items-center w-full justify-between"
                   key={index}
                 >
                   <p className="pr-4 ">{item}</p>
@@ -229,6 +241,13 @@ const PantryPage = () => {
             </div>
           )}
         </div>
+        {showSnackbar && (
+          <AutoHideSnackbar
+            openSnackbar={showSnackbar}
+            message={snackbarMessage}
+            setSnackbar={setShowSnackbar}
+          />
+        )}
       </div>
     </div>
   );

@@ -14,6 +14,7 @@ const TextInput = ({
   min,
   disabled = false,
   bgColor = "",
+  borderColor = "",
   inputWidth = "",
 }) => {
   return (
@@ -31,8 +32,10 @@ const TextInput = ({
 
       <input
         className={`${
-          bgColor ? bgColor : "bg-[#171717]"
-        } border  border-[#1d1d1d] rounded-lg px-3 py-2 ${className}`}
+          bgColor ? bgColor : "dark:bg-[#171717] bg-[#e9e9e9]"
+        } border ${
+          borderColor ? borderColor : "dark:border-[#1d1d1d] border-[#e0e0e0]"
+        }  rounded-lg px-3 py-2 ${className}`}
         id={id}
         min={min}
         max={max}
