@@ -5,22 +5,13 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import ReactPlayer from "react-player";
 import { color, height, width } from "@mui/system";
+import useTheme from "./UseTheme";
 
 const ModalComponent = ({ showModal, setShowModal, children, theme }) => {
-  const [modalTheme, setModalTheme] = useState(theme);
-  useEffect(() => {
-    const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-      .matches
-      ? "dark"
-      : "light";
+  const modalTheme = useTheme(theme);
 
-    if (!theme) {
-      setModalTheme(systemTheme);
-    } else {
-      setModalTheme(theme);
-    }
-  }, [theme]);
   const handleClose = () => setShowModal(false);
+
   const style = {
     position: "absolute",
     top: "50%",

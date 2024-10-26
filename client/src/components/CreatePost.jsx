@@ -16,6 +16,7 @@ import { HiOutlineSquare2Stack } from "react-icons/hi2";
 import axios from "axios";
 import PreviewCard from "./PreviewCard";
 import AutoHideSnackbar from "./AutoHideSnackbar";
+import useTheme from "./UseTheme";
 
 const CreatePost = ({ setCreatePost, theme, selectedPost, setShowModal }) => {
   const [title, setTitle] = useState(selectedPost?.title || "");
@@ -40,6 +41,7 @@ const CreatePost = ({ setCreatePost, theme, selectedPost, setShowModal }) => {
   const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
+  const modalTheme = useTheme(theme);
 
   const addIngredient = () => {
     if (item && !ingredients.includes(item)) {
@@ -81,19 +83,6 @@ const CreatePost = ({ setCreatePost, theme, selectedPost, setShowModal }) => {
 
   console.log("image previews", imagePreviews);
   console.log("images", images);
-  const [modalTheme, setModalTheme] = useState(theme);
-  useEffect(() => {
-    const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-      .matches
-      ? "dark"
-      : "light";
-
-    if (!theme) {
-      setModalTheme(systemTheme);
-    } else {
-      setModalTheme(theme);
-    }
-  }, [theme]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

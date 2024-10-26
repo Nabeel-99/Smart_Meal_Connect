@@ -330,7 +330,6 @@ const AccountSection = ({ userData, theme, updateTheme, refreshUserData }) => {
           options={themeOptions}
           className="w-44"
           theme={theme}
-          applyDarkMode={true}
         />
       </div>
       <div className="flex flex-col items-start gap-4 mt-8   pb-4">

@@ -49,10 +49,8 @@ const App = () => {
     const root = document.documentElement;
     if (theme === "dark") {
       root.classList.add("dark");
-      localStorage.setItem("theme", "dark");
     } else {
       root.classList.remove("dark");
-      localStorage.setItem("theme", "light");
     }
   };
 
@@ -68,9 +66,9 @@ const App = () => {
     if (selectedTheme === "light" || selectedTheme === "dark") {
       applyTheme(selectedTheme);
       localStorage.setItem("theme", selectedTheme);
-    } else {
-      applyTheme(selectedTheme);
+    } else if (selectedTheme === "system") {
       localStorage.removeItem("theme");
+      systemMode();
     }
   };
   useEffect(() => {
@@ -96,7 +94,7 @@ const App = () => {
     authenticateUser();
   }, []);
   return (
-    <div className="flex flex-col h-full w-screen pb-20 gap-10">
+    <div className="flex  flex-col h-full w-screen pb-20 gap-10">
       <Router>
         <ScrollToTop />
         <MaybeShowComponent>
