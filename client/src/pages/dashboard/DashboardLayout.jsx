@@ -154,7 +154,17 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
             />
           }
         />
-        <Route path="/profile" element={<Profile userData={userData} />} />
+        <Route
+          path="/profile"
+          element={
+            <Profile
+              theme={theme}
+              setCreatePost={setCreatePost}
+              currentUserId={userData._id}
+            />
+          }
+        />
+        <Route path="/profile/:id" element={<Profile />} />
         <Route
           path="content"
           element={

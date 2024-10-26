@@ -15,18 +15,29 @@ import ingredientsData from "../../../server/utils/ingredientsHelper.json";
 import { HiOutlineSquare2Stack } from "react-icons/hi2";
 import axios from "axios";
 import PreviewCard from "./PreviewCard";
+import AutoHideSnackbar from "./AutoHideSnackbar";
 
-const CreatePost = ({ setCreatePost, theme }) => {
-  const [title, setTitle] = useState("");
-  const [instructions, setInstructions] = useState([]);
-  const [images, setImages] = useState([]);
-  const [imagePreviews, setImagePreviews] = useState([]);
+const CreatePost = ({ setCreatePost, theme, selectedPost, setShowModal }) => {
+  const [title, setTitle] = useState(selectedPost?.title || "");
+  const [instructions, setInstructions] = useState(
+    selectedPost?.instructions || []
+  );
+  const [images, setImages] = useState(selectedPost?.images || []);
+  const [imagePreviews, setImagePreviews] = useState(
+    selectedPost?.images || []
+  );
   const [videoLink, setVideoLink] = useState(null);
-  const [prepTime, setPrepTime] = useState(0);
+  const [prepTime, setPrepTime] = useState(selectedPost?.prepTime || 0);
   const [autocompleteValue, setAutocompleteValue] = useState(null);
   const [item, setItem] = useState("");
-  const [ingredients, setIngredients] = useState([]);
-  const [category, setCategory] = useState("breakfast");
+  const [ingredients, setIngredients] = useState(
+    selectedPost?.ingredients || []
+  );
+  const [category, setCategory] = useState(
+    selectedPost?.category || "breakfast"
+  );
+  const [successMessage, setSuccessMessage] = useState("");
+  const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
@@ -42,7 +53,8 @@ const CreatePost = ({ setCreatePost, theme }) => {
 
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
-    if (files.length > 3) {
+    const totalImages = imagePreviews.length + files.length;
+    if (totalImages > 3) {
       setSnackbarOpen(true);
       setSnackbarMessage("You can only upload a maximum of 3 images.");
       return;
@@ -56,13 +68,32 @@ const CreatePost = ({ setCreatePost, theme }) => {
   };
 
   useEffect(() => {
-    const newImagePreviews = images.map((image) => URL.createObjectURL(image));
+    const newImagePreviews = images.map((image) =>
+      typeof image === "string" ? image : URL.createObjectURL(image)
+    );
+
     setImagePreviews(newImagePreviews);
 
     return () => {
       newImagePreviews.forEach((preview) => URL.revokeObjectURL(preview));
     };
   }, [images]);
+
+  console.log("image previews", imagePreviews);
+  console.log("images", images);
+  const [modalTheme, setModalTheme] = useState(theme);
+  useEffect(() => {
+    const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
+      .matches
+      ? "dark"
+      : "light";
+
+    if (!theme) {
+      setModalTheme(systemTheme);
+    } else {
+      setModalTheme(theme);
+    }
+  }, [theme]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -79,22 +110,36 @@ const CreatePost = ({ setCreatePost, theme }) => {
       formData.append("images", image);
     });
     try {
-      const response = await axios.post(
-        "http://localhost:8000/api/recipes/post",
-        formData,
-        {
-          withCredentials: true,
-        }
-      );
+      let response;
+      if (selectedPost) {
+        response = await editRecipePost(selectedPost._id, formData);
+      } else {
+        response = await createRecipePost(formData);
+      }
       console.log(response.data);
-      if (response.status === 201) {
+      if (response.status === 201 || response.status === 200) {
         setCreatePost(false);
-        setMessage("Your post has been shared");
-        setDisplayMsg(true);
+        setShowModal(false);
+        setShowSuccessSnackbar(true);
+        setSuccessMessage("Your post has been shared");
       }
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const createRecipePost = async (formData) => {
+    return await axios.post("http://localhost:8000/api/users/post", formData, {
+      withCredentials: true,
+    });
+  };
+
+  const editRecipePost = async (postId, formData) => {
+    return await axios.patch(
+      `http://localhost:8000/api/users/update/${postId}`,
+      formData,
+      { withCredentials: true }
+    );
   };
   return (
     <>
@@ -120,13 +165,21 @@ const CreatePost = ({ setCreatePost, theme }) => {
         </Snackbar>
       )}
 
+      {showSuccessSnackbar && (
+        <AutoHideSnackbar
+          message={successMessage}
+          setSnackbar={setShowSuccessSnackbar}
+          openSnackbar={showSuccessSnackbar}
+        />
+      )}
+
       <form
         onSubmit={handleSubmit}
         className="flex flex-col lg:flex-row justify-between items-center overflow-scroll lg:items-stretch p-4 lg:p-12 h-[40rem] w-80 md:w-full xl:w-full  lg:h-[35rem] xl:h-[45rem]"
       >
         <div className="hidden lg:block lg:fixed right-4 top-2  pb-10">
           <button className="text-blue-500 font-semibold hover:text-blue-300">
-            Post
+            {selectedPost ? "Update" : "Post"}
           </button>
         </div>
 
@@ -137,6 +190,8 @@ const CreatePost = ({ setCreatePost, theme }) => {
               images={images}
               setImages={setImages}
               handleImageUpload={handleImageUpload}
+              theme={theme}
+              setImagePreviews={setImagePreviews}
             />
           ) : (
             <div className="flex flex-col gap-2 items-center justify-center w-full h-64 lg:h-[416px] xl:h-full">
@@ -206,23 +261,25 @@ const CreatePost = ({ setCreatePost, theme }) => {
                   sx={{
                     width: 300,
                     "& .MuiInputBase-root": {
-                      backgroundColor: theme === "dark" ? "#0c0c0c" : "#e9e9e9",
+                      backgroundColor:
+                        modalTheme === "dark" ? "#0c0c0c" : "#e9e9e9",
                       borderRadius: "8px",
                       paddingLeft: "12px",
                       paddingRight: "12px",
-                      color: theme === "dark" ? "white" : "black",
+                      color: modalTheme === "dark" ? "white" : "black",
                     },
                     "& .MuiOutlinedInput-notchedOutline": {
-                      borderColor: theme === "dark" ? "#1d1d1d" : "#e0e0e0",
+                      borderColor:
+                        modalTheme === "dark" ? "#1d1d1d" : "#e0e0e0",
                     },
                     "&:hover .MuiOutlinedInput-notchedOutline": {
                       borderColor: "#ffffff",
                     },
                     "& .MuiAutocomplete-popupIndicator": {
-                      color: theme === "dark" ? "#ffffff" : "#333333",
+                      color: modalTheme === "dark" ? "#ffffff" : "#333333",
                     },
                     "& .MuiAutocomplete-clearIndicator": {
-                      color: theme === "dark" ? "#ffffff" : "#333333",
+                      color: modalTheme === "dark" ? "#ffffff" : "#333333",
                     },
                   }}
                   renderInput={(params) => (
@@ -234,10 +291,10 @@ const CreatePost = ({ setCreatePost, theme }) => {
                         "& .MuiInputBase-input": {
                           height: 15,
                           backgroundColor:
-                            theme === "dark" ? "#0c0c0c" : "e9e9e9",
+                            modalTheme === "dark" ? "#0c0c0c" : "e9e9e9",
                           borderRadius: "8px",
                           padding: "8px 12px",
-                          color: theme === "dark" ? "white" : "black",
+                          color: modalTheme === "dark" ? "white" : "black",
                         },
                       }}
                     />
@@ -298,9 +355,9 @@ const CreatePost = ({ setCreatePost, theme }) => {
           <div className="lg:hidden pb-12">
             <button
               type="submit"
-              className=" bg-blue-600 p-2 w-full rounded-md font-semibold hover:bg-blue-700"
+              className=" bg-blue-600  text-white p-2 w-full rounded-md font-semibold hover:bg-blue-700"
             >
-              Create post
+              {selectedPost ? "Update Post" : "Create post"}
             </button>
           </div>
         </div>

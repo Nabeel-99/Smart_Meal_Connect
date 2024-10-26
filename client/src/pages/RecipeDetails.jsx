@@ -1,19 +1,26 @@
 import React, { useEffect, useState } from "react";
 import Food1 from "../assets/food1.jpg";
-import { FaBookmark, FaVideo, FaYoutube } from "react-icons/fa6";
+import {
+  FaBookmark,
+  FaChevronLeft,
+  FaChevronRight,
+  FaVideo,
+  FaYoutube,
+} from "react-icons/fa6";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import AutohideSnackbar from "../components/AutoHideSnackbar";
 import ReactPlayer from "react-player";
 import ModalComponent from "../components/ModalComponent";
 import { SiGreasyfork } from "react-icons/si";
+import { Tooltip } from "@mui/material";
 
 const RecipeDetails = () => {
   const [recipeDetails, setRecipeDetails] = useState({});
   const [displayMsg, setDisplayMsg] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
   const [message, setMessage] = useState("");
-  const [currentImageIndex, setImageIndex] = useState(0);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const { id } = useParams();
   const location = useLocation();
   const source = location.state?.source;
@@ -23,7 +30,6 @@ const RecipeDetails = () => {
 
   const goBack = () => navigate(-1);
   const fetchRecipeDetails = async () => {
-    console.log(source);
     if (source) {
       const storedRecipes = sessionStorage.getItem(source);
       const recipes = JSON.parse(storedRecipes);
@@ -33,7 +39,7 @@ const RecipeDetails = () => {
 
       if (foundRecipe) {
         setRecipeDetails(foundRecipe);
-        console.log("Recipe found in local storage", foundRecipe);
+
         return;
       } else {
         console.log("Recipe not found in local storage");
@@ -45,15 +51,12 @@ const RecipeDetails = () => {
       );
       if (response.status === 200) {
         setRecipeDetails(response.data);
-        console.log(response.data);
       }
     } catch (error) {
       console.error("Error fetching recipe from API", error);
     }
   };
-  const images = recipeDetails.images
-    ? recipeDetails.images.map((image) => image)
-    : [];
+
   const saveRecipe = async () => {
     try {
       const response = await axios.post(
@@ -69,7 +72,6 @@ const RecipeDetails = () => {
         setMessage("Recipe saved successfully");
         setDisplayMsg(true);
       }
-      console.log(response.data);
     } catch (error) {
       console.log(error);
       if (error.response && error.response.status === 400) {
@@ -78,6 +80,21 @@ const RecipeDetails = () => {
       }
     }
   };
+  const handleNextImage = () => {
+    if (currentImageIndex < recipeDetails.images.length - 1) {
+      setCurrentImageIndex(currentImageIndex + 1);
+    }
+  };
+  const handlePreviousImage = () => {
+    if (currentImageIndex > 0) {
+      setCurrentImageIndex(currentImageIndex - 1);
+    }
+  };
+
+  const isLastImage =
+    recipeDetails.images &&
+    currentImageIndex === recipeDetails.images.length - 1;
+  const isFirstImage = currentImageIndex === 0;
 
   useEffect(() => {
     fetchRecipeDetails();
@@ -152,15 +169,50 @@ const RecipeDetails = () => {
         </div>
       </div>
       <div className="flex flex-col w-full justify-center md:w-[600px] lg:w-auto lg:flex-row gap-10">
-        <div className="">
+        <div className="relative">
+          <span>
+            <Tooltip title="previous">
+              <span>
+                <button
+                  className={`absolute flex  backdrop-blur-md dark:hover:bg-[#484848] hover:bg-[#dadada]   p-2  rounded-full  items-center justify-center top-[50%] ${
+                    isFirstImage ? "hidden" : ""
+                  }`}
+                  onClick={handlePreviousImage}
+                  type="button"
+                  disabled={isFirstImage}
+                >
+                  <FaChevronLeft />
+                </button>
+              </span>
+            </Tooltip>
+          </span>
           <img
             src={
-              recipeDetails?.image ||
-              `http://localhost:8000/${images[currentImageIndex]}`
+              recipeDetails?.images?.[currentImageIndex]
+                ? recipeDetails.images[currentImageIndex].startsWith("http")
+                  ? recipeDetails.images[currentImageIndex]
+                  : `http://localhost:8000/${recipeDetails.images[currentImageIndex]}`
+                : "default"
             }
             alt=""
             className="w-full h-[280px] md:w-[600px] md:h-[400px] lg:w-[500px] lg:h-[400px] xl:w-[700px] xl:h-[500px] object-cover border border-[#1d1d1d] rounded-2xl"
           />
+          <span>
+            <Tooltip title="next">
+              <span>
+                <button
+                  className={`absolute flex  backdrop-blur-md dark:hover:bg-[#484848] hover:bg-[#dadada]  p-2  rounded-full right-0 items-center justify-center top-[50%] ${
+                    isLastImage ? "hidden" : ""
+                  }`}
+                  type="button"
+                  onClick={handleNextImage}
+                  disabled={isLastImage}
+                >
+                  <FaChevronRight />
+                </button>
+              </span>
+            </Tooltip>
+          </span>
         </div>
         <div className="flex flex-col gap-4">
           {recipeDetails.nutrients && (

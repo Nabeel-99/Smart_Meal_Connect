@@ -1,5 +1,5 @@
 import { Tooltip } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FaArrowLeft,
   FaArrowRight,
@@ -7,13 +7,15 @@ import {
   FaChevronRight,
   FaTrash,
 } from "react-icons/fa6";
-import { HiOutlineSquare2Stack } from "react-icons/hi2";
+import { HiOutlineSquare2Stack, HiSquare2Stack } from "react-icons/hi2";
 
 const PreviewCard = ({
   imagePreviews,
   images,
   setImages,
   handleImageUpload = null,
+  theme,
+  setImagePreviews,
 }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const handleNextImage = () => {
@@ -26,18 +28,27 @@ const PreviewCard = ({
       setCurrentImageIndex(currentImageIndex - 1);
     }
   };
-  const removeImage = (image) => {
+  const removeImage = (imageToRemove) => {
     setImages((prevImages) => {
-      const updatedImages = prevImages.filter((i) => i !== image);
+      const updatedImages = prevImages.filter((i) => i !== imageToRemove);
 
-      if (updatedImages.length === 0) {
-        setCurrentImageIndex(0);
-      } else if (currentImageIndex >= updatedImages.length) {
-        setCurrentImageIndex(updatedImages.length - 1);
-      }
+      setImagePreviews((prevPreviews) => {
+        const updatedPreviews = prevPreviews.filter(
+          (preview) => preview !== imageToRemove
+        );
+        if (updatedImages.length === 0) {
+          setCurrentImageIndex(0);
+        } else if (currentImageIndex >= updatedImages.length) {
+          setCurrentImageIndex(updatedImages.length - 1);
+        }
+
+        return updatedPreviews;
+      });
+
       return updatedImages;
     });
   };
+
   const isLastImage = currentImageIndex === imagePreviews.length - 1;
   const isFirstImage = currentImageIndex === 0;
 
@@ -45,14 +56,14 @@ const PreviewCard = ({
     <div className="flex h-full ">
       <Tooltip title="previous">
         <button
-          className={`absolute flex  backdrop-blur-md dark:hover:bg-[#484848] hover:bg-[#dadada]   p-2  rounded-full  items-center justify-center top-[50%] ${
+          className={`absolute flex dark:text-black dark:hover:text-white dark:bg-white   backdrop-blur-md dark:hover:bg-[#484848] hover:bg-[#dadada]   p-2  rounded-full  items-center justify-center top-[50%] ${
             isFirstImage ? "hidden" : ""
           }`}
           onClick={handlePreviousImage}
           type="button"
           disabled={isFirstImage}
         >
-          <FaChevronLeft />
+          <FaChevronLeft className="" />
         </button>
       </Tooltip>
 
@@ -61,9 +72,9 @@ const PreviewCard = ({
           <button
             type="button"
             onClick={() => removeImage(images[currentImageIndex])}
-            className="flex border hover:bg-[#dadada] dark:hover:bg-[#484848] dark:border-[#676767] p-2 dark:bg-[#1d1d1d] rounded-full items-center  justify-center  "
+            className="flex border hover:bg-[#dadada] bg-white dark:hover:bg-[#484848] dark:border-[#676767] p-2 dark:bg-[#1d1d1d] rounded-full items-center  justify-center  "
           >
-            <FaTrash />
+            <FaTrash className="" />
           </button>
         </Tooltip>
         {images.length < 3 && (
@@ -71,9 +82,13 @@ const PreviewCard = ({
             <label
               type="button"
               htmlFor="file-upload"
-              className="flex flex-col cursor-pointer hover:bg-[#dadada] border dark:hover:bg-[#484848] dark:border-[#676767] p-2 dark:bg-[#1d1d1d]  rounded-full items-center  justify-center  "
+              className="flex flex-col cursor-pointer bg-white hover:bg-[#dadada] border dark:hover:bg-[#484848] dark:border-[#676767] p-2 dark:bg-[#1d1d1d]  rounded-full items-center  justify-center  "
             >
-              <HiOutlineSquare2Stack />
+              {theme === "dark" ? (
+                <HiOutlineSquare2Stack className="dark:text-white" />
+              ) : (
+                <HiSquare2Stack className="dark:text-white" />
+              )}
             </label>
             <input
               type="file"
@@ -88,13 +103,18 @@ const PreviewCard = ({
       </div>
 
       <img
-        src={imagePreviews[currentImageIndex]}
+        src={
+          typeof imagePreviews[currentImageIndex] === "string" &&
+          imagePreviews[currentImageIndex].startsWith("uploads/")
+            ? `http://localhost:8000/${imagePreviews[currentImageIndex]}`
+            : imagePreviews[currentImageIndex]
+        }
         alt={`uploaded image - ${currentImageIndex + 1}`}
         className=" rounded-md w-full h-[16rem] md:h-[20rem] lg:w-full lg:h-full xl:w-full  xl:h-full object-contain"
       />
       <Tooltip title="next">
         <button
-          className={`absolute flex  backdrop-blur-md dark:hover:bg-[#484848] hover:bg-[#dadada]  p-2  rounded-full right-0 items-center justify-center top-[50%] ${
+          className={`absolute flex  backdrop-blur-md dark:text-black dark:hover:text-white dark:bg-white  dark:hover:bg-[#484848] hover:bg-[#dadada]  p-2  rounded-full right-0 items-center justify-center top-[50%] ${
             isLastImage ? "hidden" : ""
           }`}
           type="button"

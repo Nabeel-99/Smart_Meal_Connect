@@ -71,7 +71,7 @@ const Navbar = ({ userData }) => {
       </div>
       {isLoggedIn ? (
         <Link
-          to={"/dashboard"}
+          to={"/home"}
           className="hidden lg:flex items-center z-50 gap-4 border bg-[#dadada] text-black hover:bg-[#483ba3] hover:text-white transition-all duration-300 border-[#302d2d]  backdrop-blur-lg rounded-xl px-6 h-[55px] fixed right-10"
         >
           Dashboard

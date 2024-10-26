@@ -1,6 +1,8 @@
+import path from "path";
 import Recipe from "../models/recipeModel.js";
+import User from "../models/userModel.js";
 import UserPost from "../models/userPostModel.js";
-
+import * as fs from "node:fs/promises";
 // post recipe
 export const postRecipe = async (req, res) => {
   try {
@@ -76,12 +78,31 @@ export const updateRecipePost = async (req, res) => {
       ...(videoLink && { videoLink }),
       ...(prepTime && { prepTime }),
     };
+
+    const existingImages = recipe.images || [];
     if (images && images.length > 0) {
       if (images.length > 3) {
         return res.status(400).json({ message: "Maximum 3 images allowed" });
       }
-      const imagePaths = images.map((image) => image.path);
-      updatedData.images = imagePaths;
+      const imagePaths = [
+        ...existingImages,
+        ...images.map((image) => image.path),
+      ];
+      updatedData.images = [...new Set(imagePaths)];
+
+      const imagesToDelete = existingImages.filter(
+        (img) => !imagePaths.includes(img)
+      );
+      imagesToDelete.forEach((img) => {
+        const filePath = path.join(__dirname, "uploads", path.basename(img));
+        fs.unlink(filePath, (err) => {
+          if (err) {
+            console.log("failed to delete image", err);
+          }
+        });
+      });
+    } else {
+      updatedData.images = existingImages;
     }
 
     const updatedPost = await Recipe.findByIdAndUpdate(
@@ -252,11 +273,20 @@ export const deleteComment = async (req, res) => {
 // get user posts
 export const getUserPosts = async (req, res) => {
   try {
-    const { userId } = req;
-    if (!userId) {
+    const { id: userId } = req.params;
+    const currentUserId = req.userId;
+    const queryUserId = userId || currentUserId;
+
+    if (!queryUserId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
-    const posts = await UserPost.find({ userId: userId }).populate("recipeId");
+
+    const userProfile = await User.findById(queryUserId).select(
+      "firstName lastName"
+    );
+    const posts = await UserPost.find({ userId: queryUserId }).populate(
+      "recipeId"
+    );
     if (!posts) {
       return res.status(404).json({ message: "No posts found" });
     }
@@ -276,10 +306,53 @@ export const getUserPosts = async (req, res) => {
       };
     });
     return res.status(200).json({
+      userProfile,
       userPosts,
       totalLikes: totalLikes,
     });
   } catch (error) {
     console.log(error);
+  }
+};
+
+// delete user post
+export const deletePost = async (req, res) => {
+  try {
+    const { userId } = req;
+    const { postId, recipeId } = req.body;
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    const post = await UserPost.findById(postId);
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+    const recipe = await Recipe.findById(recipeId);
+    if (!recipe) {
+      return res.status(404).json({ message: "Recipe not found" });
+    }
+    if (!post.userId.equals(userId)) {
+      return res
+        .status(401)
+        .json({ message: "Unauthorized to delete this post" });
+    }
+    if (recipe && recipe.images) {
+      for (const image of recipe.images) {
+        const filePath = path.join(__dirname, "uploads", path.basename(image));
+        try {
+          await fs.unlink(filePath);
+        } catch (error) {
+          console.log(`error deleting image: ${image}}`, error);
+        }
+      }
+    }
+
+    await recipe.deleteOne();
+    await post.deleteOne();
+
+    return res.status(200).json({ message: "Post deleted" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };

@@ -106,7 +106,7 @@ const Preferences = () => {
                 <SiGreasyfork className="text-2xl lg:text-8xl backdrop-blur-lg" />
               </div>
             </div>
-            <div className=" w-[0.08px] h-full bg-[#343333]"></div>
+            <div className=" w-[0.8px] h-full bg-[#343333]"></div>
             <div className="w-full md:w-1/2 lg:w-auto">
               <form onSubmit={onSubmit}>
                 <div className="grid  lg:grid-cols-2 lg:gap-10">
@@ -116,6 +116,8 @@ const Preferences = () => {
                     min={0}
                     value={age}
                     onChange={(e) => setAge(e.target.value)}
+                    bgColor="bg-[#171717]"
+                    borderColor="border-[#343333]"
                   />
                   <SelectInput
                     label={"Gender"}
@@ -123,6 +125,9 @@ const Preferences = () => {
                     options={genderOptions}
                     value={gender}
                     onChange={(e) => setGender(e.target.value)}
+                    bgColor="bg-[#171717]"
+                    borderColor="border-[#343333]"
+                    applyDarkMode={true}
                   />
                   <TextInput
                     label={"Height (cm)"}
@@ -130,6 +135,8 @@ const Preferences = () => {
                     min={0}
                     value={height}
                     onChange={(e) => setHeight(e.target.value)}
+                    bgColor="bg-[#171717]"
+                    borderColor="border-[#343333]"
                   />
                   <SelectInput
                     label={"Goal"}
@@ -137,6 +144,9 @@ const Preferences = () => {
                     options={goalOptions}
                     value={goal}
                     onChange={(e) => setGoal(e.target.value)}
+                    bgColor="bg-[#171717]"
+                    borderColor="border-[#343333]"
+                    applyDarkMode={true}
                   />
 
                   <TextInput
@@ -145,6 +155,8 @@ const Preferences = () => {
                     type={"number"}
                     value={weight}
                     onChange={(e) => setWeight(e.target.value)}
+                    bgColor="bg-[#171717]"
+                    borderColor="border-[#343333]"
                   />
 
                   <SelectInput
@@ -153,6 +165,9 @@ const Preferences = () => {
                     options={exerciseOptions}
                     value={exerciseLevel}
                     onChange={(e) => setExerciseLevel(e.target.value)}
+                    applyDarkMode={true}
+                    bgColor="bg-[#171717]"
+                    borderColor="border-[#343333]"
                   />
                 </div>
                 <div className=" flex flex-col gap-3">

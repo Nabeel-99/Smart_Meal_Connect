@@ -67,8 +67,9 @@ const App = () => {
     setTheme(selectedTheme);
     if (selectedTheme === "light" || selectedTheme === "dark") {
       applyTheme(selectedTheme);
+      localStorage.setItem("theme", selectedTheme);
     } else {
-      systemMode();
+      applyTheme(selectedTheme);
       localStorage.removeItem("theme");
     }
   };

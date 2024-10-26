@@ -22,6 +22,7 @@ import ImageCard from "../../components/ImageCard";
 import PostHeader from "../../components/PostHeader";
 import PostComment from "../../components/PostComment";
 import AutoHideSnackbar from "../../components/AutoHideSnackbar";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const DashboardHome = ({
   anchorRef,
@@ -33,22 +34,25 @@ const DashboardHome = ({
   const [showModal, setShowModal] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
   const [posts, setPosts] = useState([]);
-
+  const [loading, setLoading] = useState(false);
   const [likedPosts, setLikedPosts] = useState({});
   const [comment, setComment] = useState("");
   const [snackbarMsg, setSnackbarMsg] = useState("");
   const [displaySnackbar, setDisplaySnackbar] = useState("");
 
   const fetchAllPosts = async () => {
+    setLoading(true);
     try {
       const response = await axios.get(
-        "http://localhost:8000/api/recipes/posts",
+        "http://localhost:8000/api/users/posts",
         { withCredentials: true }
       );
 
       setPosts(response.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -56,7 +60,7 @@ const DashboardHome = ({
     const fetchLikedPosts = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/recipes/liked-posts",
+          "http://localhost:8000/api/users/liked-posts",
           { withCredentials: true }
         );
 
@@ -93,7 +97,7 @@ const DashboardHome = ({
         [postId]: !prev[postId],
       }));
       const response = await axios.post(
-        "http://localhost:8000/api/recipes/like",
+        "http://localhost:8000/api/users/like",
         {
           postId: postId,
         },
@@ -118,7 +122,7 @@ const DashboardHome = ({
     }
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/recipes/post-comment",
+        "http://localhost:8000/api/users/post-comment",
         {
           postId: postId,
           comment: comment,
@@ -148,7 +152,7 @@ const DashboardHome = ({
   const deleteComment = async (postId, commentId) => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/recipes/delete-comment",
+        "http://localhost:8000/api/users/delete-comment",
         {
           postId: postId,
           commentId: commentId,
@@ -195,40 +199,47 @@ const DashboardHome = ({
         </div>
         <div className="flex w-full  ">
           {/* post cards */}
-          <div className="flex flex-col gap-4 w-full">
-            {posts.length > 0 ? (
-              posts.map((post, index) => {
-                const images = post.posts.images;
-                const isLiked = likedPosts[post.postId];
+          {loading ? (
+            <div className="flex  flex-col gap-4 items-center justify-center h-full w-full">
+              <AiOutlineLoading3Quarters className="spin text-3xl" />
+            </div>
+          ) : (
+            <div className="flex flex-col gap-4 w-full">
+              {posts.length > 0 ? (
+                posts.map((post, index) => {
+                  const images = post.posts.images;
+                  const isLiked = likedPosts[post.postId];
 
-                return (
-                  <PostCard
-                    key={index}
-                    post={post}
-                    likeRecipe={likeRecipe}
-                    isLiked={isLiked}
-                    images={images}
-                    openModal={openModal}
-                  />
-                );
-              })
-            ) : (
-              <div className="flex  flex-col gap-4 items-center justify-center h-full">
-                <p className="text-center">
-                  No feeds yet.{" "}
-                  <span className="block">
-                    Be the first to share your recipe and inspire others!
-                  </span>
-                </p>
-                <button
-                  onClick={showPostModal}
-                  className="bg-blue-600 hover:bg-blue-700 text-white rounded-md py-2 px-4"
-                >
-                  Create post
-                </button>
-              </div>
-            )}
-          </div>
+                  return (
+                    <PostCard
+                      key={index}
+                      post={post}
+                      likeRecipe={likeRecipe}
+                      isLiked={isLiked}
+                      images={images}
+                      openModal={openModal}
+                    />
+                  );
+                })
+              ) : (
+                <div className="flex  flex-col gap-4 items-center justify-center pt-32 xl:pt-0  h-full">
+                  <p className="text-center">
+                    No feeds yet.{" "}
+                    <span className="block">
+                      Be the first to share your recipe and inspire others!
+                    </span>
+                  </p>
+                  <button
+                    onClick={showPostModal}
+                    className="bg-blue-600 hover:bg-blue-700 text-white rounded-md py-2 px-4"
+                  >
+                    Create post
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+
           {/* notification card */}
           <div className="mt-16 ">
             <NotificationCard />
