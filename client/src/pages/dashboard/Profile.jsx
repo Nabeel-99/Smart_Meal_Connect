@@ -8,10 +8,10 @@ import { AiOutlineEdit, AiOutlineLoading3Quarters } from "react-icons/ai";
 import { MdEdit } from "react-icons/md";
 import { Tooltip } from "@mui/material";
 import ModalComponent from "../../components/ModalComponent";
-import CreatePost from "../../components/CreatePost";
 import DialogComponent from "../../components/DialogComponent";
 import { FaTrash } from "react-icons/fa6";
 import AutoHideSnackbar from "../../components/AutoHideSnackbar";
+import PostForm from "../../components/PostForm";
 
 const Profile = ({ currentUserId, theme, setCreatePost }) => {
   const [userProfile, setUserProfile] = useState(null);
@@ -119,7 +119,7 @@ const Profile = ({ currentUserId, theme, setCreatePost }) => {
                   <div key={index} className="relative">
                     <Link to={`/recipe-details/${post.posts._id}`}>
                       <img
-                        src={`http://localhost:8000/${post.posts.images[currentImageIndex]}`}
+                        src={`http://localhost:8000/${post.posts?.images[currentImageIndex]}`}
                         className="h-28 w-full md:h-52 lg:h-44 xl:h-80 xl:w-full rounded-sm object-cover"
                       />
                       {post.posts.images.length > 1 && (
@@ -133,7 +133,7 @@ const Profile = ({ currentUserId, theme, setCreatePost }) => {
                         <Tooltip title="edit post">
                           <button
                             onClick={() => editPost(post)}
-                            className="border text-black hover:border-[#e0e0e0] hover:bg-[#dadada] bg-white rounded-full p-1 hover:text-black"
+                            className="border text-black hover:border-[#e0e0e0] text-[0.5rem] md:text-[0.8rem] lg:text-base hover:bg-[#dadada] bg-white rounded-full p-1 hover:text-black"
                           >
                             <MdEdit className="" />
                           </button>
@@ -141,7 +141,7 @@ const Profile = ({ currentUserId, theme, setCreatePost }) => {
                         <Tooltip title="delete post">
                           <button
                             onClick={() => deletePost(post)}
-                            className=" border  hover:border-[#e0e0e0] hover:bg-[#dadada] bg-white text-black rounded-full p-1 hover:text-black"
+                            className=" border  hover:border-[#e0e0e0] text-[0.5rem] md:text-[0.8rem] lg:text-base hover:bg-[#dadada] bg-white text-black rounded-full p-1 hover:text-black"
                           >
                             <FaTrash className="" />
                           </button>
@@ -154,10 +154,11 @@ const Profile = ({ currentUserId, theme, setCreatePost }) => {
                         setShowModal={setShowModal}
                         showModal={showModal}
                       >
-                        <CreatePost
+                        <PostForm
                           setCreatePost={setCreatePost}
                           selectedPost={selectedPost}
                           setShowModal={setShowModal}
+                          fetchUserPosts={fetchUserPosts}
                         />
                       </ModalComponent>
                     )}

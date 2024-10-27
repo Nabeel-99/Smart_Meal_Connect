@@ -11,6 +11,7 @@ import Recipe from "../models/recipeModel.js";
 import path from "path";
 import * as fs from "node:fs/promises";
 // create user
+const __dirname = path.resolve();
 export const createUser = async (req, res) => {
   try {
     const { email } = req.body;

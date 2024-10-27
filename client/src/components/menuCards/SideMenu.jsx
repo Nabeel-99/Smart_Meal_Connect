@@ -40,10 +40,10 @@ const SideMenu = ({
           <div className="flex px-3 pt-8 flex-col  pb-4 text-base font-bold gap-4">
             <button
               onClick={() => {
-                navigate("/home");
+                navigate("/dashboard");
               }}
               className={`flex items-center border py-3 rounded-md border-none dark:hover:bg-[#181818] hover:bg-[#dadada] transition-all duration-300  px-2 gap-2 ${
-                location.pathname === "/home"
+                location.pathname === "/dashboard"
                   ? "dark:bg-[#181818] bg-[#DADADA]"
                   : ""
               }`}
@@ -53,28 +53,28 @@ const SideMenu = ({
               ) : (
                 <GoHome className="w-6 text-2xl " />
               )}
-              Home
+              Dashboard
             </button>
+            <button
+              onClick={() => {
+                navigate("/feeds");
+              }}
+              className={`flex items-center border py-3 rounded-md border-none dark:hover:bg-[#181818] hover:bg-[#dadada] transition-all duration-300  px-2 gap-2 ${
+                location.pathname === "/feeds"
+                  ? "dark:bg-[#181818] bg-[#DADADA]"
+                  : ""
+              }`}
+            >
+              <CiGrid41 className="w-6 text-2xl " />
+              Feeds
+            </button>
+
             <button
               onClick={showPostModal}
               className={`flex items-center border py-3 rounded-md border-none dark:hover:bg-[#181818] hover:bg-[#dadada] transition-all duration-300  px-2 gap-2 `}
             >
               <IoIosAddCircleOutline className="w-6 text-2xl" />
               Create Post
-            </button>
-
-            <button
-              onClick={() => {
-                navigate("/content");
-              }}
-              className={`flex items-center border py-3 rounded-md border-none dark:hover:bg-[#181818] hover:bg-[#dadada] transition-all duration-300  px-2 gap-2 ${
-                location.pathname === "/content"
-                  ? "dark:bg-[#181818] bg-[#DADADA]"
-                  : ""
-              }`}
-            >
-              <CiGrid41 className="w-6 text-2xl " />
-              Dashboard
             </button>
 
             <button

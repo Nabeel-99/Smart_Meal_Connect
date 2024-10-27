@@ -38,6 +38,6 @@ router.post(
 router.post("/get-metrics-recipes", generateMetricsBasedRecipes);
 router.post("/save-recipe", verifyUser, saveRecipe);
 router.get("/get-saved-recipes", verifyUser, getSavedRecipes);
-router.delete("/delete-recipe/:id", verifyUser, deleteRecipe);
+router.post("/delete-recipe", verifyUser, deleteRecipe);
 
 export default router;

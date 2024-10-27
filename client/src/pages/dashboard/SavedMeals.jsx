@@ -35,10 +35,13 @@ const SavedMeals = ({ showGridView, showListView, gridView, listView }) => {
       setLoading(false);
     }
   };
-  const deleteRecipe = async (id) => {
+  const deleteRecipe = async () => {
     try {
-      const response = await axios.delete(
-        `http://localhost:8000/api/recipes/delete-recipe/${id}`,
+      const response = await axios.post(
+        `http://localhost:8000/api/recipes/delete-recipe`,
+        {
+          id: selectedId,
+        },
         { withCredentials: true }
       );
       console.log(response.data);
@@ -51,7 +54,7 @@ const SavedMeals = ({ showGridView, showListView, gridView, listView }) => {
       console.log(error);
     }
   };
-
+  console.log("selected Id", selectedId);
   useEffect(() => {
     fetchSavedRecipes();
   }, []);

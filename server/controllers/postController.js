@@ -4,6 +4,7 @@ import User from "../models/userModel.js";
 import UserPost from "../models/userPostModel.js";
 import * as fs from "node:fs/promises";
 // post recipe
+const __dirname = path.resolve();
 export const postRecipe = async (req, res) => {
   try {
     const { userId } = req;
@@ -56,20 +57,24 @@ export const updateRecipePost = async (req, res) => {
     const { id } = req.params;
     const { title, ingredients, instructions, category, videoLink, prepTime } =
       req.body;
-    const images = req.files;
+    const images = req.files || [];
+    const deletedImages = JSON.parse(req.body.deletedImages || "[]");
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
-    const recipe = Recipe.findById(id);
+
+    const recipe = await Recipe.findById(id);
     if (!recipe) {
       return res.status(404).json({ message: "Recipe not found" });
     }
+
     const formattedIngredients = ingredients
       .split(",")
       .map((ingredient) => ingredient.trim());
     const formattedInstructions = instructions
       .split(/\r?\n/)
       .map((instruction) => instruction.trim());
+
     const updatedData = {
       ...(title && { title }),
       ...(ingredients && { ingredients: formattedIngredients }),
@@ -80,7 +85,8 @@ export const updateRecipePost = async (req, res) => {
     };
 
     const existingImages = recipe.images || [];
-    if (images && images.length > 0) {
+    // Update images only if there are new ones
+    if (images.length > 0) {
       if (images.length > 3) {
         return res.status(400).json({ message: "Maximum 3 images allowed" });
       }
@@ -89,37 +95,39 @@ export const updateRecipePost = async (req, res) => {
         ...images.map((image) => image.path),
       ];
       updatedData.images = [...new Set(imagePaths)];
-
-      const imagesToDelete = existingImages.filter(
-        (img) => !imagePaths.includes(img)
-      );
-      imagesToDelete.forEach((img) => {
-        const filePath = path.join(__dirname, "uploads", path.basename(img));
-        fs.unlink(filePath, (err) => {
-          if (err) {
-            console.log("failed to delete image", err);
-          }
-        });
-      });
     } else {
       updatedData.images = existingImages;
     }
 
+    // Remove deleted images from the file system and update recipe
+    deletedImages.forEach((img) => {
+      const imagePath = path.join(__dirname, "uploads", path.basename(img));
+      if (existingImages.includes(img)) {
+        fs.unlink(imagePath, (err) => {
+          if (err) {
+            console.log("Failed to delete image", err);
+          }
+        });
+      }
+    });
+
+    updatedData.images = updatedData.images.filter(
+      (img) => !deletedImages.includes(img)
+    );
     const updatedPost = await Recipe.findByIdAndUpdate(
       id,
       { $set: updatedData },
       { new: true }
     );
-
+    console.log("updated post images", updatedData, updatedPost);
     return res
       .status(200)
-      .json({ message: "update was successful", updatedPost });
+      .json({ message: "Update was successful", updatedPost });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal server error" });
   }
 };
-
 // get all posts
 export const getAllPosts = async (req, res) => {
   try {

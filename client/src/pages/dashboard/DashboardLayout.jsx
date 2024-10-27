@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FaBarsStaggered, FaRegHeart, FaXmark } from "react-icons/fa6";
-import DashboardContent from "./DashboardContent";
 import SavedMeals from "./SavedMeals";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import MobileSideMenu from "../../components/menuCards/MobileSideMenu";
@@ -11,12 +10,13 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import axios from "axios";
 import PantryPage from "./PantryPage";
 import DialogComponent from "../../components/DialogComponent";
-import DashboardHome from "./DashboardHome";
 import PopperComponent from "../../components/PopperComponent";
 import ModalComponent from "../../components/ModalComponent";
-import CreatePost from "../../components/CreatePost";
 import Profile from "./Profile";
 import MobileNotificationCard from "../../components/MobileNotificationCard";
+import PostForm from "../../components/PostForm";
+import Dashboard from "./Dashboard";
+import Feeds from "./Feeds";
 
 const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
   const [loading, setLoading] = useState(true);
@@ -35,6 +35,9 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
   const [item, setItem] = useState("");
   const [ingredients, setIngredients] = useState([]);
   const [prepTime, setPrepTime] = useState(0);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
+
   const anchorRef = useRef(null);
 
   const navigate = useNavigate();
@@ -133,7 +136,7 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
 
   const getCurrentView = () => {
     if (location.pathname === "/profile") return "Profile";
-    if (location.pathname === "/content") return "Dashboard";
+    if (location.pathname === "/dashboard") return "Dashboard";
     if (location.pathname === "/saved-meals") return "Saved Meals";
     if (location.pathname === "/settings") return "Settings";
     if (location.pathname === "/pantry-items") return "Pantry";
@@ -143,9 +146,24 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
     return (
       <Routes>
         <Route
-          path="home"
+          path="dashboard"
           element={
-            <DashboardHome
+            <Dashboard
+              showOptions={showOptions}
+              showGridView={showGridView}
+              showListView={showListView}
+              setViewOptions={setViewOptions}
+              viewOptions={viewOptions}
+              gridView={gridView}
+              listView={listView}
+              dashboardRecipes={dashboardRecipes}
+            />
+          }
+        />
+        <Route
+          path="feeds"
+          element={
+            <Feeds
               anchorRef={anchorRef}
               showNotifications={showNotifications}
               currentUserId={userData._id}
@@ -165,21 +183,7 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
           }
         />
         <Route path="/profile/:id" element={<Profile />} />
-        <Route
-          path="content"
-          element={
-            <DashboardContent
-              showOptions={showOptions}
-              showGridView={showGridView}
-              showListView={showListView}
-              setViewOptions={setViewOptions}
-              viewOptions={viewOptions}
-              gridView={gridView}
-              listView={listView}
-              dashboardRecipes={dashboardRecipes}
-            />
-          }
-        />
+
         <Route
           path="saved-meals"
           element={
@@ -270,7 +274,7 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
                 <FaBarsStaggered className="text-2xl" />
               )}
             </button>
-            {location.pathname === "/home" && (
+            {location.pathname === "/feeds" && (
               <button
                 ref={anchorRef}
                 onClick={showNotifications}
@@ -308,7 +312,7 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
         <div className="dark:bg-[#0c0c0c] dark:text-white bg-[#F7F7F8] lg:pl-64 flex flex-col min-h-screen pb-8 w-full">
           <div
             className={`hidden lg:block   pb-6  z-30 w-full ${
-              location.pathname === "/home"
+              location.pathname === "/feeds"
                 ? ""
                 : "border-b dark:border-b-[#1d1d1d] border-b-[#E0E0E0] fixed dark:bg-[#0c0c0c] bg-[#F7F7F8]   pt-6"
             }`}
@@ -332,8 +336,20 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
           showModal={createPost}
           setShowModal={setCreatePost}
         >
-          <CreatePost theme={theme} setCreatePost={setCreatePost} />
+          <PostForm
+            theme={theme}
+            setCreatePost={setCreatePost}
+            setShowSuccessSnackbar={setShowSuccessSnackbar}
+            setSuccessMessage={setSuccessMessage}
+          />
         </ModalComponent>
+      )}
+      {showSuccessSnackbar && (
+        <AutoHideSnackbar
+          message={successMessage}
+          setSnackbar={setShowSuccessSnackbar}
+          openSnackbar={showSuccessSnackbar}
+        />
       )}
     </>
   );

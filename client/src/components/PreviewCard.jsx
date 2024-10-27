@@ -16,6 +16,7 @@ const PreviewCard = ({
   handleImageUpload = null,
   theme,
   setImagePreviews,
+  setDeletedImages,
 }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const handleNextImage = () => {
@@ -31,7 +32,6 @@ const PreviewCard = ({
   const removeImage = (imageToRemove) => {
     setImages((prevImages) => {
       const updatedImages = prevImages.filter((i) => i !== imageToRemove);
-
       setImagePreviews((prevPreviews) => {
         const updatedPreviews = prevPreviews.filter(
           (preview) => preview !== imageToRemove
@@ -41,10 +41,10 @@ const PreviewCard = ({
         } else if (currentImageIndex >= updatedImages.length) {
           setCurrentImageIndex(updatedImages.length - 1);
         }
-
         return updatedPreviews;
       });
 
+      setDeletedImages((prevDeleted) => [...prevDeleted, imageToRemove]);
       return updatedImages;
     });
   };

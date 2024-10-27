@@ -82,12 +82,13 @@ const PostCard = ({ post, likeRecipe, isLiked, openModal, images }) => {
             <FaChevronLeft />
           </button>
         </Tooltip>
-
-        <img
-          src={`http://localhost:8000/${images[currentImageIndex]}`}
-          onDoubleClick={() => likeRecipe(post.postId)}
-          className="w-full h-[450px] md:h-[550px] lg:h-[650px] rounded-md object-contain "
-        />
+        {images.length > 0 && (
+          <img
+            src={`http://localhost:8000/${images[currentImageIndex]}`}
+            onDoubleClick={() => likeRecipe(post.postId)}
+            className="w-full h-[450px] md:h-[550px] lg:h-[650px] rounded-md object-contain "
+          />
+        )}
 
         <Tooltip title="next">
           <button

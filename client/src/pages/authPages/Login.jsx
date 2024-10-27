@@ -39,7 +39,7 @@ const Login = ({ authenticateUser }) => {
           if (isNewUser) {
             navigate("/preferences");
           } else {
-            navigate("/content");
+            navigate("/dashboard");
           }
           setLoading(false);
         }, 3000);

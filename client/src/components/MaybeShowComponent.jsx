@@ -7,7 +7,7 @@ const MaybeShowComponent = ({ children }) => {
 
   useEffect(() => {
     const hidePaths = [
-      "/home",
+      "/dashboard",
       "/sign-up",
       "/login",
       "/profile",
@@ -15,7 +15,7 @@ const MaybeShowComponent = ({ children }) => {
       "/recipe-details",
       "/settings",
       "/pantry-items",
-      "/content",
+      "/feeds",
       "/preferences",
       "/pantry",
       "/forgot-password",
