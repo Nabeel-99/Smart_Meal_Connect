@@ -18,7 +18,7 @@ import {
 } from "../../../server/utils/helper";
 import axios from "axios";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import MealCard from "../components/MealCard";
+import MealCard from "../components/viewCards/MealCard";
 
 const MetricsBased = ({ userData }) => {
   let gridView = true;

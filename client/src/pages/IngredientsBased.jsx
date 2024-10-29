@@ -14,7 +14,7 @@ import { Autocomplete, TextField } from "@mui/material";
 import ingredientsData from "../../../server/utils/ingredientsHelper.json";
 import axios from "axios";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import MealCard from "../components/MealCard";
+import MealCard from "../components/viewCards/MealCard";
 import { AiOutlineLoading } from "react-icons/ai";
 
 const IngredientsBased = ({ userData }) => {

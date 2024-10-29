@@ -9,7 +9,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { mapText } from "../../../../server/utils/helper";
 import { TbFridge } from "react-icons/tb";
 import axios from "axios";
-import DialogComponent from "../DialogComponent";
+import DialogComponent from "../popupCards/DialogComponent";
 import { GoHome, GoHomeFill } from "react-icons/go";
 
 const MobileSideMenu = ({
@@ -29,7 +29,7 @@ const MobileSideMenu = ({
       <div className="flex lg:hidden flex-col  pt-20 justify-between  w-full z-40  dark:border-r-[#1d1d1d] border-r[#E0E0E0] dark:bg-[#0c0c0c] bg-[#F7F7F8] h-full fixed ">
         <div className="flex flex-col w-full gap-2">
           <div className="flex px-5 font-semibold items-center w-full gap-2">
-            <div className="w-6 h-6 rounded-full text-center flex items-center justify-center bg-[#B678F0]">
+            <div className="w-6 h-6 rounded-full text-center flex items-center text-white justify-center bg-[#B678F0]">
               {userData.firstName.slice(0, 1)}
             </div>
             <div>
@@ -134,7 +134,7 @@ const MobileSideMenu = ({
                   : ""
               }`}
             >
-              <div className="w-6 h-6 rounded-full text-center flex items-center justify-center bg-[#B678F0]">
+              <div className="w-6 h-6 rounded-full text-center text-white flex items-center justify-center bg-[#B678F0]">
                 {userData.firstName.slice(0, 1)}
               </div>
               Profile

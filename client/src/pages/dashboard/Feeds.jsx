@@ -1,28 +1,9 @@
 import React, { useEffect, useState } from "react";
-
-import {
-  FaArrowLeft,
-  FaBookmark,
-  FaHeart,
-  FaRegBookmark,
-  FaRegComment,
-  FaRegHeart,
-} from "react-icons/fa6";
-import { IoIosNotifications, IoIosNotificationsOutline } from "react-icons/io";
-import ModalComponent from "../../components/ModalComponent";
-import { Link } from "react-router-dom";
+import { FaRegHeart } from "react-icons/fa6";
 import axios from "axios";
-import moment from "moment";
-import PostCard from "../../components/PostCard";
-import NotificationCard from "../../components/NotificationCard";
-import CommentsCard from "../../components/CommentsCard";
-import PreviewCard from "../../components/PreviewCard";
-import { Tooltip } from "@mui/material";
-import ImageCard from "../../components/ImageCard";
-import PostHeader from "../../components/PostHeader";
-import PostComment from "../../components/PostComment";
-import AutoHideSnackbar from "../../components/AutoHideSnackbar";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import AutoHideSnackbar from "../../components/popupCards/AutoHideSnackbar";
+import UserFeedsCard from "../../components/feeds/UserFeedsCard";
+import PostDetailsModal from "../../components/feeds/PostDetailsModal";
 
 const Feeds = ({
   anchorRef,
@@ -38,17 +19,30 @@ const Feeds = ({
   const [likedPosts, setLikedPosts] = useState({});
   const [comment, setComment] = useState("");
   const [snackbarMsg, setSnackbarMsg] = useState("");
-  const [displaySnackbar, setDisplaySnackbar] = useState("");
+  const [displaySnackbar, setDisplaySnackbar] = useState(false);
 
   const fetchAllPosts = async () => {
     setLoading(true);
     try {
+      const savedRecipeResponse = await axios.get(
+        "http://localhost:8000/api/recipes/get-saved-recipes",
+        { withCredentials: true }
+      );
+      const savedRecipeIds = savedRecipeResponse.data.map(
+        (recipe) => recipe._id
+      );
+
       const response = await axios.get(
         "http://localhost:8000/api/users/posts",
         { withCredentials: true }
       );
 
-      setPosts(response.data);
+      const feedPosts = response.data.map((post) => ({
+        ...post,
+        isSaved: savedRecipeIds.includes(post.posts._id),
+      }));
+
+      setPosts(feedPosts);
     } catch (error) {
       console.log(error);
     } finally {
@@ -86,8 +80,6 @@ const Feeds = ({
   const openModal = (id) => {
     setSelectedPost(id);
     setShowModal(true);
-    console.log(id);
-    console.log(selectedPost);
   };
 
   const likeRecipe = async (postId) => {
@@ -131,7 +123,7 @@ const Feeds = ({
           withCredentials: true,
         }
       );
-      console.log(response.data);
+
       if (response.status === 200) {
         const newComment = response.data.comment.comments.slice(-1)[0];
 
@@ -141,7 +133,6 @@ const Feeds = ({
         }));
 
         await fetchAllPosts();
-        console.log(newComment);
       }
       setComment("");
     } catch (error) {
@@ -159,7 +150,6 @@ const Feeds = ({
         },
         { withCredentials: true }
       );
-      console.log(response.data);
 
       setSelectedPost((prevPost) => {
         return {
@@ -197,111 +187,33 @@ const Feeds = ({
             </button>
           </div>
         </div>
-        <div className="flex w-full  ">
-          {/* post cards */}
-          {loading ? (
-            <div className="flex  flex-col gap-4 items-center justify-center h-full w-full">
-              <AiOutlineLoading3Quarters className="spin text-3xl" />
-            </div>
-          ) : (
-            <div className="flex flex-col gap-4 w-full">
-              {posts.length > 0 ? (
-                posts.map((post, index) => {
-                  const images = post.posts.images || [];
-                  const isLiked = likedPosts[post.postId];
-
-                  return (
-                    <PostCard
-                      key={index}
-                      post={post}
-                      likeRecipe={likeRecipe}
-                      isLiked={isLiked}
-                      images={images}
-                      openModal={openModal}
-                    />
-                  );
-                })
-              ) : (
-                <div className="flex  flex-col gap-4 items-center justify-center pt-32 xl:pt-0  h-full">
-                  <p className="text-center">
-                    No feeds yet.{" "}
-                    <span className="block">
-                      Be the first to share your recipe and inspire others!
-                    </span>
-                  </p>
-                  <button
-                    onClick={showPostModal}
-                    className="bg-blue-600 hover:bg-blue-700 text-white rounded-md py-2 px-4"
-                  >
-                    Create post
-                  </button>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* notification card */}
-          <div className="mt-16 ">
-            <NotificationCard />
-          </div>
-        </div>
-      </div>
-      {showModal && (
-        <ModalComponent
-          theme={theme}
-          showModal={showModal}
-          setShowModal={setShowModal}
-        >
-          <div className="flex flex-col gap-4 lg:flex-row justify-between items-center overflow-scroll lg:items-stretch p-8 h-[40rem]  lg:h-[35rem] xl:h-[45rem] w-full">
-            <ImageCard selectedPost={selectedPost} />
-
-            <div className="flex flex-col  px-4 lg:w-[200rem] xl:w-[230rem] h-full">
-              <PostHeader
-                firstName={selectedPost.firstName}
-                lastName={selectedPost.lastName}
-                title={selectedPost.posts.title}
-                recipeId={selectedPost.posts._id}
-                time={
-                  selectedPost.posts.updatedAt || selectedPost.posts.createdAt
-                }
-              />
-              {/* comments  */}
-              <div className="flex flex-col gap-4 pb-2  pt-8   h-96  xl:h-full overflow-y-scroll">
-                {selectedPost.comments.length > 0 ? (
-                  selectedPost.comments.map((comment, index) => (
-                    <CommentsCard
-                      key={index}
-                      comment={comment}
-                      deleteComment={deleteComment}
-                      selectedPost={selectedPost}
-                      currentUserId={currentUserId}
-                    />
-                  ))
-                ) : (
-                  <div className="text-sm text-center text-gray-400">
-                    No comments yet
-                  </div>
-                )}
-              </div>
-              {/* post comment */}
-              <PostComment
-                comment={comment}
-                setComment={setComment}
-                postUserComment={postUserComment}
-                selectedPost={selectedPost}
-              />
-            </div>
-          </div>
-        </ModalComponent>
-      )}
-
-      {displaySnackbar && (
-        <AutoHideSnackbar
-          message={snackbarMsg}
-          openSnackbar={displaySnackbar}
-          setSnackbar={setDisplaySnackbar}
+        <UserFeedsCard
+          loading={loading}
+          posts={posts}
+          likeRecipe={likeRecipe}
+          openModal={openModal}
+          showPostModal={showPostModal}
+          likedPosts={likedPosts}
         />
-      )}
+      </div>
+
+      <PostDetailsModal
+        showModal={showModal}
+        theme={theme}
+        setShowModal={setShowModal}
+        selectedPost={selectedPost}
+        deleteComment={deleteComment}
+        currentUserId={currentUserId}
+        comment={comment}
+        setComment={setComment}
+        postUserComment={postUserComment}
+      />
+
+      <AutoHideSnackbar
+        message={snackbarMsg}
+        openSnackbar={displaySnackbar}
+        setSnackbar={setDisplaySnackbar}
+      />
     </>
   );
 };

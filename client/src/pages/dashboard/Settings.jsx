@@ -1,17 +1,6 @@
-import React, { useEffect, useState } from "react";
-import TextInput from "../../components/formInputs/TextInput";
-import SelectInput from "../../components/formInputs/SelectInput";
-import {
-  dietPreferences,
-  exerciseOptions,
-  genderOptions,
-  goalOptions,
-  themeOptions,
-} from "../../../../server/utils/helper";
-import axios from "axios";
-import { FaEyeSlash, FaEye } from "react-icons/fa6";
-import AccountSection from "../../components/AccountSection";
-import PreferenceSection from "../../components/PreferenceSection";
+import React, { useState } from "react";
+import AccountSection from "../../components/settingsCards/AccountSection";
+import PreferenceSection from "../../components/settingsCards/PreferenceSection";
 
 const Settings = ({
   userData,

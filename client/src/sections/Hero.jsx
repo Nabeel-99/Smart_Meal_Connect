@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import ingredients from "../assets/recipe-based.png";
 import metrics from "../assets/body-metrics.jpeg";
-import GridCard from "../components/GridCard";
+import GridCard from "../components/viewCards/GridCard";
 
 const Hero = () => {
   return (

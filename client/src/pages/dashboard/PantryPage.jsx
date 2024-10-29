@@ -1,11 +1,10 @@
-import { Autocomplete, TextField } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import ingredientsData from "../../../../server/utils/ingredientsHelper.json";
-import { FaXmark } from "react-icons/fa6";
 import pantryItems from "../../../../server/utils/pantry.json";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import AutoHideSnackbar from "../../components/AutoHideSnackbar";
+import AutoHideSnackbar from "../../components/popupCards/AutoHideSnackbar";
+import SelectedPantryItems from "../../components/pantry/SelectedPantryItems";
+import PantrySelection from "../../components/pantry/PantrySelection";
+import ingredientsData from "../../../../server/utils/ingredientsHelper.json";
 
 const PantryPage = ({ theme }) => {
   const [loading, setLoading] = useState(false);
@@ -14,12 +13,9 @@ const PantryPage = ({ theme }) => {
   const [customItems, setCustomItems] = useState([]);
   const [autocompleteValue, setAutocompleteValue] = useState(null);
   const [isEditingPantry, setIsEditingPantry] = useState("");
-  const [updateSuccess, setUpdateSuccess] = useState("");
-  const [updateError, setUpdateError] = useState("");
-  const [showUpdateSuccess, setShowUpdateSuccess] = useState(false);
-  const [showUpdateError, setShowUpdateError] = useState(false);
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
+
   const showEditPantry = () => setIsEditingPantry(!isEditingPantry);
   const fetchPantryItems = async () => {
     try {
@@ -104,150 +100,34 @@ const PantryPage = ({ theme }) => {
       </div>
       <div className="flex flex-col gap-8 pt-8 md:pt-8  lg:gap-0 lg:flex-row w-full   h-full  ">
         {isEditingPantry && (
-          <div className="flex flex-col items-center w-full  pb-24   gap-2">
-            <div className="flex flex-col mt-4 items-start  xl:justify-start gap-4 w-full">
-              <div className="flex items-center   gap-2">
-                Select All
-                <input
-                  type="checkbox"
-                  onChange={selectAllPantry}
-                  checked={allSelected}
-                />
-              </div>
-              <div className=" gap-2 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 items-center xl:items-start justify-center xl:justify-start w-full xl:w-[400px]">
-                {pantryItems.pantry.map((pantry, index) => (
-                  <div className="flex  items-center" key={pantry}>
-                    <label className="w-32 ">
-                      {" "}
-                      {pantry.charAt(0).toUpperCase() +
-                        pantry.slice(1).toLowerCase()}
-                    </label>
-                    <input
-                      value={pantry}
-                      type="checkbox"
-                      className="transform "
-                      onChange={handleCheckboxChange}
-                      checked={selectedItems.includes(pantry)}
-                    />
-                  </div>
-                ))}
-              </div>
-              <div className="mt-4 flex flex-col lg:flex-row items-center w-full gap-4">
-                <Autocomplete
-                  disablePortal
-                  options={ingredientsData}
-                  getOptionLabel={(option) => option.name}
-                  sx={{
-                    width: {
-                      xs: "90%",
-                      sm: "80%",
-                      md: "70%",
-                      lg: "60%",
-                    },
-                    maxWidth: "400px",
-                    "& .MuiInputBase-root": {
-                      backgroundColor: theme === "dark" ? "#171717" : "#F7F7F8",
-                      border:
-                        theme === "dark"
-                          ? "1px solid #343333"
-                          : "1px solid #E0E0E0",
-                      color: theme === "dark" ? "white" : "#333333",
-                    },
-                    "& .MuiOutlinedInput-notchedOutline": {
-                      borderColor: theme === "dark" ? "#343333" : "#E0E0E0",
-                    },
-                    "&:hover .MuiOutlinedInput-notchedOutline": {
-                      borderColor: theme === "dark" ? "#ffffff" : "#333333",
-                    },
-                    "& .MuiAutocomplete-popupIndicator": {
-                      color: theme === "dark" ? "#ffffff" : "#333333",
-                    },
-                  }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Add more pantry items..."
-                      variant="outlined"
-                      slotProps={{
-                        inputLabel: {
-                          style: { color: "#a3a3a3" },
-                        },
-                      }}
-                    />
-                  )}
-                  value={autocompleteValue}
-                  onChange={(event, value) => {
-                    if (value) {
-                      setItem(value.name);
-                      setAutocompleteValue(null);
-                    }
-                  }}
-                />
-                <button
-                  onClick={addToPantry}
-                  className="bg-[#199224] mb-2 hover:bg-[#1ead2a] text-white py-2 text-center px-6 rounded-lg"
-                >
-                  Add
-                </button>
-              </div>
-              <div className="flex items-center justify-center lg:justify-start mt-6 gap-3 w-full h-full">
-                <button
-                  onClick={updatePantry}
-                  disabled={loading}
-                  className="bg-[#B678F0] py-1 text-center w-44 flex items-center justify-center text-white rounded-md"
-                >
-                  {loading ? (
-                    <AiOutlineLoading3Quarters className="spin text-2xl" />
-                  ) : (
-                    "Save"
-                  )}
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        <div
-          className={` rounded-md dark:bg-[#0f0f0f] bg-[#dadada] max-h-[650px] p-8 w-full border dark:border-[#1d1d1d] border-[#e0e0e0] overflow-auto  `}
-        >
-          {" "}
-          <div
-            className={`grid md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-2 ${
-              !isEditingPantry ? "lg:grid-cols-3 xl:grid-cols-4" : ""
-            }`}
-          >
-            {selectedItems.length > 0 &&
-              selectedItems.map((item, index) => (
-                <div
-                  className="dark:bg-[#2d2d2d] bg-[#c4c4c4] border-[#dadada] border dark:border-[#444544] px-3 py-2 rounded-xl dark:text-white flex items-center w-full justify-between"
-                  key={index}
-                >
-                  <p className="pr-4 ">{item}</p>
-                  {isEditingPantry && (
-                    <button
-                      type="button"
-                      onClick={() => removeItem(item)}
-                      className="border border-[#7a7a7a] bg-[#535252] rounded-full p-1 hover:text-white hover:bg-[#34343d]"
-                    >
-                      <FaXmark className="text-gray-400 hover:text-white " />
-                    </button>
-                  )}
-                </div>
-              ))}
-          </div>
-          {selectedItems.length <= 0 && (
-            <div className="flex items-center justify-center h-full">
-              <p>Your Pantry Items will be displayed here.</p>
-            </div>
-          )}
-        </div>
-        {showSnackbar && (
-          <AutoHideSnackbar
-            openSnackbar={showSnackbar}
-            message={snackbarMessage}
-            setSnackbar={setShowSnackbar}
+          <PantrySelection
+            pantryItems={pantryItems}
+            selectedItems={selectedItems}
+            handleCheckboxChange={handleCheckboxChange}
+            selectAllPantry={selectAllPantry}
+            allSelected={allSelected}
+            theme={theme}
+            setItem={setItem}
+            setAutocompleteValue={setAutocompleteValue}
+            autocompleteValue={autocompleteValue}
+            addToPantry={addToPantry}
+            loading={loading}
+            updatePantry={updatePantry}
+            ingredientsData={ingredientsData}
           />
         )}
+
+        <SelectedPantryItems
+          isEditingPantry={isEditingPantry}
+          selectedItems={selectedItems}
+          removeItem={removeItem}
+        />
+
+        <AutoHideSnackbar
+          openSnackbar={showSnackbar}
+          message={snackbarMessage}
+          setSnackbar={setShowSnackbar}
+        />
       </div>
     </div>
   );

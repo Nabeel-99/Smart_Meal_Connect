@@ -9,9 +9,9 @@ import {
 } from "react-icons/fa6";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import AutohideSnackbar from "../components/AutoHideSnackbar";
+import AutohideSnackbar from "../components/popupCards/AutoHideSnackbar";
 import ReactPlayer from "react-player";
-import ModalComponent from "../components/ModalComponent";
+import ModalComponent from "../components/popupCards/ModalComponent";
 import { SiGreasyfork } from "react-icons/si";
 import { Tooltip } from "@mui/material";
 

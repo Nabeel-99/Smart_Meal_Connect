@@ -11,6 +11,16 @@ export const postRecipe = async (req, res) => {
     const { title, ingredients, instructions, category, videoLink, prepTime } =
       req.body;
     const images = req.files;
+    if (
+      !title ||
+      !instructions ||
+      !prepTime ||
+      !ingredients ||
+      !images ||
+      !category
+    ) {
+      return res.status(400).json({ message: "Fields are required" });
+    }
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
@@ -119,7 +129,7 @@ export const updateRecipePost = async (req, res) => {
       { $set: updatedData },
       { new: true }
     );
-    console.log("updated post images", updatedData, updatedPost);
+
     return res
       .status(200)
       .json({ message: "Update was successful", updatedPost });
@@ -349,6 +359,7 @@ export const deletePost = async (req, res) => {
         const filePath = path.join(__dirname, "uploads", path.basename(image));
         try {
           await fs.unlink(filePath);
+          console.log(`Successfully deleted image: ${image}`);
         } catch (error) {
           console.log(`error deleting image: ${image}}`, error);
         }

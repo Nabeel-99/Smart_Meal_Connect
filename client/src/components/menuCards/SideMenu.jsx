@@ -8,7 +8,7 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { mapText } from "../../../../server/utils/helper";
 import { TbFridge } from "react-icons/tb";
-import DialogComponent from "../DialogComponent";
+import DialogComponent from "../popupCards/DialogComponent";
 import { GoHome, GoHomeFill } from "react-icons/go";
 import { BsBrightnessHigh } from "react-icons/bs";
 import { FaMoon } from "react-icons/fa6";

@@ -1,22 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
-import { FaBarsStaggered, FaRegHeart, FaXmark } from "react-icons/fa6";
-import SavedMeals from "./SavedMeals";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import MobileSideMenu from "../../components/menuCards/MobileSideMenu";
-import SideMenu from "../../components/menuCards/SideMenu";
-import Settings from "./Settings";
-import { Routes, Route } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import axios from "axios";
-import PantryPage from "./PantryPage";
-import DialogComponent from "../../components/DialogComponent";
-import PopperComponent from "../../components/PopperComponent";
-import ModalComponent from "../../components/ModalComponent";
-import Profile from "./Profile";
-import MobileNotificationCard from "../../components/MobileNotificationCard";
-import PostForm from "../../components/PostForm";
-import Dashboard from "./Dashboard";
-import Feeds from "./Feeds";
+import DialogComponent from "../../components/popupCards/DialogComponent";
+import ModalComponent from "../../components/popupCards/ModalComponent";
+import PostForm from "../../components/forms/PostForm";
+import AutoHideSnackbar from "../../components/popupCards/AutoHideSnackbar";
+import Content from "../../components/viewCards/Content";
+import ContentViews from "../../components/viewCards/ContentViews";
+import MainMenu from "../../components/menuCards/MainMenu";
 
 const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
   const [loading, setLoading] = useState(true);
@@ -30,36 +22,21 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
   const [fetchingInProgress, setFetchingInProgress] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
   const [viewNotifications, setViewNotifications] = useState(false);
-  const [createPost, setCreatePost] = useState(false);
-  const [autocompleteValue, setAutocompleteValue] = useState(null);
-  const [item, setItem] = useState("");
-  const [ingredients, setIngredients] = useState([]);
-  const [prepTime, setPrepTime] = useState(0);
+  const [showModal, setShowModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
-
+  const [totalPosts, setTotalPosts] = useState(0);
+  const [totalLikes, setTotalLikes] = useState(0);
+  const [userProfile, setUserProfile] = useState(null);
+  const [userPosts, setUserPosts] = useState([]);
+  const { id: userId } = useParams();
   const anchorRef = useRef(null);
 
-  const navigate = useNavigate();
-
-  const addIngredient = () => {
-    if (item && !ingredients.includes(item)) {
-      setIngredients([...ingredients, item]);
-      setItem("");
-    }
-  };
-  const removeIngredient = (ingredient) => {
-    setIngredients(ingredients.filter((item) => item !== ingredient));
-  };
-
-  const showPostModal = () => setCreatePost(!createPost);
-
+  const showPostModal = () => setShowModal(!showModal);
   const showNotifications = () => setViewNotifications(!viewNotifications);
-
   const openDialog = () => {
     setShowDialog(true);
   };
-
   const showListView = () => {
     setListView(true);
     setGridView(false);
@@ -74,6 +51,25 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
   const showSideMenu = () => setSideMenu(!sideMenu);
   const showPreferences = () => setPreferences(!preferences);
   const location = useLocation();
+
+  const fetchUserPosts = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/api/users/profile/${userId || ""}`,
+        { withCredentials: true }
+      );
+
+      setUserProfile(response.data.userProfile);
+      setUserPosts(response.data.userPosts);
+      setTotalPosts(response.data.userPosts.length);
+      setTotalLikes(response.data.totalLikes);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleLogout = async () => {
     setLoading(true);
@@ -144,74 +140,39 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
 
   const renderContentView = () => {
     return (
-      <Routes>
-        <Route
-          path="dashboard"
-          element={
-            <Dashboard
-              showOptions={showOptions}
-              showGridView={showGridView}
-              showListView={showListView}
-              setViewOptions={setViewOptions}
-              viewOptions={viewOptions}
-              gridView={gridView}
-              listView={listView}
-              dashboardRecipes={dashboardRecipes}
-            />
-          }
-        />
-        <Route
-          path="feeds"
-          element={
-            <Feeds
-              anchorRef={anchorRef}
-              showNotifications={showNotifications}
-              currentUserId={userData._id}
-              showPostModal={showPostModal}
-              theme={theme}
-            />
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <Profile
-              theme={theme}
-              setCreatePost={setCreatePost}
-              currentUserId={userData._id}
-            />
-          }
-        />
-        <Route path="/profile/:id" element={<Profile />} />
-
-        <Route
-          path="saved-meals"
-          element={
-            <SavedMeals
-              showGridView={showGridView}
-              showListView={showListView}
-              gridView={gridView}
-              listView={listView}
-            />
-          }
-        />
-        <Route
-          path="settings"
-          element={
-            <Settings
-              userData={userData}
-              refreshUserData={fetchUserData}
-              userMetrics={userMetrics}
-              refreshSideMenu={getUserMetrics}
-              updateTheme={updateTheme}
-              theme={theme}
-            />
-          }
-        />
-        <Route path="pantry-items" element={<PantryPage theme={theme} />} />
-      </Routes>
+      <ContentViews
+        showOptions={showOptions}
+        showGridView={showGridView}
+        showListView={showListView}
+        setViewOptions={setViewOptions}
+        viewOptions={viewOptions}
+        gridView={gridView}
+        listView={listView}
+        dashboardRecipes={dashboardRecipes}
+        anchorRef={anchorRef}
+        showNotifications={showNotifications}
+        userData={userData}
+        showPostModal={showPostModal}
+        theme={theme}
+        setShowSuccessSnackbar={setShowSuccessSnackbar}
+        setSuccessMessage={setSuccessMessage}
+        userPosts={userPosts}
+        userProfile={userProfile}
+        totalLikes={totalLikes}
+        totalPosts={totalPosts}
+        fetchUserData={fetchUserData}
+        fetchUserPosts={fetchUserPosts}
+        userMetrics={userMetrics}
+        getUserMetrics={getUserMetrics}
+        updateTheme={updateTheme}
+        userId={userId}
+      />
     );
   };
+
+  useEffect(() => {
+    fetchUserPosts();
+  }, [userId]);
 
   useEffect(() => {
     getUserMetrics();
@@ -252,105 +213,59 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
   return (
     <>
       <div className="flex flex-col lg:flex-row dark:bg-[#0c0c0c] dark:text-white bg-[#F7F7F8] text-black w-full  gap-10">
-        {/* side Menu */}
-        {userData && userMetrics && (
-          <SideMenu
-            theme={theme}
-            userData={userData}
-            userMetrics={userMetrics}
-            showPreferences={showPreferences}
-            preferences={preferences}
-            openDialog={openDialog}
-            showPostModal={showPostModal}
-          />
-        )}
-
-        <div className="lg:hidden pt-6 pl-6 flex items-center text-sm gap-4 border-b pb-3 dark:border-b-[#343333] border-b-[#E0E0E0] fixed  dark:bg-[#0c0c0c] bg-white z-50 w-full">
-          <div className="flex items-center">
-            <button onClick={showSideMenu} className="">
-              {sideMenu ? (
-                <FaXmark className="text-2xl" />
-              ) : (
-                <FaBarsStaggered className="text-2xl" />
-              )}
-            </button>
-            {location.pathname === "/feeds" && (
-              <button
-                ref={anchorRef}
-                onClick={showNotifications}
-                className="fixed right-5"
-              >
-                <FaRegHeart className="text-2xl" />
-              </button>
-            )}
-            {viewNotifications && (
-              <PopperComponent
-                viewPopper={viewNotifications}
-                anchorRef={anchorRef}
-                setViewPopper={setViewNotifications}
-              >
-                <MobileNotificationCard />
-              </PopperComponent>
-            )}
-          </div>
-          <div className="mb-1 text-lg">{getCurrentView()}</div>
-        </div>
-        {/* mobile side menu */}
-        {sideMenu && userData && userMetrics && (
-          <MobileSideMenu
-            theme={theme}
-            userData={userData}
-            userMetrics={userMetrics}
-            showPreferences={showPreferences}
-            preferences={preferences}
-            setSideMenu={setSideMenu}
-            openDialog={openDialog}
-            showPostModal={showPostModal}
-          />
-        )}
-        {/* Outlet */}
-        <div className="dark:bg-[#0c0c0c] dark:text-white bg-[#F7F7F8] lg:pl-64 flex flex-col min-h-screen pb-8 w-full">
-          <div
-            className={`hidden lg:block   pb-6  z-30 w-full ${
-              location.pathname === "/feeds"
-                ? ""
-                : "border-b dark:border-b-[#1d1d1d] border-b-[#E0E0E0] fixed dark:bg-[#0c0c0c] bg-[#F7F7F8]   pt-6"
-            }`}
-          >
-            <div className="px-10 text-sm">{getCurrentView()}</div>
-          </div>
-          {renderContentView()}
-        </div>
-      </div>
-      {showDialog && (
-        <DialogComponent
-          showDialog={showDialog}
-          setShowDialog={setShowDialog}
-          handleAction={handleLogout}
-          title={"Arer you sure you want to log out?"}
-        />
-      )}
-      {createPost && (
-        <ModalComponent
+        {/* Side Menu */}
+        <MainMenu
+          userData={userData}
+          userMetrics={userMetrics}
           theme={theme}
-          showModal={createPost}
-          setShowModal={setCreatePost}
-        >
-          <PostForm
-            theme={theme}
-            setCreatePost={setCreatePost}
-            setShowSuccessSnackbar={setShowSuccessSnackbar}
-            setSuccessMessage={setSuccessMessage}
-          />
-        </ModalComponent>
-      )}
-      {showSuccessSnackbar && (
-        <AutoHideSnackbar
-          message={successMessage}
-          setSnackbar={setShowSuccessSnackbar}
-          openSnackbar={showSuccessSnackbar}
+          showPreferences={showPreferences}
+          preferences={preferences}
+          openDialog={openDialog}
+          showPostModal={showPostModal}
+          showSideMenu={showSideMenu}
+          sideMenu={sideMenu}
+          location={location}
+          anchorRef={anchorRef}
+          showNotifications={showNotifications}
+          viewNotifications={viewNotifications}
+          setViewNotifications={setViewNotifications}
+          getCurrentView={getCurrentView}
+          setSideMenu={setSideMenu}
         />
-      )}
+        {/* Content area */}
+        <Content
+          getCurrentView={getCurrentView}
+          renderContentView={renderContentView}
+          location={location}
+        />
+      </div>
+
+      <ModalComponent
+        theme={theme}
+        showModal={showModal}
+        setShowModal={setShowModal}
+      >
+        <PostForm
+          theme={theme}
+          setShowModal={setShowModal}
+          setShowSuccessSnackbar={setShowSuccessSnackbar}
+          setSuccessMessage={setSuccessMessage}
+          fetchUserPosts={fetchUserPosts}
+        />
+      </ModalComponent>
+
+      <AutoHideSnackbar
+        message={successMessage}
+        setSnackbar={setShowSuccessSnackbar}
+        openSnackbar={showSuccessSnackbar}
+      />
+
+      <DialogComponent
+        showDialog={showDialog}
+        setShowDialog={setShowDialog}
+        handleAction={handleLogout}
+        title={"Are you sure you want to log out?"}
+      />
     </>
   );
 };
