@@ -1,19 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import ProfileCard from "../../components/profile/ProfileCard";
 import PostsGrid from "../../components/profile/PostsGrid";
+import { useParams } from "react-router-dom";
 
 const Profile = ({
   currentUserId,
   theme,
   setSuccessMessage,
   setShowSuccessSnackbar,
-  fetchUserPosts,
-  userPosts,
-  userProfile,
-  totalPosts,
-  totalLikes,
+  // showModal,
+  // setShowModal,
+  // fetchUserPosts,
+  // userPosts,
+  // userProfile,
+  // totalPosts,
+  // totalLikes,
 }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -21,8 +24,13 @@ const Profile = ({
   const [selectedPost, setSelectedPost] = useState(null);
   const [postToDelete, setPostToDelete] = useState(null);
   const [showDialog, setShowDialog] = useState(false);
-
+  const [totalPosts, setTotalPosts] = useState(0);
+  const [totalLikes, setTotalLikes] = useState(0);
+  const [userProfile, setUserProfile] = useState(null);
+  const [userPosts, setUserPosts] = useState([]);
+  const { id: userId } = useParams();
   const editPost = (post) => {
+    fetchUserPosts();
     setShowModal(true);
     setSelectedPost(post.posts);
   };
@@ -57,6 +65,28 @@ const Profile = ({
     }
   };
 
+  const fetchUserPosts = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/api/users/profile/${userId || ""}`,
+        { withCredentials: true }
+      );
+
+      setUserProfile(response.data.userProfile);
+      setUserPosts(response.data.userPosts);
+      setTotalPosts(response.data.userPosts.length);
+      setTotalLikes(response.data.totalLikes);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserPosts();
+  }, [userId]);
   return (
     <div className="flex flex-col  h-full gap-8 pt-28 px-6 md:px-10 dark:text-white lg:px-20">
       {loading ? (

@@ -79,25 +79,27 @@ const PreviewCard = ({
         </Tooltip>
         {images.length < 3 && (
           <Tooltip title="Add images">
-            <label
-              type="button"
-              htmlFor="file-upload"
-              className="flex flex-col cursor-pointer bg-white hover:bg-[#dadada] border dark:hover:bg-[#484848] dark:border-[#676767] p-2 dark:bg-[#1d1d1d]  rounded-full items-center  justify-center  "
-            >
-              {theme === "dark" ? (
-                <HiOutlineSquare2Stack className="dark:text-white" />
-              ) : (
-                <HiSquare2Stack className="dark:text-white" />
-              )}
-            </label>
-            <input
-              type="file"
-              accept="image/*"
-              className="hidden"
-              id="file-upload"
-              multiple
-              onChange={handleImageUpload}
-            />
+            <span>
+              <label
+                type="button"
+                htmlFor="file-upload"
+                className="flex flex-col cursor-pointer bg-white hover:bg-[#dadada] border dark:hover:bg-[#484848] dark:border-[#676767] p-2 dark:bg-[#1d1d1d]  rounded-full items-center  justify-center  "
+              >
+                {theme === "dark" ? (
+                  <HiOutlineSquare2Stack className="dark:text-white" />
+                ) : (
+                  <HiSquare2Stack className="dark:text-white" />
+                )}
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                id="file-upload"
+                multiple
+                onChange={handleImageUpload}
+              />
+            </span>
           </Tooltip>
         )}
       </div>

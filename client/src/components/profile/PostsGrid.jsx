@@ -1,5 +1,5 @@
 import React from "react";
-import ManagePostButtons from "./ManagePostButtons";
+import ManagePostButtons from "../buttons/ManagePostButtons";
 import { HiSquare2Stack } from "react-icons/hi2";
 import { Link } from "react-router-dom";
 import { MdGridOn } from "react-icons/md";
@@ -51,29 +51,27 @@ const PostsGrid = ({
                   deletePost={deletePost}
                 />
               )}
-              {showModal && (
-                <ModalComponent
-                  theme={theme}
+
+              <ModalComponent
+                theme={theme}
+                setShowModal={setShowModal}
+                showModal={showModal}
+              >
+                <PostForm
+                  selectedPost={selectedPost}
                   setShowModal={setShowModal}
-                  showModal={showModal}
-                >
-                  <PostForm
-                    selectedPost={selectedPost}
-                    setShowModal={setShowModal}
-                    fetchUserPosts={fetchUserPosts}
-                    setShowSuccessSnackbar={setShowSuccessSnackbar}
-                    setSuccessMessage={setSuccessMessage}
-                  />
-                </ModalComponent>
-              )}
-              {showDialog && (
-                <DialogComponent
-                  title={"Are yu sure you want to delete this post?"}
-                  handleAction={handleDelete}
-                  setShowDialog={setShowDialog}
-                  showDialog={showDialog}
+                  fetchUserPosts={fetchUserPosts}
+                  setShowSuccessSnackbar={setShowSuccessSnackbar}
+                  setSuccessMessage={setSuccessMessage}
                 />
-              )}
+              </ModalComponent>
+
+              <DialogComponent
+                title={"Are you sure you want to delete this post?"}
+                handleAction={handleDelete}
+                setShowDialog={setShowDialog}
+                showDialog={showDialog}
+              />
             </div>
           ))}
         </div>

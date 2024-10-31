@@ -30,9 +30,14 @@ const IngredientsBased = ({ userData }) => {
   const [loading, setLoading] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState("");
+  const [tryCount, setTryCount] = useState(
+    () => parseInt(localStorage.getItem("tryCountIngredients")) || 0
+  );
   const cardRef = useRef();
 
   let gridView = true;
+
+  const TRY_LIMIT = 1;
 
   const handleToggle = () => {
     setIsConnected(!isConnected);
@@ -56,6 +61,13 @@ const IngredientsBased = ({ userData }) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    if (!isLoggedIn && tryCount >= TRY_LIMIT) {
+      setError("Please create an account to continue using this feature.");
+      setTimeout(() => {
+        setError("");
+      }, 10000);
+      return;
+    }
     setLoading(true);
     sessionStorage.removeItem("ingredientsBased");
     setFetchedRecipes([]);
@@ -92,6 +104,9 @@ const IngredientsBased = ({ userData }) => {
           "ingredientsBased",
           JSON.stringify(validRecipes)
         );
+
+        localStorage.setItem("tryCountIngredients", tryCount + 1);
+        setTryCount((prevCount) => prevCount + 1);
         setFetchedRecipes(validRecipes);
         cardRef.current.scrollIntoView({ behavior: "smooth" });
       }
@@ -159,7 +174,11 @@ const IngredientsBased = ({ userData }) => {
           <div className="flex flex-col items-end w-96 md:w-2/3 gap-2">
             <div className="flex items-center gap-2">
               <p>Connect your pantry and metrics</p>
-              <label className="relative inline-flex items-center cursor-pointer">
+              <label
+                className={`relative inline-flex items-center  ${
+                  isLoggedIn ? "cursor-pointer" : "cursor-not-allowed"
+                }`}
+              >
                 <input
                   type="checkbox"
                   className=" sr-only peer"

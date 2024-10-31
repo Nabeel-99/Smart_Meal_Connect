@@ -80,7 +80,23 @@ const ContentViews = ({
           />
         }
       />
-      <Route path="/profile/:id" element={<Profile />} />
+      <Route
+        path="/profile/:id"
+        element={
+          <Profile
+            theme={theme}
+            currentUserId={userData._id}
+            setShowSuccessSnackbar={setShowSuccessSnackbar}
+            setSuccessMessage={setSuccessMessage}
+            userPosts={userPosts}
+            userProfile={userProfile}
+            totalLikes={totalLikes}
+            totalPosts={totalPosts}
+            fetchUserPosts={fetchUserPosts}
+            userId={userId}
+          />
+        }
+      />
 
       <Route
         path="saved-meals"

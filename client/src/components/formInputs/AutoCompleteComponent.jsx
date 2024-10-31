@@ -8,10 +8,14 @@ const AutoCompleteComponent = ({
   setAutocompleteValue,
   autocompleteValue,
   ingredientsData,
+  label,
+  placeholder,
+  id,
 }) => {
   const autoCompleteTheme = useTheme(theme);
   return (
     <Autocomplete
+      id={id}
       disablePortal
       options={ingredientsData}
       getOptionLabel={(option) => option.name}
@@ -44,7 +48,8 @@ const AutoCompleteComponent = ({
       renderInput={(params) => (
         <TextField
           {...params}
-          label="Add more pantry items..."
+          label={label}
+          placeholder={placeholder}
           variant="outlined"
           slotProps={{
             inputLabel: {

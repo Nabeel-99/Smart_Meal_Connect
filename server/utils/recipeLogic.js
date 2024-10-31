@@ -19,20 +19,34 @@ export const fetchDashboardRecipes = async (goal, dietaryPreferences) => {
     const lunchQueries = ["side dish", "snack"];
     const dinnerQueries = ["dessert", "main course", "soup"];
     // fetching recipes
-    const [spoonacularBreakfast, spoonacularLunch, spoonacularDinner] =
-      await Promise.all([
-        getSpoonacularRecipes(["breakfast"], calories, dietaryPreferences),
-        getSpoonacularRecipes(lunchQueries, calories, dietaryPreferences),
-        getSpoonacularRecipes(dinnerQueries, calories, dietaryPreferences),
-      ]);
+    const [
+      spoonacularBreakfast,
+      spoonacularLunch,
+      spoonacularDinner,
+      edamamRecipes,
+      tastyRecipes,
+    ] = await Promise.all([
+      getSpoonacularRecipes(["breakfast"], calories, dietaryPreferences),
+      getSpoonacularRecipes(lunchQueries, calories, dietaryPreferences),
+      getSpoonacularRecipes(dinnerQueries, calories, dietaryPreferences),
+      getEdamamRecipes([], null, calories, dietaryPreferences),
+      getTastyAPIRecipes([]),
+    ]);
 
     const breakfastRecipes = [...spoonacularBreakfast];
     const lunchRecipes = [...spoonacularLunch];
     const dinnerRecipes = [...spoonacularDinner];
+    const edamam = [...edamamRecipes];
+    const tasty = [...tastyRecipes];
 
-    const allRecipes = [...breakfastRecipes, ...lunchRecipes, ...dinnerRecipes];
+    const allRecipes = [
+      ...breakfastRecipes,
+      ...lunchRecipes,
+      ...dinnerRecipes,
+      ...edamam,
+      ...tasty,
+    ];
     const shuffleRecipes = allRecipes.sort(() => Math.random() - 0.5);
-
     return shuffleRecipes;
   } catch (error) {
     console.log("Error fetching Recipes from APIS", error);
@@ -80,8 +94,6 @@ export const fetchBasedOnIngredients = async (
       userIngredients,
       userPantry
     );
-    console.log("all recipes", recipes.length);
-    console.log("top ranked", topRanked.length);
 
     return topRanked;
   } catch (error) {
@@ -107,7 +119,7 @@ export const fetchBasedOnMetrics = async (goal, dietaryPreferences) => {
       ...tastyRecipes,
     ];
     const shuffledRecipes = allRecipes.sort(() => Math.random() - 0.5);
-    console.log(shuffledRecipes.map((recipe) => recipe.sourceUrl));
+
     const filteredRecipes = filterRecipeCalories(shuffledRecipes, calories);
 
     return filteredRecipes;
@@ -238,7 +250,6 @@ export const categorizeRecipes = async (recipes) => {
       prepTime,
       nutrients,
     } = recipe;
-    console.log(nutrients);
     if (existingRecipes.has(title)) continue;
 
     let assigned = false;
@@ -313,7 +324,7 @@ export const categorizeRecipes = async (recipes) => {
     }
   }
 
-  const limit = 24;
+  const limit = 18;
   const topRecipes = {
     breakfast: categories.breakfast.slice(0, limit),
     lunch: categories.lunch.slice(0, limit),

@@ -22,19 +22,27 @@ import MealCard from "../components/viewCards/MealCard";
 
 const MetricsBased = ({ userData }) => {
   let gridView = true;
-  const [ingredientCount, setIngredientCount] = useState(24);
-  const [gender, setGender] = useState("");
-  const [goal, setGoal] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [ingredientCount, setIngredientCount] = useState(() =>
+    isLoggedIn ? 24 : 10
+  );
+  const [gender, setGender] = useState("male");
+  const [goal, setGoal] = useState("weight_loss");
   const [age, setAge] = useState(0);
   const [height, setHeight] = useState(0);
   const [weight, setWeight] = useState(0);
-  const [exerciseLevel, setExerciseLevel] = useState("");
+  const [exerciseLevel, setExerciseLevel] = useState("moderately_active");
   const [selectedDietaryPreferences, setSelectedDietaryPreferences] = useState(
     []
   );
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const [loading, setLoading] = useState(false);
   const [fetchedRecipes, setFetchedRecipes] = useState([]);
+  const [error, setError] = useState("");
+  const [tryCount, setTryCount] = useState(
+    () => parseInt(localStorage.getItem("tryCountMetrics")) || 0
+  );
+  const TRY_LIMIT = 1;
   const getUserMetrics = async () => {
     setLoading(true);
     try {
@@ -84,6 +92,14 @@ const MetricsBased = ({ userData }) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    console.log("fields", gender, age, height, weight, goal, exerciseLevel);
+    if (!isLoggedIn && tryCount >= TRY_LIMIT) {
+      setError("Please create an account to continue using this feature.");
+      setTimeout(() => {
+        setError("");
+      }, 10000);
+      return;
+    }
     try {
       setLoading(true);
       const response = await axios.post(
@@ -104,6 +120,8 @@ const MetricsBased = ({ userData }) => {
       if (response.status === 200) {
         const recipes = response.data.recipes;
         sessionStorage.setItem("metricsBased", JSON.stringify(recipes));
+        localStorage.setItem("tryCountMetrics", tryCount + 1);
+        setTryCount((prevCount) => prevCount + 1);
         setFetchedRecipes(recipes);
       }
     } catch (error) {
@@ -124,6 +142,10 @@ const MetricsBased = ({ userData }) => {
       setIsLoggedIn(false);
     }
   }, [userData]);
+
+  useEffect(() => {
+    setIngredientCount(isLoggedIn ? 24 : 10);
+  }, [isLoggedIn]);
 
   useEffect(() => {
     const storedRecipes = sessionStorage.getItem("metricsBased");
@@ -275,9 +297,12 @@ const MetricsBased = ({ userData }) => {
                   type={"number"}
                   min={0}
                   max={30}
+                  disabled={!isLoggedIn}
                   value={ingredientCount}
                   onChange={(e) => setIngredientCount(e.target.value)}
-                  className="md:w-44 px-3"
+                  className={`md:w-44 px-3 ${
+                    isLoggedIn ? "" : "cursor-not-allowed"
+                  }`}
                   bgColor="bg-[#171717]"
                   borderColor="border-[#343333]"
                 />
@@ -289,8 +314,21 @@ const MetricsBased = ({ userData }) => {
                   <BiSolidRightArrow className="text-2xl" />
                 </button>
               </div>
+              {!isLoggedIn && (
+                <div className="text-sm text-[#A3A3A3]">
+                  Create an account to increase the number of recipes.
+                </div>
+              )}
             </div>
-
+            {error && (
+              <div
+                className={`text-red-500 text-sm mt-1 transition-opacity ease-in-out  duration-1000 ${
+                  error ? "opacity-100" : "opacity-0"
+                }`}
+              >
+                {error}
+              </div>
+            )}
             <div className="pt-10 flex items-center w-full ">
               <button
                 type="submit"

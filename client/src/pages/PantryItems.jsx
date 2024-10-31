@@ -50,7 +50,7 @@ const PantryItems = () => {
     setItem("");
   };
   const skipToDashboard = () => {
-    navigate("/content");
+    navigate("/dashboard");
   };
   const savePantryItems = async () => {
     setLoading(true);

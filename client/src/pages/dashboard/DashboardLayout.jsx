@@ -166,6 +166,8 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
         getUserMetrics={getUserMetrics}
         updateTheme={updateTheme}
         userId={userId}
+        showModal={showModal}
+        setShowModal={setShowModal}
       />
     );
   };

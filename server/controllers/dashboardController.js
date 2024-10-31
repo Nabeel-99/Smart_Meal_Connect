@@ -93,23 +93,32 @@ export const manageDashboardRecipes = async (req, res) => {
       model: "recipe",
     });
 
+    const currentTime = new Date();
     if (userDashboard) {
-      const existingRecipes = {
-        breakfast: userDashboard.generatedMeals.breakfast.map(
-          (meal) => meal.recipeId
-        ),
-        lunch: userDashboard.generatedMeals.lunch.map((meal) => meal.recipeId),
-        dinner: userDashboard.generatedMeals.dinner.map(
-          (meal) => meal.recipeId
-        ),
-      };
+      if (userDashboard.expiresAt > currentTime) {
+        // Dashboard still valid
+        const existingRecipes = {
+          breakfast: userDashboard.generatedMeals.breakfast.map(
+            (meal) => meal.recipeId
+          ),
+          lunch: userDashboard.generatedMeals.lunch.map(
+            (meal) => meal.recipeId
+          ),
+          dinner: userDashboard.generatedMeals.dinner.map(
+            (meal) => meal.recipeId
+          ),
+        };
 
-      return res.status(200).json({
-        message: "Dashboard already exists.",
-        recipes: existingRecipes,
-        calorieTarget:
-          userDashboard.calorieTarget || "No calorie target available",
-      });
+        return res.status(200).json({
+          message: "Dashboard already exists.",
+          recipes: existingRecipes,
+          calorieTarget:
+            userDashboard.calorieTarget || "No calorie target available",
+        });
+      } else {
+        // Dashboard expired; regenerate meals
+        await UserDashboard.deleteOne({ userId: userId });
+      }
     }
 
     const dashboardResponse = await generateDashboardRecipes(req);

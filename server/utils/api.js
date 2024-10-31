@@ -41,7 +41,7 @@ export const getSpoonacularRecipes = async (
     try {
       const response = await axios.get(`${spoonacularAPI}/complexSearch`, {
         params: {
-          number: 40,
+          number: 60,
           addRecipeInformation: true,
           addRecipeInstructions: true,
           addRecipeNutrition: true,
@@ -76,7 +76,7 @@ export const findByIngredients = async (ingredients = []) => {
           ingredients: ingredients.join(","),
           apiKey: key,
           ranking: 2,
-          number: 10,
+          number: 50,
         },
       });
       return response.data;
