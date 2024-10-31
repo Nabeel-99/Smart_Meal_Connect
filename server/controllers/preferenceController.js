@@ -14,6 +14,7 @@ export const createMetrics = async (req, res) => {
       exerciseLevel,
       goal,
       dietaryPreferences,
+      defaultMetrics,
     } = req.body;
     const existingMetrics = await Metrics.findOne({ userId: userId });
     if (existingMetrics) {
@@ -30,6 +31,7 @@ export const createMetrics = async (req, res) => {
       exerciseLevel,
       goal,
       dietaryPreferences,
+      defaultMetrics: defaultMetrics || false,
     });
     await metrics.save();
     return res.status(200).json({ message: "Metrics created successfully" });

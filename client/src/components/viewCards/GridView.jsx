@@ -12,6 +12,7 @@ const GridView = ({
   showMissingIngredients,
   showTrash,
   sourceType,
+  openDialog,
 }) => {
   return (
     <div className="">

@@ -3,6 +3,7 @@ import MealCard from "../../components/viewCards/MealCard";
 import IngredientsMetricsButtons from "../../components/buttons/IngredientsMetricsButtons";
 import CaloriesBar from "../../components/headers/CaloriesBar";
 import MealViewOptions from "../../components/viewCards/MealViewOptions";
+import PreferencePrompt from "../../components/PreferencePrompt";
 
 const Dashboard = ({
   showOptions,
@@ -13,6 +14,8 @@ const Dashboard = ({
   listView,
   dashboardRecipes,
   setViewOptions,
+  showMetricsPrompt,
+  setShowMetricsPrompt,
 }) => {
   let breakfastMeals = dashboardRecipes.recipes?.breakfast || [];
   let lunchMeals = dashboardRecipes.recipes?.lunch || [];
@@ -78,6 +81,8 @@ const Dashboard = ({
           caloriesConsumed={caloriesConsumed}
         />
       </div>
+      <PreferencePrompt showMetricsPrompt={showMetricsPrompt} />
+
       <MealViewOptions
         showLunch={showLunch}
         showBreakfast={showBreakfast}
@@ -94,7 +99,6 @@ const Dashboard = ({
         lunch={lunch}
         dinner={dinner}
       />
-
       {breakfast && breakfastMeals.length > 0 && (
         <MealCard
           meals={breakfastMeals}
@@ -141,7 +145,6 @@ const Dashboard = ({
             <div>600 calories</div>
           </div>
         </div> */}
-
       {/* <SkeletonLoader
         count={12}
         className="w-full"

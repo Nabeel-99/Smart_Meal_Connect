@@ -29,6 +29,7 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
   const [totalLikes, setTotalLikes] = useState(0);
   const [userProfile, setUserProfile] = useState(null);
   const [userPosts, setUserPosts] = useState([]);
+  const [showMetricsPrompt, setShowMetricsPrompt] = useState(false);
   const { id: userId } = useParams();
   const anchorRef = useRef(null);
 
@@ -99,14 +100,20 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
       );
       if (response.status === 200) {
         setUserMetrics(response.data.metrics);
-      }
-      if (response.status === 404) {
-        console.log("User has no metrics");
-
-        setUserMetrics("You haven't set your preferences yet.");
+        console.log("repsonse", response.data);
+        if (response.data.metrics.defaultMetrics) {
+          setShowMetricsPrompt(true);
+        }
       }
     } catch (error) {
       console.log(error);
+      if (
+        error.response &&
+        error.response.status >= 400 &&
+        error.response.status <= 500
+      ) {
+        setUserMetrics(error.response.message);
+      }
     } finally {
       setLoading(false);
     }
@@ -141,6 +148,8 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
   const renderContentView = () => {
     return (
       <ContentViews
+        showMetricsPrompt={showMetricsPrompt}
+        setShowMetricsPrompt={setShowMetricsPrompt}
         showOptions={showOptions}
         showGridView={showGridView}
         showListView={showListView}
@@ -205,7 +214,7 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
     }
   }, [sideMenu]);
 
-  if (loading || !userData || !userMetrics) {
+  if (loading || !userData) {
     return (
       <div className="flex items-center justify-center h-screen">
         <AiOutlineLoading3Quarters className="spin text-3xl" />

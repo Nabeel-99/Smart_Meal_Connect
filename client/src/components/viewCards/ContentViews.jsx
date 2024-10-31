@@ -33,6 +33,8 @@ const ContentViews = ({
   getUserMetrics,
   updateTheme,
   userId,
+  showMetricsPrompt,
+  setShowMetricsPrompt,
 }) => {
   return (
     <Routes>
@@ -48,6 +50,8 @@ const ContentViews = ({
             gridView={gridView}
             listView={listView}
             dashboardRecipes={dashboardRecipes}
+            showMetricsPrompt={showMetricsPrompt}
+            setShowMetricsPrompt={setShowMetricsPrompt}
           />
         }
       />

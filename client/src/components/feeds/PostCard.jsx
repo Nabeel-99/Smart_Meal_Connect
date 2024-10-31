@@ -20,8 +20,20 @@ import LikeButton from "../buttons/LikeButton";
 import CommentButton from "../buttons/CommentButton";
 import SaveButton from "../buttons/SaveButton";
 import PostBottomSection from "./PostBottomSection";
+import AutoHideSnackbar from "../popupCards/AutoHideSnackbar";
 
-const PostCard = ({ post, likeRecipe, isLiked, openModal, images }) => {
+const PostCard = ({
+  post,
+  likeRecipe,
+  isLiked,
+  openModal,
+  images,
+  fetchAllPosts,
+}) => {
+  const [isSaved, setIsSaved] = useState(post.isSaved);
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+
   const saveRecipe = async (post) => {
     try {
       const response = await axios.post(
@@ -31,8 +43,40 @@ const PostCard = ({ post, likeRecipe, isLiked, openModal, images }) => {
         },
         { withCredentials: true }
       );
+      setIsSaved(true);
+      post.isSaved = true;
+
+      if (response.status === 200) {
+        setSnackbarMessage(response.data.message);
+        setShowSnackbar(true);
+      } else {
+        setSnackbarMessage("Failed to save recipe");
+        setShowSnackbar(true);
+      }
+      console.log(response.data);
     } catch (error) {
       console.log(error);
+      if (error.response && error.response.status === 400) {
+        console.log("already saved");
+        const newResponse = await axios.post(
+          "http://localhost:8000/api/recipes/delete-recipe",
+          {
+            id: post.posts._id,
+          },
+          { withCredentials: true }
+        );
+        console.log(newResponse.data);
+        setIsSaved(false);
+        post.isSaved = false;
+
+        if (newResponse.status === 200) {
+          setSnackbarMessage(newResponse.data.message);
+          setShowSnackbar(true);
+        } else {
+          setSnackbarMessage("Failed to delete recipe");
+          setShowSnackbar(true);
+        }
+      }
     }
   };
 
@@ -59,9 +103,14 @@ const PostCard = ({ post, likeRecipe, isLiked, openModal, images }) => {
           <LikeButton post={post} isLiked={isLiked} likeRecipe={likeRecipe} />
           <CommentButton openModal={() => openModal(post)} />
         </div>
-        <SaveButton post={post} saveRecipe={() => saveRecipe(post)} />
+        <SaveButton post={post} saveRecipe={saveRecipe} isSaved={isSaved} />
       </div>
       <PostBottomSection openModal={() => openModal(post)} post={post} />
+      <AutoHideSnackbar
+        openSnackbar={showSnackbar}
+        setSnackbar={setShowSnackbar}
+        message={snackbarMessage}
+      />
     </div>
   );
 };

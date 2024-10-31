@@ -12,6 +12,7 @@ const ForgotPasswordForm = ({
   handleResend,
   resendTimer,
   loading,
+  setEmail,
 }) => {
   return (
     <div className="w-full md:w-1/2 lg:w-auto">

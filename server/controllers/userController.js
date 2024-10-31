@@ -10,6 +10,7 @@ import Pantry from "../models/pantryModel.js";
 import Recipe from "../models/recipeModel.js";
 import path from "path";
 import * as fs from "node:fs/promises";
+import { verifyEmailToken } from "./authController.js";
 // create user
 const __dirname = path.resolve();
 export const createUser = async (req, res) => {
@@ -31,6 +32,13 @@ export const createUser = async (req, res) => {
     // create user
     const newUser = new User({ ...req.body, password: hashPassword });
     await newUser.save();
+    // send email
+    const emailResponse = await verifyEmailToken(req);
+    if (emailResponse.status !== 200) {
+      return res
+        .status(emailResponse.status)
+        .json({ message: emailResponse.message });
+    }
     return res.status(200).json({ message: "user created successfully" });
   } catch (error) {
     console.log(error);

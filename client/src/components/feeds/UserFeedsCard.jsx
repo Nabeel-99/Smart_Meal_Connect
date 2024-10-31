@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import NotificationCard from "../notificationCards/NotificationCard";
 import EmptyPosts from "./EmptyPosts";
 import PostCard from "./PostCard";
+import AutoHideSnackbar from "../popupCards/AutoHideSnackbar";
 
 const UserFeedsCard = ({
   loading,
@@ -11,6 +12,7 @@ const UserFeedsCard = ({
   openModal,
   showPostModal,
   likedPosts,
+  fetchAllPosts,
 }) => {
   return (
     <div className="flex w-full  ">
@@ -34,6 +36,7 @@ const UserFeedsCard = ({
                   isLiked={isLiked}
                   images={images}
                   openModal={openModal}
+                  fetchAllPosts={fetchAllPosts}
                 />
               );
             })

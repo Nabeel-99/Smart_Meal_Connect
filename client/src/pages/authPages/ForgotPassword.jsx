@@ -116,6 +116,7 @@ const ForgotPassword = () => {
           handleResend={handleResend}
           resendTimer={resendTimer}
           loading={loading}
+          setEmail={setEmail}
         />
       </div>
     </div>

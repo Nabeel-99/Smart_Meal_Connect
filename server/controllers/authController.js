@@ -66,7 +66,7 @@ export const requestResetPassword = async (req, res) => {
 };
 
 // verify-email
-export const verifyEmail = async (req, res) => {
+export const verifyEmailToken = async (req) => {
   try {
     const { email } = req.body;
     const user = await User.findOne({ email: email });
@@ -98,10 +98,10 @@ export const verifyEmail = async (req, res) => {
       .replace("{{APP_NAME}}", process.env.APP_NAME);
 
     await sendEmail(user.email, "Verify your email", htmlContent);
-    return res.status(200).json({ message: "Verification email sent" });
+    return { status: 200, message: "Verification email sent" };
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Internal Server Error" });
+    return { status: 500, message: "Internal Server Error" };
   }
 };
 // resetPassword
@@ -134,6 +134,26 @@ export const resetPassword = async (req, res) => {
     await user.save();
     return res.status(200).json({ message: "Password updated successfully" });
   } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const verifyEmail = async (req, res) => {
+  try {
+    const { token } = req.params;
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+    const user = await User.findById(decoded.userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    if (user.isVerified) {
+      return res.status(400).json({ message: "Email already verified" });
+    }
+    user.isVerified = true;
+    await user.save();
+    return res.status(200).json({ message: "Email verified successfully" });
+  } catch (error) {
+    console.log("error", error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };

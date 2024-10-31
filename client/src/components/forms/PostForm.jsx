@@ -17,6 +17,12 @@ import axios from "axios";
 import PreviewCard from "../viewCards/PreviewCard";
 import AutoHideSnackbar from "../popupCards/AutoHideSnackbar";
 import useTheme from "../UseTheme";
+import AutoCompleteComponent from "../formInputs/AutoCompleteComponent";
+import ImageUploadCard from "../feeds/ImageUploadCard";
+import TextAreaInput from "../formInputs/TextAreaInput";
+import IngredientsList from "../viewCards/IngredientsList";
+import UploadLimitSnackbar from "../popupCards/UploadLimitSnackbar";
+import InputArea from "../formInputs/InputArea";
 
 const PostForm = ({
   setShowModal,
@@ -48,7 +54,7 @@ const PostForm = ({
   const [error, setError] = useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
-  const modalTheme = useTheme(theme);
+
   const handleCloseSnackbar = () => {
     setSnackbarOpen(false);
   };
@@ -154,27 +160,11 @@ const PostForm = ({
   };
   return (
     <>
-      {snackbarOpen && (
-        <Snackbar
-          open={snackbarOpen}
-          autoHideDuration={6000}
-          onClose={handleCloseSnackbar}
-          message={snackbarMessage}
-          anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        >
-          <div className="flex flex-col gap-3 dark:bg-[#1d1d1d] bg-[#e2e2e2] border-[#08090a] p-8 rounded-md">
-            <div>{snackbarMessage}</div>
-            <div className="flex items-end justify-end mt-4">
-              <button
-                className="bg-blue-600 text-white hover:bg-blue-800 py-1 w-14 px-2 text-sm rounded-md"
-                onClick={handleCloseSnackbar}
-              >
-                OK
-              </button>
-            </div>
-          </div>
-        </Snackbar>
-      )}
+      <UploadLimitSnackbar
+        snackbarOpen={snackbarOpen}
+        handleCloseSnackbar={handleCloseSnackbar}
+        snackbarMessage={snackbarMessage}
+      />
 
       <form
         onSubmit={handleSubmit}
@@ -186,190 +176,35 @@ const PostForm = ({
           </button>
         </div>
 
-        <div className="relative w-[15rem] lg:w-[200rem] xl:w-[230rem]  border border-[#e0e0e0] dark:border-[#2a2a2a] rounded-md">
-          {imagePreviews.length > 0 ? (
-            <PreviewCard
-              imagePreviews={imagePreviews}
-              images={images}
-              setImages={setImages}
-              handleImageUpload={handleImageUpload}
-              theme={theme}
-              setImagePreviews={setImagePreviews}
-              setDeletedImages={setDeletedImages}
-            />
-          ) : (
-            <div className="flex flex-col gap-2 items-center justify-center w-full h-64 lg:h-[416px] xl:h-full">
-              <label
-                htmlFor="file-upload"
-                className="cursor-pointer flex flex-col items-center justify-center"
-              >
-                <IoCloudUploadOutline className="text-xl" />
-                <div>Upload file</div>
-                <div className="text-sm text-[#969696]">
-                  maximum of 3 images.
-                </div>
-              </label>
+        <ImageUploadCard
+          imagePreviews={imagePreviews}
+          images={images}
+          setImages={setImages}
+          handleImageUpload={handleImageUpload}
+          theme={theme}
+          setImagePreviews={setImagePreviews}
+          setDeletedImages={setDeletedImages}
+        />
 
-              <input
-                type="file"
-                accept="image/*"
-                className="hidden"
-                id="file-upload"
-                multiple
-                onChange={handleImageUpload}
-              />
-            </div>
-          )}
-        </div>
-
-        <div className="flex flex-col  pt-8 gap-3  w-full lg:px-4 l lg:w-[200rem] xl:w-[230rem] h-full lg:overflow-scroll">
-          {error && <div className="text-red-500 text-sm">{error}</div>}
-          <TextInput
-            label={"Title"}
-            bgColor="dark:bg-[#0c0c0c] bg-[#e9e9e9]"
-            className=""
-            type={"text"}
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
-          <div className="flex flex-col lg:flex-row items-center gap-4 w-full">
-            <TextInput
-              label={"Cooking time"}
-              className="w-full"
-              type={"number"}
-              min={0}
-              bgColor="dark:bg-[#0c0c0c] bg-[#e9e9e9]"
-              value={prepTime}
-              onChange={(e) => setPrepTime(e.target.value)}
-              required
-            />
-            <SelectInput
-              label={"Category"}
-              options={mealCategories}
-              id={"category"}
-              bgColor="dark:bg-[#0c0c0c] bg-[#e9e9e9]"
-              className=" w-full"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              required
-            />
-          </div>
-          <div className="flex flex-col gap-3 ">
-            <div className="flex flex-col  items-start w-full gap-2">
-              <label htmlFor="ingredients-autocomplete" className="text-sm ">
-                Ingredients
-              </label>
-              <div className="flex items-center justify-between w-full gap-2">
-                <Autocomplete
-                  id="ingredients-autocomplete"
-                  disablePortal
-                  options={ingredientsData}
-                  getOptionLabel={(option) => option.name}
-                  sx={{
-                    width: 300,
-                    "& .MuiInputBase-root": {
-                      backgroundColor:
-                        modalTheme === "dark" ? "#0c0c0c" : "#e9e9e9",
-                      borderRadius: "8px",
-                      paddingLeft: "12px",
-                      paddingRight: "12px",
-                      color: modalTheme === "dark" ? "white" : "black",
-                    },
-                    "& .MuiOutlinedInput-notchedOutline": {
-                      borderColor:
-                        modalTheme === "dark" ? "#1d1d1d" : "#e0e0e0",
-                    },
-                    "&:hover .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "#ffffff",
-                    },
-                    "& .MuiAutocomplete-popupIndicator": {
-                      color: modalTheme === "dark" ? "#ffffff" : "#333333",
-                    },
-                    "& .MuiAutocomplete-clearIndicator": {
-                      color: modalTheme === "dark" ? "#ffffff" : "#333333",
-                    },
-                  }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      placeholder="e.g chicken, pasta ..."
-                      className="text-sm"
-                      sx={{
-                        "& .MuiInputBase-input": {
-                          height: 15,
-                          backgroundColor:
-                            modalTheme === "dark" ? "#0c0c0c" : "e9e9e9",
-                          borderRadius: "8px",
-                          padding: "8px 12px",
-                          color: modalTheme === "dark" ? "white" : "black",
-                        },
-                      }}
-                    />
-                  )}
-                  value={autocompleteValue}
-                  onChange={(event, value) => {
-                    setItem(value.name);
-                    setAutocompleteValue(null);
-                  }}
-                />
-                <button
-                  onClick={addIngredient}
-                  type="button"
-                  className="bg-[#B678F0] hover:bg-[#813ebf] text-white px-6 h-10 rounded-xl"
-                >
-                  Add
-                </button>
-              </div>
-            </div>
-            <div className=" rounded-md dark:bg-[#0c0c0c] bg-[#e9e9e9] border dark:border-[#1d1d1d] border-[#e0e0e0] h-44 max-h-44 w-full p-8  overflow-auto  ">
-              {" "}
-              <div className="grid  gap-2">
-                {ingredients.length > 0 &&
-                  ingredients.map((ingredient, index) => (
-                    <div
-                      className="dark:bg-[#2d2d2d] bg-[#c4c4c4] border-[#dadada] border dark:border-[#444544] px-3 py-2 rounded-xl dark:text-white flex items-center w-full justify-between"
-                      key={index}
-                    >
-                      <p className="pr-4">{ingredient}</p>
-                      <button
-                        type="button"
-                        onClick={() => removeIngredient(ingredient)}
-                        className="border border-[#7a7a7a] bg-[#535252] rounded-full p-1 hover:text-white hover:bg-[#34343d]"
-                      >
-                        <FaXmark className="text-gray-400 hover:text-white " />
-                      </button>
-                    </div>
-                  ))}
-              </div>
-              {ingredients.length <= 0 && (
-                <div className="flex items-center justify-center text-sm h-full">
-                  <p>Ingredients added will appear here.</p>
-                </div>
-              )}
-            </div>
-          </div>
-
-          <div className="text-sm flex  lg:pb-0 flex-col gap-2">
-            <label htmlFor="instructions">Instructions</label>
-            <textarea
-              id="instructions"
-              placeholder="Type instructions here"
-              className="dark:bg-[#0c0c0c] bg-[#e9e9e9] w-full min-h-52 overflow-scroll border text-sm dark:border-[#1d1d1d] border-[#e0e0e0] rounded-md px-2 py-2"
-              value={instructions}
-              onChange={(event) => setInstructions(event.target.value)}
-              required
-            />
-          </div>
-          <div className="lg:hidden pb-12">
-            <button
-              type="submit"
-              className=" bg-blue-600  text-white p-2 w-full rounded-md font-semibold hover:bg-blue-700"
-            >
-              {selectedPost ? "Update Post" : "Create post"}
-            </button>
-          </div>
-        </div>
+        <InputArea
+          error={error}
+          title={title}
+          setTitle={setTitle}
+          prepTime={prepTime}
+          setPrepTime={setPrepTime}
+          category={category}
+          setCategory={setCategory}
+          theme={theme}
+          setItem={setItem}
+          setAutocompleteValue={setAutocompleteValue}
+          autocompleteValue={autocompleteValue}
+          addIngredient={addIngredient}
+          ingredients={ingredients}
+          removeIngredient={removeIngredient}
+          instructions={instructions}
+          setInstructions={setInstructions}
+          selectedPost={selectedPost}
+        />
       </form>
     </>
   );

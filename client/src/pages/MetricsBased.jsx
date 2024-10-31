@@ -1,24 +1,9 @@
-import React, { useEffect, useState } from "react";
-import MetricsImg from "../assets/background-metrics.png";
-import MetricsBg from "../assets/background-circle.svg";
-import { FaInfo, FaXmark } from "react-icons/fa6";
-import { FaCircleInfo } from "react-icons/fa6";
-import TextInput from "../components/formInputs/TextInput";
-import { TbCircleDotted } from "react-icons/tb";
-import Food1 from "../assets/food1.jpg";
-import SkeletonLoader from "../components/SkeletonLoader";
-import { Link } from "react-router-dom";
-import { BiSolidLeftArrow, BiSolidRightArrow } from "react-icons/bi";
-import SelectInput from "../components/formInputs/SelectInput";
-import {
-  dietPreferences,
-  exerciseOptions,
-  genderOptions,
-  goalOptions,
-} from "../../../server/utils/helper";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import MealCard from "../components/viewCards/MealCard";
+import GetStartedSection from "../components/GetStartedSection";
+import RecipeResults from "../components/viewCards/RecipeResults";
+import MetricsForm from "../components/forms/MetricsForm";
+import MetricsHeader from "../components/headers/MetricsHeader";
 
 const MetricsBased = ({ userData }) => {
   let gridView = true;
@@ -35,14 +20,15 @@ const MetricsBased = ({ userData }) => {
   const [selectedDietaryPreferences, setSelectedDietaryPreferences] = useState(
     []
   );
-
   const [loading, setLoading] = useState(false);
   const [fetchedRecipes, setFetchedRecipes] = useState([]);
   const [error, setError] = useState("");
   const [tryCount, setTryCount] = useState(
     () => parseInt(localStorage.getItem("tryCountMetrics")) || 0
   );
+  const cardRef = useRef(null);
   const TRY_LIMIT = 1;
+
   const getUserMetrics = async () => {
     setLoading(true);
     try {
@@ -73,8 +59,8 @@ const MetricsBased = ({ userData }) => {
 
   const incrementCount = () => {
     setIngredientCount(ingredientCount + 1);
-    if (ingredientCount >= 9) {
-      setIngredientCount(9);
+    if (ingredientCount >= 30) {
+      setIngredientCount(30);
     }
   };
   const decrementCount = () => {
@@ -155,237 +141,44 @@ const MetricsBased = ({ userData }) => {
   }, []);
   return (
     <div className="overflow-hidden flex flex-col gap-8 pt-8 justify-center items-center">
-      <div className="flex items-center gap-2 pt-20 text-sm">
-        <div className="h-4 w-6 rounded-xl bg-[#d08824]"></div>
-        <p>Metrics-based</p>
-      </div>
-      <div className="  w-full h-[300px] lg:h-[550px]  flex flex-col items-center">
-        <h1 className="text-center text-2xl lg:text-6xl shadow-lg tracking-tighter z-10 font-semibold">
-          Plan from Body Metrics
-          <span className="block">to Meal Recommendations</span>
-        </h1>
-        <div className="hidden lg:flex absolute  top-40 left-0 bg-gradient-to-r from-[#08090a] from-15% to-transparent lg:shadow-xl lg:drop-shadow-xl h-full w-20 lg:h-3/4 lg:w-96"></div>
-        <div className="hidden lg:flex absolute right-0 top-40  bg-gradient-to-l from-[#08090a] from-15% to-transparent lg:shadow-xl lg:drop-shadow-xl h-full w-20 lg:h-3/4 lg:w-96"></div>
-
-        <div className="absolute w-screen -top-8 lg:top-24 lg:rotate-180  md:flex -z-10 items-center justify-center">
-          <img
-            src={MetricsBg}
-            alt=""
-            className="w-[3000px] h-[600px] object-contain lg:object-fill "
-          />
-        </div>
-      </div>
-
+      <MetricsHeader />
       <div className="flex flex-col gap-6 items-center  w-full px-2 lg:px-44">
         <div className=" lg:relative border border-[#1d1d1d] w-96  md:w-auto   rounded-xl py-2 px-2 bg-[#0E0F10] min-h-[700px] h-full  ">
-          <form
+          <MetricsForm
             onSubmit={onSubmit}
-            className="flex flex-col gap-8 p-8 lg:px-14 items-start justify-center "
-          >
-            <div className="text-center text-xl">Enter your Body Metrics</div>
-            <div className="text-sm border-b pb-2 border-b-[#343333] w-full">
-              Personal Information
-            </div>
-            <div className="flex flex-col text-sm lg:flex-row  gap-8 ">
-              <SelectInput
-                label={"Gender"}
-                id={"gender"}
-                options={genderOptions}
-                value={gender}
-                onChange={(e) => setGender(e.target.value)}
-                className="w-72 cursor-pointer"
-                applyDarkMode={true}
-                bgColor="bg-[#171717]"
-                borderColor="border-[#343333]"
-              />
-              <TextInput
-                label={"Age"}
-                id={"age"}
-                htmlFor={"age"}
-                type={"number"}
-                value={age}
-                onChange={(e) => setAge(e.target.value)}
-                className="w-72 cursor-pointer"
-                bgColor="bg-[#171717]"
-                borderColor="border-[#343333]"
-              />
-            </div>
-            <div className="text-sm border-b pb-2 border-b-[#343333] w-full">
-              Body Measurements / Fitness Goals
-            </div>
-            <div className="grid lg:grid-cols-2 gap-8 gap-y-4 ">
-              <TextInput
-                label={"Height(cm)"}
-                id={"height"}
-                min={0}
-                htmlFor={"height"}
-                value={height}
-                onChange={(e) => setHeight(e.target.value)}
-                type={"number"}
-                className="w-72 cursor-pointer"
-                bgColor="bg-[#171717]"
-                borderColor="border-[#343333]"
-              />
-              <TextInput
-                label={"Weight(kg)"}
-                id={"weight"}
-                min={0}
-                htmlFor={"weight"}
-                value={weight}
-                onChange={(e) => setWeight(e.target.value)}
-                type={"number"}
-                className="w-72 cursor-pointer"
-                bgColor="bg-[#171717]"
-                borderColor="border-[#343333]"
-              />
-              <SelectInput
-                label={"Goal"}
-                id={"goal"}
-                options={goalOptions}
-                value={goal}
-                onChange={(e) => setGoal(e.target.value)}
-                className="w-72 cursor-pointer"
-                applyDarkMode={true}
-                bgColor="bg-[#171717]"
-                borderColor="border-[#343333]"
-              />
-              <SelectInput
-                label={"Exercise Level"}
-                id={"exercise-level"}
-                options={exerciseOptions}
-                value={exerciseLevel}
-                onChange={(e) => setExerciseLevel(e.target.value)}
-                className="w-72 cursor-pointer"
-                applyDarkMode={true}
-                bgColor="bg-[#171717]"
-                borderColor="border-[#343333]"
-              />
-            </div>
-
-            <div className="flex flex-col items-start w-full  gap-2 ">
-              <p className="border-b pb-2 border-b-[#343333]  w-full">
-                Dietary Preferences (optional)
-              </p>
-              {/* checkbox */}
-              {dietPreferences.map((pref) => (
-                <div className="flex gap-4 items-center" key={pref.id}>
-                  <label className="text-lg lg:text-sm  w-32" htmlFor={pref.id}>
-                    {pref.name}
-                  </label>
-                  <input
-                    type="checkbox"
-                    className="transform scale-150 "
-                    id={pref.id}
-                    name={pref.id}
-                    checked={selectedDietaryPreferences.includes(pref.id)}
-                    onChange={handleChecboxChange}
-                  />
-                </div>
-              ))}
-            </div>
-            <div className="pt-4 border-t border-t-[#343333] w-full">
-              <div className="flex items-center gap-4">
-                <button
-                  onClick={decrementCount}
-                  type="button"
-                  className="md:hidden"
-                >
-                  <BiSolidLeftArrow className="text-2xl" />
-                </button>
-                <TextInput
-                  label={"Specify number of recipes"}
-                  type={"number"}
-                  min={0}
-                  max={30}
-                  disabled={!isLoggedIn}
-                  value={ingredientCount}
-                  onChange={(e) => setIngredientCount(e.target.value)}
-                  className={`md:w-44 px-3 ${
-                    isLoggedIn ? "" : "cursor-not-allowed"
-                  }`}
-                  bgColor="bg-[#171717]"
-                  borderColor="border-[#343333]"
-                />
-                <button
-                  onClick={incrementCount}
-                  type="button"
-                  className="md:hidden"
-                >
-                  <BiSolidRightArrow className="text-2xl" />
-                </button>
-              </div>
-              {!isLoggedIn && (
-                <div className="text-sm text-[#A3A3A3]">
-                  Create an account to increase the number of recipes.
-                </div>
-              )}
-            </div>
-            {error && (
-              <div
-                className={`text-red-500 text-sm mt-1 transition-opacity ease-in-out  duration-1000 ${
-                  error ? "opacity-100" : "opacity-0"
-                }`}
-              >
-                {error}
-              </div>
-            )}
-            <div className="pt-10 flex items-center w-full ">
-              <button
-                type="submit"
-                disabled={loading}
-                className={`bg-[#B678F0] py-2 text-center px-6 w-44 rounded-lg ${
-                  loading ? "cursor-not-allowed bg-[#b678f096] " : ""
-                }
-              `}
-              >
-                Submit
-              </button>
-            </div>
-          </form>
+            gender={gender}
+            setGender={setGender}
+            goal={goal}
+            setGoal={setGoal}
+            age={age}
+            setAge={setAge}
+            height={height}
+            setHeight={setHeight}
+            weight={weight}
+            setWeight={setWeight}
+            exerciseLevel={exerciseLevel}
+            setExerciseLevel={setExerciseLevel}
+            selectedDietaryPreferences={selectedDietaryPreferences}
+            decrementCount={decrementCount}
+            incrementCount={incrementCount}
+            ingredientCount={ingredientCount}
+            setIngredientCount={setIngredientCount}
+            isLoggedIn={isLoggedIn}
+            error={error}
+            loading={loading}
+            handleChecboxChange={handleChecboxChange}
+          />
         </div>
         {/* showing results */}
-        <div className="flex flex-col gap-3 items-center mt-24">
-          {loading ? (
-            <div className="flex flex-col items-center gap-2">
-              <AiOutlineLoading3Quarters className="spin duration-2000 text-[3rem] animate-bounce" />
-              <p className="animate-pulse text-3xl">
-                Generating meal recommendations...
-              </p>
-            </div>
-          ) : fetchedRecipes.length > 0 ? (
-            <MealCard
-              meals={[...fetchedRecipes].sort(
-                (a, b) => a.calories - b.calories
-              )}
-              showInput={false}
-              isGridView={gridView}
-              sourceType={"metricsBased"}
-            />
-          ) : (
-            <p className=""></p>
-          )}
-        </div>
+        <RecipeResults
+          cardRef={cardRef}
+          loading={loading}
+          fetchedRecipes={fetchedRecipes}
+          gridView={gridView}
+          sourceType={"metricsBased"}
+        />
       </div>
-      {!isLoggedIn && (
-        <div className="flex flex-col px-8 gap-20 md:flex-row items-start md:items-center border-b border-b-[#343333] pt-20 mt-20 pb-20  md:justify-between md:px-16  xl:justify-around bg-gradient-to-b from-[#08090a] to-[#221300] w-full">
-          <div>
-            <h2 className="text-2xl  md:text-3xl xl:text-6xl tracking-tighter">
-              Want meal recommendations?{" "}
-              <span className="block">
-                Discover the best choices just for You!
-              </span>
-            </h2>
-          </div>
-          <div>
-            <Link
-              to={"/login"}
-              className="bg-[#e6e6e6] text-black rounded-md px-4 py-2"
-            >
-              Get Started
-            </Link>
-          </div>
-        </div>
-      )}
+      {!isLoggedIn && <GetStartedSection />}
     </div>
   );
 };

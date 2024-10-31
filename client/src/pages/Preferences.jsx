@@ -1,25 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { SiGreasyfork } from "react-icons/si";
 import { Link, useNavigate } from "react-router-dom";
-import TextInput from "../components/formInputs/TextInput";
-import SelectInput from "../components/formInputs/SelectInput";
 import AnimationComponent from "../components/AnimationComponent";
 import axios from "axios";
-import {
-  dietPreferences,
-  exerciseOptions,
-  genderOptions,
-  goalOptions,
-} from "../../../server/utils/helper";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import PreferenceForm from "../components/forms/PreferenceForm";
 
 const Preferences = () => {
   const [getStarted, setGetStarted] = useState(true);
   const [loading, setLoading] = useState(false);
   const [gender, setGender] = useState("male");
-  const [age, setAge] = useState("");
-  const [weight, setWeight] = useState("");
-  const [height, setHeight] = useState("");
+  const [age, setAge] = useState(18);
+  const [weight, setWeight] = useState(70);
+  const [height, setHeight] = useState(170);
   const [exerciseLevel, setExerciseLevel] = useState("moderately_active");
   const [goal, setGoal] = useState("weight_loss");
   const [selectedDietaryPreferences, setSelectedDietaryPreferences] = useState(
@@ -36,23 +28,35 @@ const Preferences = () => {
   };
 
   const skipToDashboard = () => {
-    navigate("/dashboard");
+    navigate("/pantry");
+    handleSubmit({ preventDefault: () => {} }, true);
   };
 
-  const onSubmit = async (e) => {
+  const handleSubmit = async (e, skipped = false) => {
     e.preventDefault();
     setLoading(true);
+    console.log({
+      gender,
+      age,
+      weight,
+      height,
+      exerciseLevel,
+      goal,
+      dietaryPreferences: selectedDietaryPreferences,
+      defaultMetrics: skipped,
+    });
     try {
       const response = await axios.post(
         "http://localhost:8000/api/users/create-metrics",
         {
-          gender,
-          age,
-          weight,
-          height,
-          exerciseLevel,
-          goal,
-          dietaryPreferences: selectedDietaryPreferences,
+          gender: gender || "male",
+          age: age || 18,
+          weight: weight || 70,
+          height: height || 170,
+          exerciseLevel: exerciseLevel || "moderately_active",
+          goal: goal || "weight_loss",
+          dietaryPreferences: selectedDietaryPreferences || [],
+          defaultMetrics: skipped,
         },
         { withCredentials: true }
       );
@@ -79,141 +83,51 @@ const Preferences = () => {
       {getStarted ? (
         <AnimationComponent />
       ) : (
-        <>
-          {/* <div className="flex justify-between items-center backdrop-blur-lg lg:backdrop-blur-0  fixed right-8 lg:right-16 lg:top-12 left-8 lg:left-24">
-            <SiGreasyfork className="text-2xl lg:text-4xl   backdrop-blur-lg" />
-            <Link
-              to={"/"}
-              className="border flex  items-center justify-center rounded-lg bg-[#d9d9d9] text-black w-20 h-8 "
-            >
-              Close
-            </Link>
-          </div> */}
-          <div className="flex flex-col gap-8 pt-32 md:pt-28  lg:gap-0 lg:flex-row items-center justify-evenly  ">
-            <div className="flex flex-col items-center w-full md:w-1/2 lg:w-auto   h-full lg:justify-center gap-2">
-              <div className="flex flex-col  w-full gap-4">
-                <h1 className="text-4xl lg:text-6xl font-bold tracking-tight">
-                  Set up your <span className="block">Preferences</span>
-                </h1>
-                <p className="">
-                  We recommend setting up your preferences to{" "}
-                  <span className="block">
-                    help us tailor your experience.{" "}
-                  </span>
-                </p>
-              </div>
-              <div className="mt-8 mr-4 hidden md:block">
-                <SiGreasyfork className="text-2xl lg:text-8xl backdrop-blur-lg" />
-              </div>
+        <div className="flex flex-col gap-8 pt-32 md:pt-28  lg:gap-0 lg:flex-row items-center justify-evenly  ">
+          <div className="flex flex-col items-center w-full md:w-1/2 lg:w-auto   h-full lg:justify-center gap-2">
+            <div className="flex flex-col  w-full gap-4">
+              <h1 className="text-4xl lg:text-6xl font-bold tracking-tight">
+                Set up your <span className="block">Preferences</span>
+              </h1>
+              <p className="">
+                We recommend setting up your preferences to{" "}
+                <span className="block">help us tailor your experience. </span>
+              </p>
             </div>
-            <div className=" w-[0.8px] h-full bg-[#343333]"></div>
-            <div className="w-full md:w-1/2 lg:w-auto">
-              <form onSubmit={onSubmit}>
-                <div className="grid  lg:grid-cols-2 lg:gap-10">
-                  <TextInput
-                    label={"Age"}
-                    type={"number"}
-                    min={0}
-                    value={age}
-                    onChange={(e) => setAge(e.target.value)}
-                    bgColor="bg-[#171717]"
-                    borderColor="border-[#343333]"
-                  />
-                  <SelectInput
-                    label={"Gender"}
-                    id={"gender"}
-                    options={genderOptions}
-                    value={gender}
-                    onChange={(e) => setGender(e.target.value)}
-                    bgColor="bg-[#171717]"
-                    borderColor="border-[#343333]"
-                    applyDarkMode={true}
-                  />
-                  <TextInput
-                    label={"Height (cm)"}
-                    type={"number"}
-                    min={0}
-                    value={height}
-                    onChange={(e) => setHeight(e.target.value)}
-                    bgColor="bg-[#171717]"
-                    borderColor="border-[#343333]"
-                  />
-                  <SelectInput
-                    label={"Goal"}
-                    id={"goal"}
-                    options={goalOptions}
-                    value={goal}
-                    onChange={(e) => setGoal(e.target.value)}
-                    bgColor="bg-[#171717]"
-                    borderColor="border-[#343333]"
-                    applyDarkMode={true}
-                  />
-
-                  <TextInput
-                    label={"Weight (kg)"}
-                    min={0}
-                    type={"number"}
-                    value={weight}
-                    onChange={(e) => setWeight(e.target.value)}
-                    bgColor="bg-[#171717]"
-                    borderColor="border-[#343333]"
-                  />
-
-                  <SelectInput
-                    label={"Exercise Level"}
-                    id={"exercise-level"}
-                    options={exerciseOptions}
-                    value={exerciseLevel}
-                    onChange={(e) => setExerciseLevel(e.target.value)}
-                    applyDarkMode={true}
-                    bgColor="bg-[#171717]"
-                    borderColor="border-[#343333]"
-                  />
-                </div>
-                <div className=" flex flex-col gap-3">
-                  <div>Dietary Preferences (optional)</div>
-                  {dietPreferences.map((pref) => (
-                    <div className="flex gap-4 items-center" key={pref.id}>
-                      <label
-                        className="text-lg lg:text-sm  w-32"
-                        htmlFor={pref.id}
-                      >
-                        {pref.name}
-                      </label>
-                      <input
-                        type="checkbox"
-                        className="transform scale-150 "
-                        id={pref.id}
-                        name={pref.id}
-                        onChange={handleDietaryPreferenceChange}
-                      />
-                    </div>
-                  ))}
-                </div>
-                <div className="flex flex-col gap-10 mt-8">
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="bg-[#B678F0] py-2 text-center flex items-center justify-center w-full  rounded-md"
-                  >
-                    {loading ? (
-                      <AiOutlineLoading3Quarters className="spin text-2xl" />
-                    ) : (
-                      "Save"
-                    )}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={skipToDashboard}
-                    className="text-[#A3A3A3] flex justify-end"
-                  >
-                    Skip
-                  </button>
-                </div>
-              </form>
+            <div className="mt-8 mr-4 hidden md:block">
+              <SiGreasyfork className="text-2xl lg:text-8xl backdrop-blur-lg" />
             </div>
           </div>
-        </>
+          <div className=" w-[0.8px] h-full bg-[#343333]"></div>
+          <div className="w-full md:w-1/2 lg:w-auto">
+            <PreferenceForm
+              handleSubmit={handleSubmit}
+              age={age}
+              setAge={setAge}
+              gender={gender}
+              setGender={setGender}
+              height={height}
+              setHeight={setHeight}
+              weight={weight}
+              setWeight={setWeight}
+              exerciseLevel={exerciseLevel}
+              goal={goal}
+              setGoal={setGoal}
+              setExerciseLevel={setExerciseLevel}
+              handleDietaryPreferenceChange={handleDietaryPreferenceChange}
+              loading={loading}
+            />
+            <div className="pt-10 flex justify-end items-end">
+              <button
+                type="button"
+                onClick={skipToDashboard}
+                className="text-[#A3A3A3] flex justify-end"
+              >
+                Skip
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

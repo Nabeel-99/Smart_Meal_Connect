@@ -194,6 +194,7 @@ const Feeds = ({
           openModal={openModal}
           showPostModal={showPostModal}
           likedPosts={likedPosts}
+          fetchAllPosts={fetchAllPosts}
         />
       </div>
 

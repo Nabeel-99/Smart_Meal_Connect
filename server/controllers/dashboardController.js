@@ -47,16 +47,17 @@ const generateDashboardRecipes = async (req) => {
       age = null,
       weight = null,
       height = null,
-      exerciseLevel = "sedentary",
+      exerciseLevel = "moderately_active",
       goal = null,
       dietaryPreferences = [],
+      defaultMetrics = false,
     } = user;
 
     let BMR = null;
     let TDEE = null;
     let calorieTarget = null;
 
-    if (gender && weight && height && age) {
+    if (!defaultMetrics && gender && weight && height && age) {
       BMR = calculateBMR(gender, weight, height, age);
       TDEE = calculateTDEE(BMR, exerciseLevel);
       calorieTarget = getCalorieIntake(goal, TDEE);
@@ -69,8 +70,7 @@ const generateDashboardRecipes = async (req) => {
     return {
       error: false,
       message: "Dashboard recipes fetched successfully",
-      calorieTarget:
-        calorieTarget || "No calorie target due to missing preferences",
+      calorieTarget: calorieTarget || null,
       recipes: filteredAndRankedRecipes,
     };
   } catch (error) {
@@ -112,12 +112,23 @@ export const manageDashboardRecipes = async (req, res) => {
         return res.status(200).json({
           message: "Dashboard already exists.",
           recipes: existingRecipes,
-          calorieTarget:
-            userDashboard.calorieTarget || "No calorie target available",
+          calorieTarget: userDashboard.calorieTarget || null,
         });
       } else {
-        // Dashboard expired; regenerate meals
+        // Dashboard expired deleting user dashbaord
         await UserDashboard.deleteOne({ userId: userId });
+
+        // deleting recipes associated with the dashboard
+        await Recipe.deleteMany({
+          _id: {
+            $in: userDashboard.generatedMeals.breakfast
+              .concat(
+                userDashboard.generatedMeals.lunch,
+                userDashboard.generatedMeals.dinner
+              )
+              .map((meal) => meal.recipeId),
+          },
+        });
       }
     }
 
@@ -187,8 +198,7 @@ export const manageDashboardRecipes = async (req, res) => {
     return res.status(200).json({
       message: "Dashboard prepared successfully",
       recipes: newRecipes,
-      calorieTarget:
-        calorieTarget || "No calorie target due to missing preferences",
+      calorieTarget: calorieTarget || null,
     });
   } catch (error) {
     console.error(error);

@@ -8,6 +8,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import AutoCompleteComponent from "../components/formInputs/AutoCompleteComponent";
 
 const PantryItems = () => {
   const [loading, setLoading] = useState(false);
@@ -117,13 +118,9 @@ const PantryItems = () => {
               ))}
             </div>
             <div className="mt-4 flex flex-col lg:flex-row items-center w-full gap-4">
-              <Autocomplete
-                disablePortal
-                options={ingredientsData}
-                getOptionLabel={(option) => option.name}
-                sx={{
+              <AutoCompleteComponent
+                customStyles={{
                   width: 300,
-
                   "& .MuiInputBase-root": {
                     backgroundColor: "#171717",
                     border: "1px solid #343333",
@@ -139,25 +136,10 @@ const PantryItems = () => {
                     color: "#ffffff",
                   },
                 }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Add more pantry items..."
-                    variant="outlined"
-                    slotProps={{
-                      inputLabel: {
-                        style: { color: "#a3a3a3" },
-                      },
-                    }}
-                  />
-                )}
-                value={autocompleteValue}
-                onChange={(event, value) => {
-                  if (value) {
-                    setItem(value.name);
-                    setAutocompleteValue(null);
-                  }
-                }}
+                label={"Add more pantry items..."}
+                autocompleteValue={autocompleteValue}
+                setAutocompleteValue={setAutocompleteValue}
+                setItem={setItem}
               />
               <button
                 onClick={addToPantry}

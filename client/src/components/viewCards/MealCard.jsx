@@ -33,6 +33,7 @@ const MealCard = ({
                 showMissingIngredients={showMissingIngredients}
                 showTrash={showTrash}
                 sourceType={sourceType}
+                openDialog={openDialog}
               />
             )
         )}

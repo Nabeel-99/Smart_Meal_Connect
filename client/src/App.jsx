@@ -22,6 +22,7 @@ import Preferences from "./pages/Preferences";
 import axios from "axios";
 import PantryItems from "./pages/PantryItems";
 import DashboardLayout from "./pages/dashboard/DashboardLayout";
+import VerifyEmail from "./pages/authPages/VerifyEmail";
 
 const App = () => {
   const [userData, setUserData] = useState(null);
@@ -123,6 +124,10 @@ const App = () => {
           <Route path="preferences" element={<Preferences />} />
           <Route path="pantry" element={<PantryItems />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
+          <Route
+            path="/verify-email/:token"
+            element={<VerifyEmail userData={userData} />}
+          />
           <Route path="/forgot-password" element={<ForgotPassword />} />
 
           <Route

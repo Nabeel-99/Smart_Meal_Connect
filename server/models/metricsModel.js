@@ -35,6 +35,7 @@ const metricsSchema = new mongoose.Schema(
       type: [String],
       required: false,
     },
+    defaultMetrics: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
