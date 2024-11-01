@@ -122,7 +122,7 @@ const App = () => {
           />
 
           <Route path="preferences" element={<Preferences />} />
-          <Route path="pantry" element={<PantryItems />} />
+          <Route path="pantry" element={<PantryItems theme={theme} />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route
             path="/verify-email/:token"

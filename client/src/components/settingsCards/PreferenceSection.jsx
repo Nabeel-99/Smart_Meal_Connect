@@ -14,6 +14,7 @@ const PreferenceSection = ({
   refreshSideMenu,
   setIsPreferences,
   setIsAccount,
+  fetchUserDashboardRecipes,
 }) => {
   const [isChangingPreferences, setIsChangingPreferences] = useState(false);
   const [gender, setGender] = useState(userMetrics.gender || "");
@@ -54,6 +55,7 @@ const PreferenceSection = ({
     if (exerciseLevel) updateData.exerciseLevel = exerciseLevel;
     if (selectedDietaryPreferences)
       updateData.dietaryPreferences = selectedDietaryPreferences;
+    updateData.defaultMetrics = false;
     try {
       const response = await axios.patch(
         "http://localhost:8000/api/users/update-metrics",
@@ -65,6 +67,7 @@ const PreferenceSection = ({
       console.log(response.data);
 
       if (response.status === 200) {
+        await fetchUserDashboardRecipes();
         setIsChangingPreferences(false);
         setIsPreferences(true);
         setIsAccount(false);
@@ -138,7 +141,6 @@ const PreferenceSection = ({
             value={gender}
             onChange={(e) => setGender(e.target.value)}
             disabled={!isChangingPreferences}
-            applyDarkMode={true}
           />
           <TextInput
             label={"Height (cm)"}
@@ -164,7 +166,6 @@ const PreferenceSection = ({
             disabled={!isChangingPreferences}
             value={goal}
             onChange={(e) => setGoal(e.target.value)}
-            applyDarkMode={true}
           />
 
           <TextInput
@@ -192,7 +193,6 @@ const PreferenceSection = ({
             disabled={!isChangingPreferences}
             value={exerciseLevel}
             onChange={(e) => setExerciseLevel(e.target.value)}
-            applyDarkMode={true}
           />
         </div>
         <div className=" flex flex-col gap-3">

@@ -177,6 +177,7 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
         userId={userId}
         showModal={showModal}
         setShowModal={setShowModal}
+        fetchUserDashboardRecipes={fetchUserDashboardRecipes}
       />
     );
   };

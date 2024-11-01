@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { SiGreasyfork } from "react-icons/si";
-import { Link } from "react-router-dom";
-import TextInput from "../../components/formInputs/TextInput";
 import axios from "axios";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import ForgotPasswordForm from "../../components/forms/ForgotPasswordForm";
 import CloseButtonHeader from "../../components/buttons/CloseButtonHeader";
 

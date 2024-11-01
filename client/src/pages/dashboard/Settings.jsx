@@ -9,6 +9,7 @@ const Settings = ({
   refreshSideMenu,
   theme,
   updateTheme,
+  fetchUserDashboardRecipes,
 }) => {
   const [isAccount, setIsAccount] = useState(true);
   const [isPreferenecs, setIsPreferences] = useState(false);
@@ -58,6 +59,7 @@ const Settings = ({
           refreshSideMenu={refreshSideMenu}
           setIsPreferences={setIsPreferences}
           setIsAccount={setIsAccount}
+          fetchUserDashboardRecipes={fetchUserDashboardRecipes}
         />
       )}
     </div>

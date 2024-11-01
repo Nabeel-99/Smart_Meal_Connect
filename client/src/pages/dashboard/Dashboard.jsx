@@ -15,6 +15,7 @@ const Dashboard = ({
   dashboardRecipes,
   setViewOptions,
   showMetricsPrompt,
+
   setShowMetricsPrompt,
 }) => {
   let breakfastMeals = dashboardRecipes.recipes?.breakfast || [];

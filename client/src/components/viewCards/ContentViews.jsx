@@ -35,6 +35,7 @@ const ContentViews = ({
   userId,
   showMetricsPrompt,
   setShowMetricsPrompt,
+  fetchUserDashboardRecipes,
 }) => {
   return (
     <Routes>
@@ -123,6 +124,7 @@ const ContentViews = ({
             refreshSideMenu={getUserMetrics}
             updateTheme={updateTheme}
             theme={theme}
+            fetchUserDashboardRecipes={fetchUserDashboardRecipes}
           />
         }
       />

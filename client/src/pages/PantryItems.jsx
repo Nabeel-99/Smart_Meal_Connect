@@ -2,15 +2,11 @@ import React, { useState } from "react";
 import pantryItems from "../../../server/utils/pantry.json";
 import ingredientsData from "../../../server/utils/ingredientsHelper.json";
 import { FaXmark } from "react-icons/fa6";
-import TextInput from "../components/formInputs/TextInput";
 import axios from "axios";
-import Autocomplete from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
 import { useNavigate } from "react-router-dom";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import AutoCompleteComponent from "../components/formInputs/AutoCompleteComponent";
-
-const PantryItems = () => {
+import PantrySelection from "../components/pantry/PantrySelection";
+import PantryHeader from "../components/pantry/PantryHeader";
+const PantryItems = ({ theme }) => {
   const [loading, setLoading] = useState(false);
   const [item, setItem] = useState("");
   const [selectedItems, setSelectedItems] = useState([]);
@@ -66,7 +62,7 @@ const PantryItems = () => {
       console.log(response.data);
       if (response.status === 200) {
         setTimeout(() => {
-          navigate("/content");
+          navigate("/dashboard");
         }, 2000);
       }
     } catch (error) {
@@ -79,99 +75,25 @@ const PantryItems = () => {
     <div className="flex flex-col gap-20  w-full h-full  px-8 lg:px-24">
       <div className="flex flex-col  pt-32 md:pt-28  lg:gap-10 lg:flex-row items-center justify-between h-full  ">
         <div className="flex flex-col items-center w-full lg:w-auto  pb-24  xl:h-full lg:justify-center gap-2">
-          <div className="flex flex-col  w-full gap-4">
-            <h1 className="text-4xl lg:text-6xl font-bold tracking-tight">
-              Let's Get Your<span className="lg:block">Pantry Ready</span>
-            </h1>
-            <p className="">
-              We suggest choosing a few items for your pantry to{" "}
-              <span className="lg:block">
-                help us customize your experience.{" "}
-              </span>
-            </p>
-          </div>
-          <div className="flex flex-col mt-4 justify-start gap-4 items-start w-full">
-            <div className="flex items-center  gap-2">
-              Select All
-              <input
-                type="checkbox"
-                onChange={selectAllPantry}
-                checked={allSelected}
-              />
-            </div>
-            <div className=" gap-2 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 items-center xl:items-start justify-center xl:justify-start w-full xl:w-[400px]">
-              {pantryItems.pantry.map((pantry, index) => (
-                <div className="flex  items-center" key={pantry}>
-                  <label className="w-32 ">
-                    {" "}
-                    {pantry.charAt(0).toUpperCase() +
-                      pantry.slice(1).toLowerCase()}
-                  </label>
-                  <input
-                    value={pantry}
-                    type="checkbox"
-                    className="transform "
-                    onChange={handleCheckboxChange}
-                    checked={selectedItems.includes(pantry)}
-                  />
-                </div>
-              ))}
-            </div>
-            <div className="mt-4 flex flex-col lg:flex-row items-center w-full gap-4">
-              <AutoCompleteComponent
-                customStyles={{
-                  width: 300,
-                  "& .MuiInputBase-root": {
-                    backgroundColor: "#171717",
-                    border: "1px solid #343333",
-                    color: "white",
-                  },
-                  "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "#343333",
-                  },
-                  "&:hover .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "#ffffff",
-                  },
-                  "& .MuiAutocomplete-popupIndicator": {
-                    color: "#ffffff",
-                  },
-                }}
-                label={"Add more pantry items..."}
-                autocompleteValue={autocompleteValue}
-                setAutocompleteValue={setAutocompleteValue}
-                setItem={setItem}
-              />
-              <button
-                onClick={addToPantry}
-                className="bg-[#199224] mb-2 hover:bg-[#1ead2a] py-2 text-center px-6 rounded-lg"
-              >
-                Add
-              </button>
-            </div>
-
-            <div className="flex flex-col items-center lg:flex-row lg:justify-between  mt-6 gap-3 w-full h-full">
-              <button
-                onClick={savePantryItems}
-                disabled={loading}
-                className="bg-[#B678F0] py-1 text-center w-full md:w-64  lg:w-44 flex items-center justify-center  rounded-md"
-              >
-                {loading ? (
-                  <AiOutlineLoading3Quarters className="spin text-2xl" />
-                ) : (
-                  "Save"
-                )}
-              </button>
-
-              <div className="mt-3 h-full">
-                <button
-                  onClick={skipToDashboard}
-                  className="text-[#A3A3A3] hover:text-[#cacaca]"
-                >
-                  Skip
-                </button>
-              </div>
-            </div>
-          </div>
+          <PantryHeader />
+          <PantrySelection
+            pantryItems={pantryItems}
+            selectedItems={selectedItems}
+            handleCheckboxChange={handleCheckboxChange}
+            selectAllPantry={selectAllPantry}
+            allSelected={allSelected}
+            loading={loading}
+            theme={theme}
+            addToPantry={addToPantry}
+            setAutocompleteValue={setAutocompleteValue}
+            autocompleteValue={autocompleteValue}
+            setItem={setItem}
+            ingredientsData={ingredientsData}
+            showSkip={true}
+            skipToDashboard={skipToDashboard}
+            save={true}
+            savePantryItems={savePantryItems}
+          />
         </div>
 
         <div className="hidden xl:block w-[0.08px] h-full bg-[#343333]"></div>

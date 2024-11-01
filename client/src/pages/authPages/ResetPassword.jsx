@@ -1,10 +1,6 @@
 import React, { useState } from "react";
-import { SiGreasyfork } from "react-icons/si";
 import { Link, useParams } from "react-router-dom";
-import TextInput from "../../components/formInputs/TextInput";
 import axios from "axios";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import ResetPasswordForm from "../../components/forms/ResetPasswordForm";
 import CloseButtonHeader from "../../components/buttons/CloseButtonHeader";
 

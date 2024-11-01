@@ -56,6 +56,7 @@ export const updateMetrics = async (req, res) => {
       exerciseLevel,
       goal,
       dietaryPreferences,
+      defaultMetrics,
     } = req.body;
 
     const updatedData = {
@@ -66,6 +67,7 @@ export const updateMetrics = async (req, res) => {
       ...(exerciseLevel && { exerciseLevel }),
       ...(goal && { goal }),
       ...(dietaryPreferences && { dietaryPreferences }),
+      defaultMetrics,
     };
     const updatedMetrics = await Metrics.findOneAndUpdate(
       { userId: userId },
@@ -131,24 +133,22 @@ export const createPantry = async (req, res) => {
 export const updatePantry = async (req, res) => {
   try {
     const userId = req.userId;
-    const userPantry = await Pantry.findOne({ userId: userId });
-    if (!userPantry) {
-      return res.status(404).json({ message: "Pantry not found" });
-    }
     const { items } = req.body;
-    const updatedPantry = await Pantry.findOneAndUpdate(
-      { userId: userId },
-      { items },
-      {
-        new: true,
-      }
-    );
-    if (!updatedPantry) {
-      return res.status(404).json({ message: "Pantry not found" });
+    let userPantry = await Pantry.findOne({ userId: userId });
+
+    if (!userPantry) {
+      userPantry = await Pantry.create({ userId, items });
+      return res
+        .status(201)
+        .json({ message: "Created new pantry", userPantry });
     }
+
+    userPantry.items = items;
+    await userPantry.save();
+
     return res
       .status(200)
-      .json({ message: "pantry updated successfully!", updatedPantry });
+      .json({ message: "pantry updated successfully!", userPantry });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal Server Error" });

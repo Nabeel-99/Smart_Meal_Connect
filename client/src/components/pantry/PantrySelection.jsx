@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import AutoCompleteComponent from "../formInputs/AutoCompleteComponent";
 
@@ -16,6 +16,10 @@ const PantrySelection = ({
   setItem,
   theme,
   ingredientsData,
+  showSkip = false,
+  save = false,
+  skipToDashboard,
+  savePantryItems,
 }) => {
   return (
     <div className="flex flex-col items-center w-full  pb-24   gap-2">
@@ -48,6 +52,7 @@ const PantrySelection = ({
         </div>
         <div className="mt-4 flex flex-col lg:flex-row items-center w-full gap-4">
           <AutoCompleteComponent
+            label={"Add more pantry Items"}
             theme={theme}
             setItem={setItem}
             setAutocompleteValue={setAutocompleteValue}
@@ -63,7 +68,7 @@ const PantrySelection = ({
         </div>
         <div className="flex items-center justify-center lg:justify-start mt-6 gap-3 w-full h-full">
           <button
-            onClick={updatePantry}
+            onClick={save ? savePantryItems : updatePantry}
             disabled={loading}
             className="bg-[#B678F0] py-1 text-center w-44 flex items-center justify-center text-white rounded-md"
           >
@@ -74,6 +79,16 @@ const PantrySelection = ({
             )}
           </button>
         </div>
+        {showSkip && (
+          <div className="mt-3 h-full flex items-end justify-end w-full">
+            <button
+              onClick={skipToDashboard}
+              className="text-[#A3A3A3] hover:text-[#cacaca]"
+            >
+              Skip
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
