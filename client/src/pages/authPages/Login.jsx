@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import CloseButtonHeader from "../../components/buttons/CloseButtonHeader";
 import LoginForm from "../../components/forms/LoginForm";
+import BASE_URL from "../../../config";
 
 const Login = ({ authenticateUser }) => {
   const [email, setEmail] = useState("");
@@ -23,7 +24,8 @@ const Login = ({ authenticateUser }) => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/auth/login",
+        // "http://localhost:8000/api/auth/login",
+        `${BASE_URL}/api/auth/login`,
         {
           email: email,
           password: password,

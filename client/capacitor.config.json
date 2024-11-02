@@ -1,0 +1,6 @@
+{
+  "appId": "com.smartmealconnect.app",
+  "appName": "Smart Meal Connect",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}

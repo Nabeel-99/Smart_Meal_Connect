@@ -6,6 +6,7 @@ const DialogComponent = ({
   setShowDialog,
   handleAction,
   title,
+  loading,
   theme,
 }) => {
   const handleClose = () => setShowDialog(false);
@@ -25,14 +26,20 @@ const DialogComponent = ({
         <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
         <DialogActions>
           <button
+            disabled={loading}
             onClick={handleAction}
-            className="rounded-md py-2 px-3 bg-[#2c2c2c] text-white hover:bg-[#646464] transition-all duration-150"
+            className={` ${
+              loading ? "cursor-not-allowed" : ""
+            }rounded-md py-2 px-3 bg-[#2c2c2c] text-white hover:bg-[#646464] transition-all duration-150`}
           >
             Yes
           </button>
           <button
+            disabled={loading}
             onClick={handleClose}
-            className="rounded-md py-2 px-3 bg-[#2c2c2c] text-white hover:bg-[#646464] transition-all duration-150"
+            className={` ${
+              loading ? "cursor-not-allowed" : ""
+            }rounded-md py-2 px-3 bg-[#2c2c2c] text-white hover:bg-[#646464] transition-all duration-150`}
           >
             No
           </button>

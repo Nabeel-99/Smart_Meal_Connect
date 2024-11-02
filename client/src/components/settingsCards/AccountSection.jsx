@@ -52,6 +52,7 @@ const AccountSection = ({ userData, theme, updateTheme, refreshUserData }) => {
     setShowDialog(true);
   };
   const deleteAccount = async () => {
+    setLoading(true);
     try {
       const response = await axios.delete(
         "http://localhost:8000/api/auth/delete-user",
@@ -63,6 +64,8 @@ const AccountSection = ({ userData, theme, updateTheme, refreshUserData }) => {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
   const updateAccount = async (e) => {
@@ -183,6 +186,7 @@ const AccountSection = ({ userData, theme, updateTheme, refreshUserData }) => {
         theme={theme}
         showDialog={showDialog}
         setShowDialog={setShowDialog}
+        loading={loading}
         handleAction={deleteAccount}
         title={"Are you sure you want to delete your account?"}
       />

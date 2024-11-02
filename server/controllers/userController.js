@@ -11,6 +11,7 @@ import Recipe from "../models/recipeModel.js";
 import path from "path";
 import * as fs from "node:fs/promises";
 import { verifyEmailToken } from "./authController.js";
+
 // create user
 const __dirname = path.resolve();
 export const createUser = async (req, res) => {
@@ -20,12 +21,12 @@ export const createUser = async (req, res) => {
     if (user) {
       return res.status(400).json({ message: "User already exists" });
     }
-    // check if there is no validation error
+    //validation
     const { error } = validate(req.body);
     if (error) {
       return res.status(401).json({ message: error.details[0].message });
     }
-    // use salt for enhanced security and bcrypt to hash the password
+
     const salt = await bcrypt.genSalt(Number(process.env.SALT));
     const hashPassword = await bcrypt.hash(req.body.password, salt);
 
@@ -61,12 +62,11 @@ export const loginUser = async (req, res) => {
           "Sorry, your password was incorrect. Please double-check your password.",
       });
     }
-    // user token
+
     const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
       expiresIn: "5d",
     });
 
-    // set token in cookies
     res.cookie("token", token, {
       httpOnly: true,
     });
@@ -133,7 +133,7 @@ export const updateUser = async (req, res) => {
       const salt = await bcrypt.genSalt(Number(process.env.SALT));
       hashPassword = await bcrypt.hash(password, salt);
     }
-    // update the user details
+
     const updatedData = {
       ...(firstName && { firstName }),
       ...(lastName && { lastName }),
