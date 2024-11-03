@@ -14,6 +14,7 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* padding-top: calc(env(safe-area-inset-top) + 16px); */
   /* scroll-behavior: smooth; */
 }
 .transition-container {

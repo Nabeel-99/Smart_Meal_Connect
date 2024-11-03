@@ -130,7 +130,7 @@ const IngredientsBased = ({ userData }) => {
     }
   }, []);
   return (
-    <div className="overflow-hidden flex flex-col gap-8 pt-8 justify-center items-center">
+    <div className="overflow-hidden flex flex-col gap-8 pt-16 justify-center items-center">
       <IngredientsHeader />
       <div className="flex flex-col gap-6 items-center   w-full px-2 lg:px-44">
         <IngredientsBasedToggle

@@ -21,7 +21,11 @@ const __dirname = dirname(__filename);
 app.use(express.json());
 app.use(
   cors({
-    origin: [process.env.FRONTEND_URL, "capacitor://localhost"],
+    origin: [
+      process.env.FRONTEND_URL,
+      "capacitor://localhost",
+      "http://10.0.2.2:8000",
+    ],
     credentials: true,
   })
 );

@@ -6,6 +6,7 @@ import {
   Route,
   useLocation,
 } from "react-router-dom";
+import "@ionic/react/css/core.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import SignUp from "./pages/authPages/SignUp";
@@ -23,7 +24,9 @@ import axios from "axios";
 import PantryItems from "./pages/PantryItems";
 import DashboardLayout from "./pages/dashboard/DashboardLayout";
 import VerifyEmail from "./pages/authPages/VerifyEmail";
-
+import { IonApp, IonContent, setupIonicReact } from "@ionic/react";
+import { StatusBar } from "@capacitor/status-bar";
+setupIonicReact();
 const App = () => {
   const [userData, setUserData] = useState(null);
   const [isFetching, setIsFetching] = useState(false);
@@ -92,15 +95,27 @@ const App = () => {
   }, [theme]);
 
   useEffect(() => {
+    const setStatusBar = async () => {
+      await StatusBar.setStyle({ style: Style.Dark });
+      await StatusBar.setBackgroundColor({ color: "#08090a" });
+    };
+    setStatusBar();
+  }, []);
+
+  useEffect(() => {
     authenticateUser();
   }, []);
   return (
-    <div className="flex  flex-col h-full w-screen pb-20 gap-10">
+    <div
+      style={{ paddingTop: "env(safe-area-inset-top)" }}
+      className="flex  flex-col h-full w-screen  gap-10"
+    >
       <Router>
         <ScrollToTop />
         <MaybeShowComponent>
           <Navbar userData={userData} />
         </MaybeShowComponent>
+
         <Routes>
           <Route path="/" element={<Home userData={userData} />} />
           <Route path="/sign-up" element={<SignUp />} />

@@ -81,7 +81,7 @@ const RecipeDetails = () => {
 
   return (
     // <div>hey</div>
-    <div className="flex flex-col gap-8 pt-20 pb-44 justify-center items-center px-4">
+    <div className="flex flex-col gap-8 pt-10 pb-44 justify-center items-center px-4">
       <CloseButtonHeader goBack={goBack} />
 
       <AutohideSnackbar

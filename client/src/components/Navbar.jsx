@@ -95,7 +95,8 @@ const Navbar = ({ userData }) => {
 
       {/* burger menu*/}
       <div
-        className={`lg:hidden fixed px-4 pt-8 w-full z-50 flex items-center justify-between ${
+        style={{ paddingTop: `calc(env(safe-area-inset-top) + 16px)` }}
+        className={`lg:hidden fixed top-0 px-4  w-full z-50 flex items-center justify-between ${
           isBurgerMenu ? "bg-[#08090a]" : ""
         }  backdrop-blur-lg pb-4`}
       >

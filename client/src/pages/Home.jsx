@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   return (
-    <div className="flex flex-col w-full overflow-hidden gap-20 ">
+    <div className="flex flex-col w-full overflow-hidden pt-10 gap-20 ">
       <Hero />
       <Features />
       <About />

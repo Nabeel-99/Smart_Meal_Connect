@@ -5,7 +5,7 @@ import { FaXTwitter } from "react-icons/fa6";
 import { FaGithub } from "react-icons/fa";
 const Footer = () => {
   return (
-    <div className="flex flex-col gap-32 w-full px-8 pt-10 md:px-16 lg:px-32 xl:px-64">
+    <div className="flex flex-col pb-20 gap-32 w-full px-8 pt-10 md:px-16 lg:px-32 xl:px-64">
       <div className="flex flex-col gap-10 lg:gap-0 md:flex-row items-start justify-between">
         <div className="flex gap-2 items-center">
           <SiGreasyfork />

@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import CloseButtonHeader from "../../components/buttons/CloseButtonHeader";
 import LoginForm from "../../components/forms/LoginForm";
-import BASE_URL from "../../../config";
+import BASE_URL from "../../../apiConfig";
 
 const Login = ({ authenticateUser }) => {
   const [email, setEmail] = useState("");
@@ -60,8 +60,9 @@ const Login = ({ authenticateUser }) => {
       }
     }
   };
+  console.log("base url", BASE_URL);
   return (
-    <div className="flex flex-col gap-20  w-full pt-10 px-8 lg:px-24">
+    <div className="flex flex-col gap-20   w-full pt-10 px-8 lg:px-24">
       <CloseButtonHeader />
       <div className="flex flex-col gap-8 pt-32 md:pt-40 lg:pt-44 lg:gap-0 lg:flex-row items-center justify-evenly  ">
         <div className="flex flex-col items-center w-full md:w-1/2 lg:w-auto   h-full lg:justify-center gap-2">
