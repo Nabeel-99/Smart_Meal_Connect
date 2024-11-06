@@ -24,7 +24,7 @@ const RecipeResults = ({
             if (sourceType === "metricsBased") {
               return a.calories - b.calories;
             } else if (sourceType === "ingredientsBased") {
-              a.missingIngredientsCount - b.missingIngredientsCount;
+              return a.missingIngredientsCount - b.missingIngredientsCount;
             }
           })}
           showInput={false}

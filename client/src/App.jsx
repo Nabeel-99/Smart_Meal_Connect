@@ -26,6 +26,7 @@ import DashboardLayout from "./pages/dashboard/DashboardLayout";
 import VerifyEmail from "./pages/authPages/VerifyEmail";
 import { IonApp, IonContent, setupIonicReact } from "@ionic/react";
 import { StatusBar } from "@capacitor/status-bar";
+import BASE_URL from "../apiConfig";
 setupIonicReact();
 const App = () => {
   const [userData, setUserData] = useState(null);
@@ -36,7 +37,7 @@ const App = () => {
     if (isFetching) return;
     setIsFetching(true);
     try {
-      const response = await axios.get("http://localhost:8000/api/auth", {
+      const response = await axios.get(`${BASE_URL}/api/auth`, {
         withCredentials: true,
       });
       if (response.status === 200) {
@@ -48,6 +49,7 @@ const App = () => {
       setIsFetching(false);
     }
   };
+
   // app theme
   const applyTheme = (theme) => {
     const root = document.documentElement;

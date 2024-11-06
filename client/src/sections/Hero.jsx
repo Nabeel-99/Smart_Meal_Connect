@@ -9,11 +9,11 @@ const Hero = () => {
   return (
     <div id="/" className="flex flex-col gap-2  justify-center items-center">
       <h1 className="text-4xl md:text-6xl font-bold text-center tracking-tighter">
-        Smart <span className="block">Meal Finder</span>{" "}
+        Smart <span className="block">Meal Connect</span>{" "}
       </h1>
-      <p className="text-center text-sm lg:text-xl text-[#A3A3A3]">
-        Discover personalized recipes based on your{" "}
-        <span className="block">ingredients and body metrics.</span>
+      <p className="text-center px-10 lg:px-0 text-sm lg:text-xl text-[#A3A3A3]">
+        Discover personalized recipes and connect with a community{" "}
+        <span className="lg:block">to share your favorite dishes</span>
       </p>
       <div className="relative pt-10  bg-gradient-to-b  from-[#08090a] to-[#02031A] w-full pb-9">
         <div className="absolute -bottom-10 h-44 w-full bg-gradient-to-t from-[#08090a]  to-[#02031A] "></div>
@@ -22,15 +22,15 @@ const Hero = () => {
             header={"Get recipes based on Ingredients"}
             image={ingredients}
             description={
-              "Easily get meal suggestions by entering your available ingredients. Our tool helps you find meals that match what you have on hand."
+              "Easily get meal suggestions by entering your available ingredients. Our tool helps you find meals that make the most of what you have."
             }
             to={"/ingredients-based"}
           />
           <GridCard
             header={"Get recipes based on Body Metrics"}
             image={metrics}
-            description={`Adjust your meal plans by entering your body metrics. Our tool
-              will recommend meals that aligns with your health goals.`}
+            description={`Adjust your meals by entering your body metrics. Our tool
+              will recommend meals that aligns with your fitness goals.`}
             to={"/metrics-based"}
           />
         </div>

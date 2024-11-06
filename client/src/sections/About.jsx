@@ -14,23 +14,23 @@ const About = () => {
       <div className="flex flex-col px-8 md:flex-row items-start gap-6 md:gap-10  lg:gap-20 xl:gap-44 ">
         <div>
           <h2 className="text-xl lg:text-2xl xl:text-3xl font-bold">
-            Smart Meal Finder:{" "}
+            Smart Meal Connect:{" "}
             <span className="block">Making Meal Decisons </span>
             <span className="block">Easy and Personalized</span>
           </h2>
         </div>
         <div className="flex flex-col gap-8">
           <p>
-            Smart Meal Finder is your ultimate tool for taking the stress out of
+            At Smart Meal Connect, we simplify meal planning, reduce food waste,
             <span className="md:block">
               {" "}
-              meal planning. Whether you’re trying to figure out what to cook
+              and foster a community for sharing and discovering recipes.Whether
             </span>
             <span className="md:block">
-              with the ingredients you have at home or you want personalized
+              you’re cooking from what you have or setting fitness-based goals
             </span>{" "}
-            meal plan based on your health and fitness goals, we’ve got you
-            covered.
+            our platform adapts to fit your needs, making every meal an easy
+            choice.
           </p>
           <div>
             <p className="border-b pb-2  border-b-[#343333]">Our Purpose</p>
@@ -44,7 +44,10 @@ const About = () => {
                 {" "}
                 by offering tailored meal recommendations that save you time,
               </span>{" "}
-              reduce food waste, and help you achieve your nutritional goals.
+              reduce food waste, connect with community through shared interests
+              <span className="block">
+                and help you achieve your fitness goals.
+              </span>
             </p>
           </div>
         </div>

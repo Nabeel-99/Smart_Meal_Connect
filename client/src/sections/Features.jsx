@@ -87,25 +87,21 @@ const Features = () => {
       </div>
       {/* bigger screen */}
       <div className="hidden md:flex relative  items-start  gap-10 pt-44 px-10 xl:px-64 pb-44">
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 w-full">
           <h1 className="text-3xl font-bold">Multiple Recipe Suggestions</h1>
           <p className="text-lg">
-            To minimize decision fatigue, 3-5 recipes are{" "}
+            Recipes are generated based on available ingredients,
             <span className="lg:block">
-              generated with option to view more, making it easy to choose your
-              preferred meal.
+              allowing up to 3 missing ingredients. Browse suggestions
             </span>{" "}
+            to find your perfect meal.{" "}
           </p>
         </div>
         <div className="flex flex-col gap-4">
-          <h1 className="text-3xl font-bold">Ingredient Substitutions</h1>
+          <h1 className="text-3xl font-bold"> Pantry Integration</h1>
           <p className="text-lg">
-            In the absence of certain ingredients,{" "}
-            <span className="lg:block">
-              {" "}
-              suitable alternatives are suggested to accommodate meal
-              preparation.
-            </span>{" "}
+            Easily connect your pantry for recipe ideas customized to your
+            ingredients. <span className="lg:block"> </span>{" "}
           </p>
         </div>
         <div className="absolute  top-56 lg:top-36 -z-10">
@@ -117,25 +113,21 @@ const Features = () => {
         <div className="flex flex-col gap-4">
           <h1 className="text-xl font-bold">Multiple Recipe Suggestions</h1>
           <p className="text-sm">
-            To minimize decision fatigue, 3-5 recipes are{" "}
-            <span className="block">
-              generated with option to view more, making it easy to choose your
-              preferred meal.
+            Recipes are generated based on available ingredients,
+            <span className="">
+              allowing up to 3 missing ingredients. Browse suggestions
             </span>{" "}
+            to find your perfect meal.{" "}
           </p>
         </div>
         <div className="absolute top-52  -z-10">
           <img src={bgAlgorithmMobile} alt="" />
         </div>
         <div className="flex flex-col gap-4 ">
-          <h1 className="text-xl font-bold">Ingredient Substitutions</h1>
+          <h1 className="text-xl font-bold"> Pantry Integration</h1>
           <p className="text-sm">
-            In the absence of certain ingredients,{" "}
-            <span className="block">
-              {" "}
-              suitable alternatives are suggested to accommodate meal
-              preparation.
-            </span>{" "}
+            Easily connect your pantry for recipe ideas customized to your
+            ingredients. <span className="block"> </span>{" "}
           </p>
         </div>
       </div>
@@ -151,9 +143,9 @@ const Features = () => {
             Using body metrics such as age, weight, height,{" "}
             <span className="block">
               {" "}
-              and activity level., Meal plans are generated to
+              and activity level. Meals are generated to
             </span>{" "}
-            align with health and nutritional goals.
+            align with fitness goals.
           </p>
         </div>
         <div className="relative">
@@ -195,9 +187,9 @@ const Features = () => {
             Using body metrics such as age, weight, height,{" "}
             <span className="">
               {" "}
-              and activity level., Meal plans are generated to
+              and activity level. Meals are generated to
             </span>{" "}
-            align with health and nutritional goals.
+            align with your fitness goals.
           </p>
         </div>
         <div className="relative">

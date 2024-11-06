@@ -137,7 +137,8 @@ export const filteredAndRankedRecipes = async (
   const meals = [];
   const pantryToUse =
     userPantry && userPantry.length > 0 ? userPantry : defaultPantry.pantry;
-  for (const recipe of recipes) {
+
+  const recipePromises = recipes.map(async (recipe) => {
     const {
       id,
       calories,
@@ -154,14 +155,15 @@ export const filteredAndRankedRecipes = async (
     } = recipe;
 
     const recipeIngredients = ingredients.map((item) => item.toLowerCase());
-
     const userIngredientsLowercase = userIngredients.map((ingredient) =>
       ingredient.toLowerCase()
     );
-    //filtering out partially matched ingredients
+
+    // Filtering out partially matched ingredients
     const filteredIngredients = recipeIngredients.filter((ingredient) => {
       return !pantryToUse.some((pantryItem) => {
         return (
+          pantryItem.toLowerCase() === ingredient.toLowerCase() ||
           ingredient.toLowerCase().includes(pantryItem.toLowerCase()) ||
           pantryItem.toLowerCase().includes(ingredient.toLowerCase())
         );
@@ -176,6 +178,7 @@ export const filteredAndRankedRecipes = async (
             userIngredient.includes(ingredient))
       );
     });
+
     const userUsedIngredients = ingredients.filter((ingredient) => {
       return userIngredientsLowercase.some(
         (userIngredient) =>
@@ -184,19 +187,18 @@ export const filteredAndRankedRecipes = async (
             userIngredient.includes(ingredient))
       );
     });
-    let finalInstructions = instructions;
 
+    let finalInstructions = instructions;
     if (missingIngredients.length <= 3) {
       if (
         Array.isArray(instructions) &&
         instructions.includes("no instructions for edamam")
       ) {
         try {
-          const generatedInstructions = await generateInstructionsForEdamam(
+          finalInstructions = await generateInstructionsForEdamam(
             title,
             ingredients
           );
-          finalInstructions = generatedInstructions;
         } catch (error) {
           console.log("error generating instructions", error);
           finalInstructions = ["instructions could not be generated"];
@@ -222,7 +224,10 @@ export const filteredAndRankedRecipes = async (
         missingIngredientsCount: missingIngredients.length,
       });
     }
-  }
+  });
+
+  //
+  await Promise.all(recipePromises);
 
   return meals;
 };
