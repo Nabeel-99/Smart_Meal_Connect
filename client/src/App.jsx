@@ -27,6 +27,7 @@ import VerifyEmail from "./pages/authPages/VerifyEmail";
 import { IonApp, IonContent, setupIonicReact } from "@ionic/react";
 import { StatusBar } from "@capacitor/status-bar";
 import BASE_URL from "../apiConfig";
+import LayoutSkeleton from "./components/LayoutSkeleton";
 setupIonicReact();
 const App = () => {
   const [userData, setUserData] = useState(null);
@@ -96,13 +97,13 @@ const App = () => {
     };
   }, [theme]);
 
-  useEffect(() => {
-    const setStatusBar = async () => {
-      await StatusBar.setStyle({ style: Style.Dark });
-      await StatusBar.setBackgroundColor({ color: "#08090a" });
-    };
-    setStatusBar();
-  }, []);
+  // useEffect(() => {
+  //   const setStatusBar = async () => {
+  //     await StatusBar.setStyle({ style: Style.Dark });
+  //     await StatusBar.setBackgroundColor({ color: "#08090a" });
+  //   };
+  //   setStatusBar();
+  // }, []);
 
   useEffect(() => {
     authenticateUser();
@@ -119,6 +120,7 @@ const App = () => {
         </MaybeShowComponent>
 
         <Routes>
+          <Route path="/layout" element={<LayoutSkeleton />} />
           <Route path="/" element={<Home userData={userData} />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route

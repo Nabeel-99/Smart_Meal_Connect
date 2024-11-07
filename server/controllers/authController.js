@@ -65,7 +65,41 @@ export const requestResetPassword = async (req, res) => {
   }
 };
 
-// verify-email
+// resetPassword
+export const resetPassword = async (req, res) => {
+  try {
+    const { token, newPassword, confirmPassword } = req.body;
+    const { error } = validateResetPassword(req.body);
+    if (error) {
+      return res.status(400).json({ message: error.details[0].message });
+    }
+    // comparing passwords
+    if (newPassword !== confirmPassword) {
+      return res.status(400).json({ message: "Passwords do not match" });
+    }
+    // verifying token
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.SECRET_KEY);
+    } catch (error) {
+      return res.status(400).json({ message: "Invalid or expired token" });
+    }
+    const user = await User.findById(decoded.userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const salt = await bcrypt.genSalt(Number(process.env.SALT));
+    const hashPassword = await bcrypt.hash(newPassword, salt);
+    user.password = hashPassword;
+
+    await user.save();
+    return res.status(200).json({ message: "Password updated successfully" });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+// verify-email-token
 export const verifyEmailToken = async (req) => {
   try {
     const { email } = req.body;
@@ -104,39 +138,6 @@ export const verifyEmailToken = async (req) => {
     return { status: 500, message: "Internal Server Error" };
   }
 };
-// resetPassword
-export const resetPassword = async (req, res) => {
-  try {
-    const { token, newPassword, confirmPassword } = req.body;
-    const { error } = validateResetPassword(req.body);
-    if (error) {
-      return res.status(400).json({ message: error.details[0].message });
-    }
-    // comparing passwords
-    if (newPassword !== confirmPassword) {
-      return res.status(400).json({ message: "Passwords do not match" });
-    }
-    // verifying token
-    let decoded;
-    try {
-      decoded = jwt.verify(token, process.env.SECRET_KEY);
-    } catch (error) {
-      return res.status(400).json({ message: "Invalid or expired token" });
-    }
-    const user = await User.findById(decoded.userId);
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-    const salt = await bcrypt.genSalt(Number(process.env.SALT));
-    const hashPassword = await bcrypt.hash(newPassword, salt);
-    user.password = hashPassword;
-
-    await user.save();
-    return res.status(200).json({ message: "Password updated successfully" });
-  } catch (error) {
-    return res.status(500).json({ message: "Internal Server Error" });
-  }
-};
 
 export const verifyEmail = async (req, res) => {
   try {
@@ -154,6 +155,23 @@ export const verifyEmail = async (req, res) => {
     return res.status(200).json({ message: "Email verified successfully" });
   } catch (error) {
     console.log("error", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const resendVerificationEmail = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email: email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const emailResponse = await verifyEmailToken(req);
+    if (emailResponse.status !== 200) {
+      return res.status(emailResponse.status).json(emailResponse.message);
+    }
+    return res.status(200).json({ message: "Verification email sent" });
+  } catch (error) {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };

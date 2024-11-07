@@ -21,6 +21,7 @@ const MaybeShowComponent = ({ children }) => {
       "/forgot-password",
       "/reset-password",
       "/verify-email",
+      "/layout",
     ];
     setShowComponent(
       !hidePaths.some((path) => location.pathname.startsWith(path))

@@ -4,6 +4,7 @@ import GetStartedSection from "../components/GetStartedSection";
 import RecipeResults from "../components/viewCards/RecipeResults";
 import MetricsForm from "../components/forms/MetricsForm";
 import MetricsHeader from "../components/headers/MetricsHeader";
+import ShowMoreButton from "../components/buttons/ShowMoreButton";
 
 const MetricsBased = ({ userData }) => {
   let gridView = true;
@@ -23,12 +24,16 @@ const MetricsBased = ({ userData }) => {
   const [loading, setLoading] = useState(false);
   const [fetchedRecipes, setFetchedRecipes] = useState([]);
   const [error, setError] = useState("");
+  const [showMore, setShowMore] = useState(6);
   const [tryCount, setTryCount] = useState(
     () => parseInt(localStorage.getItem("tryCountMetrics")) || 0
   );
   const cardRef = useRef(null);
   const TRY_LIMIT = 1;
 
+  const loadMore = () => {
+    setShowMore((prev) => prev + 6);
+  };
   const getUserMetrics = async () => {
     setLoading(true);
     try {
@@ -170,12 +175,20 @@ const MetricsBased = ({ userData }) => {
           />
         </div>
         {/* showing results */}
-        <RecipeResults
-          cardRef={cardRef}
+        <div className="relative ">
+          <RecipeResults
+            cardRef={cardRef}
+            loading={loading}
+            fetchedRecipes={fetchedRecipes.slice(0, showMore)}
+            gridView={gridView}
+            sourceType={"metricsBased"}
+          />
+        </div>
+        <ShowMoreButton
+          loadMore={loadMore}
           loading={loading}
           fetchedRecipes={fetchedRecipes}
-          gridView={gridView}
-          sourceType={"metricsBased"}
+          showMore={showMore}
         />
       </div>
       {!isLoggedIn && <GetStartedSection />}

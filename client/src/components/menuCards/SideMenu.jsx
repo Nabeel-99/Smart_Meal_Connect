@@ -27,7 +27,7 @@ const SideMenu = ({
   const location = useLocation();
   return (
     <>
-      <div className="hidden lg:flex flex-col pt-6 justify-between z-30  w-64 border-r dark:border-r-[#1d1d1d] border-r[#E0E0E0] dark:bg-[#0c0c0c] bg-[#F7F7F8]  h-full fixed ">
+      <div className="hidden lg:flex flex-col pt-6 justify-between z-30  w-64 border-r dark:border-r-[#1d1d1d] border-r-[#E0E0E0] dark:bg-[#0c0c0c] bg-[#F7F7F8]  h-full fixed ">
         <div className="flex flex-col w-full gap-8">
           <div className="flex px-5 font-semibold items-center w-full gap-2">
             <div className="w-6 h-6 rounded-full text-center flex items-center text-white justify-center bg-[#B678F0]">

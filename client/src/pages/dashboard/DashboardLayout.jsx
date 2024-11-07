@@ -9,6 +9,7 @@ import AutoHideSnackbar from "../../components/popupCards/AutoHideSnackbar";
 import Content from "../../components/viewCards/Content";
 import ContentViews from "../../components/viewCards/ContentViews";
 import MainMenu from "../../components/menuCards/MainMenu";
+import LayoutSkeleton from "../../components/LayoutSkeleton";
 
 const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
   const [loading, setLoading] = useState(true);
@@ -30,6 +31,7 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
   const [userProfile, setUserProfile] = useState(null);
   const [userPosts, setUserPosts] = useState([]);
   const [showMetricsPrompt, setShowMetricsPrompt] = useState(false);
+  const [showVerifyEmail, setShowVerifyEmail] = useState(false);
   const { id: userId } = useParams();
   const anchorRef = useRef(null);
 
@@ -150,6 +152,8 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
       <ContentViews
         showMetricsPrompt={showMetricsPrompt}
         setShowMetricsPrompt={setShowMetricsPrompt}
+        showVerifyEmail={showVerifyEmail}
+        setShowVerifyEmail={setShowVerifyEmail}
         showOptions={showOptions}
         showGridView={showGridView}
         showListView={showListView}
@@ -175,12 +179,21 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
         getUserMetrics={getUserMetrics}
         updateTheme={updateTheme}
         userId={userId}
+        fetchingInProgress={fetchingInProgress}
         showModal={showModal}
         setShowModal={setShowModal}
         fetchUserDashboardRecipes={fetchUserDashboardRecipes}
       />
     );
   };
+
+  useEffect(() => {
+    if (userData?.isVerified) {
+      setShowVerifyEmail(false);
+    } else {
+      setShowVerifyEmail(true);
+    }
+  }, [userData?.isVerified]);
 
   useEffect(() => {
     fetchUserPosts();
@@ -218,7 +231,7 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
   if (loading || !userData) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <AiOutlineLoading3Quarters className="spin text-3xl" />
+        <LayoutSkeleton />
       </div>
     );
   }

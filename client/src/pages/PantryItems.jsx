@@ -73,7 +73,7 @@ const PantryItems = ({ theme }) => {
 
   return (
     <div className="flex flex-col gap-20  w-full h-full  px-8 lg:px-24">
-      <div className="flex flex-col  pt-32 md:pt-28  lg:gap-10 lg:flex-row items-center justify-between h-full  ">
+      <div className="flex flex-col  pt-32 md:pt-28  lg:gap-10 lg:flex-row justify-between h-full  ">
         <div className="flex flex-col items-center w-full lg:w-auto  pb-24  xl:h-full lg:justify-center gap-2">
           <PantryHeader />
           <PantrySelection

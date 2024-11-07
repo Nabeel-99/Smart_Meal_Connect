@@ -78,17 +78,17 @@ const PantrySelection = ({
               "Save"
             )}
           </button>
+          {showSkip && (
+            <div className="mt-3 h-full flex items-end justify-end w-full">
+              <button
+                onClick={skipToDashboard}
+                className="text-[#A3A3A3] hover:text-[#cacaca]"
+              >
+                Skip
+              </button>
+            </div>
+          )}
         </div>
-        {showSkip && (
-          <div className="mt-3 h-full flex items-end justify-end w-full">
-            <button
-              onClick={skipToDashboard}
-              className="text-[#A3A3A3] hover:text-[#cacaca]"
-            >
-              Skip
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );

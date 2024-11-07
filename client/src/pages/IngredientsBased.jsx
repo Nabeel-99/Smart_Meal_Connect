@@ -5,6 +5,7 @@ import IngredientsBasedToggle from "../components/formInputs/IngredientsBasedTog
 import IngredientsHeader from "../components/headers/IngredientsHeader";
 import RecipeResults from "../components/viewCards/RecipeResults";
 import GetStartedSection from "../components/GetStartedSection";
+import ShowMoreButton from "../components/buttons/ShowMoreButton";
 
 const IngredientsBased = ({ userData }) => {
   const [item, setItem] = useState("");
@@ -15,16 +16,22 @@ const IngredientsBased = ({ userData }) => {
     []
   );
   const [fetchedRecipes, setFetchedRecipes] = useState([]);
+  const [showMore, setShowMore] = useState(6);
   const [loading, setLoading] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState("");
   const [tryCount, setTryCount] = useState(
     () => parseInt(localStorage.getItem("tryCountIngredients")) || 0
   );
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [isEnding, setIsEnding] = useState(false);
   const cardRef = useRef(null);
   let gridView = true;
   const TRY_LIMIT = 1;
 
+  const loadMore = () => {
+    setShowMore((prev) => prev + 6);
+  };
   const handleToggle = () => {
     setIsConnected(!isConnected);
   };
@@ -112,7 +119,7 @@ const IngredientsBased = ({ userData }) => {
     }
   }, []);
   useEffect(() => {
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {
@@ -138,7 +145,7 @@ const IngredientsBased = ({ userData }) => {
           isLoggedIn={isLoggedIn}
           handleToggle={handleToggle}
         />
-        <div className=" lg:relative border border-[#1d1d1d] w-96  md:w-2/3 rounded-xl py-2 px-2 bg-[#0E0F10] min-h-[700px] h-full  ">
+        <div className=" border border-[#1d1d1d] w-96  md:w-2/3 rounded-xl py-2 px-2 bg-[#0E0F10] min-h-[700px] h-full  ">
           <IngredientsForm
             onSubmit={onSubmit}
             setAutocompleteValue={setAutocompleteValue}
@@ -154,12 +161,20 @@ const IngredientsBased = ({ userData }) => {
           />
         </div>
         {/* showing results */}
-        <RecipeResults
-          cardRef={cardRef}
+        <div className="relative ">
+          <RecipeResults
+            cardRef={cardRef}
+            loading={loading}
+            fetchedRecipes={fetchedRecipes.slice(0, showMore)}
+            gridView={gridView}
+            sourceType={"ingredientsBased"}
+          />
+        </div>
+        <ShowMoreButton
+          loadMore={loadMore}
           loading={loading}
           fetchedRecipes={fetchedRecipes}
-          gridView={gridView}
-          sourceType={"ingredientsBased"}
+          showMore={showMore}
         />
       </div>
       {!isLoggedIn && <GetStartedSection />}

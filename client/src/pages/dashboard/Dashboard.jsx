@@ -4,6 +4,8 @@ import IngredientsMetricsButtons from "../../components/buttons/IngredientsMetri
 import CaloriesBar from "../../components/headers/CaloriesBar";
 import MealViewOptions from "../../components/viewCards/MealViewOptions";
 import PreferencePrompt from "../../components/PreferencePrompt";
+import EmailPrompt from "../../components/EmailPrompt";
+import MealSkeletonLoader from "../../components/MealSkeletonLoader";
 
 const Dashboard = ({
   showOptions,
@@ -15,8 +17,11 @@ const Dashboard = ({
   dashboardRecipes,
   setViewOptions,
   showMetricsPrompt,
-
   setShowMetricsPrompt,
+  showVerifyEmail,
+  setShowVerifyEmail,
+  userData,
+  fetchingInProgress,
 }) => {
   let breakfastMeals = dashboardRecipes.recipes?.breakfast || [];
   let lunchMeals = dashboardRecipes.recipes?.lunch || [];
@@ -83,7 +88,11 @@ const Dashboard = ({
         />
       </div>
       <PreferencePrompt showMetricsPrompt={showMetricsPrompt} />
-
+      <EmailPrompt
+        showVerifyEmail={showVerifyEmail}
+        setShowVerifyEmail={setShowVerifyEmail}
+        userData={userData}
+      />
       <MealViewOptions
         showLunch={showLunch}
         showBreakfast={showBreakfast}
@@ -100,58 +109,48 @@ const Dashboard = ({
         lunch={lunch}
         dinner={dinner}
       />
-      {breakfast && breakfastMeals.length > 0 && (
-        <MealCard
-          meals={breakfastMeals}
-          showInput={true}
+
+      {fetchingInProgress ? (
+        <MealSkeletonLoader
+          count={18}
+          className="w-full"
           isGridView={gridView}
           isListView={listView}
-          handleChecboxChange={handleChecboxChange}
-          selectedRecipes={selectedRecipes}
         />
-      )}
-      {lunch && lunchMeals.length > 0 && (
-        <MealCard
-          meals={lunchMeals}
-          showInput={true}
-          isGridView={gridView}
-          isListView={listView}
-          handleChecboxChange={handleChecboxChange}
-          selectedRecipes={selectedRecipes}
-        />
-      )}
-      {dinner && dinnerMeals.length > 0 && (
-        <MealCard
-          meals={dinnerMeals}
-          showInput={true}
-          isGridView={gridView}
-          isListView={listView}
-          handleChecboxChange={handleChecboxChange}
-          selectedRecipes={selectedRecipes}
-        />
-      )}
-      {/* <div className="">
-          <div className="pb-2">
-            <img
-              src={""}
-              alt=""
-              className="w-full h-[250px] object-cover rounded-xl"
+      ) : (
+        <>
+          {breakfast && breakfastMeals.length > 0 && (
+            <MealCard
+              meals={breakfastMeals}
+              showInput={true}
+              isGridView={gridView}
+              isListView={listView}
+              handleChecboxChange={handleChecboxChange}
+              selectedRecipes={selectedRecipes}
             />
-          </div>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div>Chicken Sandwich</div>
-              <input type="checkbox" />
-            </div>
-            <div>600 calories</div>
-          </div>
-        </div> */}
-      {/* <SkeletonLoader
-        count={12}
-        className="w-full"
-        isGridView={gridView}
-        isListView={listView}
-      /> */}
+          )}
+          {lunch && lunchMeals.length > 0 && (
+            <MealCard
+              meals={lunchMeals}
+              showInput={true}
+              isGridView={gridView}
+              isListView={listView}
+              handleChecboxChange={handleChecboxChange}
+              selectedRecipes={selectedRecipes}
+            />
+          )}
+          {dinner && dinnerMeals.length > 0 && (
+            <MealCard
+              meals={dinnerMeals}
+              showInput={true}
+              isGridView={gridView}
+              isListView={listView}
+              handleChecboxChange={handleChecboxChange}
+              selectedRecipes={selectedRecipes}
+            />
+          )}
+        </>
+      )}
     </div>
   );
 };

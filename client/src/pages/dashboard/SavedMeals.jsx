@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import SkeletonLoader from "../../components/SkeletonLoader";
 import axios from "axios";
 import MealCard from "../../components/viewCards/MealCard";
 import DialogComponent from "../../components/popupCards/DialogComponent";
 import SavedMealsHeader from "../../components/headers/SavedMealsHeader";
+import MealSkeletonLoader from "../../components/MealSkeletonLoader";
 
 const SavedMeals = ({ showGridView, showListView, gridView, listView }) => {
   const [viewOptions, setViewOptions] = useState(false);
@@ -64,7 +64,7 @@ const SavedMeals = ({ showGridView, showListView, gridView, listView }) => {
       />
 
       {loading ? (
-        <SkeletonLoader count={savedMeals?.length} />
+        <MealSkeletonLoader count={savedMeals?.length} />
       ) : savedMeals.length > 0 ? (
         <MealCard
           meals={savedMeals}

@@ -45,8 +45,8 @@ const VerifyEmail = ({ userData }) => {
               Thank you for verifying your email address.
             </p>
             <p className="text-center text-lg">
-              You’re all set! Please return to the app to log in and enjoy the
-              full experience.
+              You’re all set! Please return to the app and enjoy the full
+              experience.
             </p>
             {userData ? (
               <Link to="/dashboard">

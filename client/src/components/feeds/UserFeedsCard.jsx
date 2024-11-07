@@ -4,6 +4,7 @@ import NotificationCard from "../notificationCards/NotificationCard";
 import EmptyPosts from "./EmptyPosts";
 import PostCard from "./PostCard";
 import AutoHideSnackbar from "../popupCards/AutoHideSnackbar";
+import PostCardSkeleton from "../PostCardSkeleton";
 
 const UserFeedsCard = ({
   loading,
@@ -19,7 +20,7 @@ const UserFeedsCard = ({
       {/* post cards */}
       {loading ? (
         <div className="flex  flex-col gap-4 items-center justify-center h-full w-full">
-          <AiOutlineLoading3Quarters className="spin text-3xl" />
+          <PostCardSkeleton />
         </div>
       ) : (
         <div className="flex flex-col gap-4 w-full">

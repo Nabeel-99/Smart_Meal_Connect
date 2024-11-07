@@ -8,6 +8,8 @@ import Settings from "../../pages/dashboard/Settings";
 import PantryPage from "../../pages/dashboard/PantryPage";
 
 const ContentViews = ({
+  showVerifyEmail,
+  setShowVerifyEmail,
   showOptions,
   showGridView,
   showListView,
@@ -36,6 +38,7 @@ const ContentViews = ({
   showMetricsPrompt,
   setShowMetricsPrompt,
   fetchUserDashboardRecipes,
+  fetchingInProgress,
 }) => {
   return (
     <Routes>
@@ -43,6 +46,7 @@ const ContentViews = ({
         path="dashboard"
         element={
           <Dashboard
+            userData={userData}
             showOptions={showOptions}
             showGridView={showGridView}
             showListView={showListView}
@@ -53,6 +57,9 @@ const ContentViews = ({
             dashboardRecipes={dashboardRecipes}
             showMetricsPrompt={showMetricsPrompt}
             setShowMetricsPrompt={setShowMetricsPrompt}
+            showVerifyEmail={showVerifyEmail}
+            setShowVerifyEmail={setShowVerifyEmail}
+            fetchingInProgress={fetchingInProgress}
           />
         }
       />
