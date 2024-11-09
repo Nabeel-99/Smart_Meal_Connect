@@ -1,29 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { IoCloudUploadOutline } from "react-icons/io5";
-import TextInput from "../formInputs/TextInput";
-import SelectInput from "../formInputs/SelectInput";
-import { mealCategories } from "../../../../server/utils/helper";
-import {
-  Autocomplete,
-  Button,
-  Snackbar,
-  TextField,
-  Tooltip,
-} from "@mui/material";
-import { FaArrowLeft, FaArrowRight, FaTrash, FaXmark } from "react-icons/fa6";
-import ingredientsData from "../../../../server/utils/ingredientsHelper.json";
-import { HiOutlineSquare2Stack } from "react-icons/hi2";
 import axios from "axios";
-import PreviewCard from "../viewCards/PreviewCard";
-import AutoHideSnackbar from "../popupCards/AutoHideSnackbar";
-import useTheme from "../UseTheme";
-import AutoCompleteComponent from "../formInputs/AutoCompleteComponent";
 import ImageUploadCard from "../feeds/ImageUploadCard";
-import TextAreaInput from "../formInputs/TextAreaInput";
-import IngredientsList from "../viewCards/IngredientsList";
 import UploadLimitSnackbar from "../popupCards/UploadLimitSnackbar";
 import InputArea from "../formInputs/InputArea";
-
+import { Camera, CameraResultType } from "@capacitor/camera";
+import { Capacitor } from "@capacitor/core";
+import BASE_URL, { isNative } from "../../../apiConfig";
 const PostForm = ({
   setShowModal,
   theme,
@@ -69,7 +51,7 @@ const PostForm = ({
     setIngredients(ingredients.filter((item) => item !== ingredient));
   };
 
-  const handleImageUpload = (e) => {
+  const handleFileUpload = (e) => {
     const files = Array.from(e.target.files);
     const totalImages = imagePreviews.length + files.length;
     if (totalImages > 3) {
@@ -81,6 +63,37 @@ const PostForm = ({
     setImages((prevImages) => [...prevImages, ...newImages]);
   };
 
+  const takePicture = async () => {
+    try {
+      const image = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: true,
+        resultType: CameraResultType.Uri,
+      });
+      const imageUri = image.webPath || image.path;
+      const response = await fetch(imageUri);
+      const blob = await response.blob();
+      const file = new File([blob], `${Date.now()}.jpg`, { type: blob.type });
+
+      setImages((prevImages) => [...prevImages, file]);
+      console.log("image uri", imageUri);
+      console.log("image", image);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  const handleImageUpload = (e) => {
+    if (
+      Capacitor.getPlatform() === "android" ||
+      Capacitor.getPlatform === "ios"
+    ) {
+      takePicture();
+    } else {
+      handleFileUpload(e);
+    }
+  };
+  // for web
   useEffect(() => {
     const newImagePreviews = images.map((image) =>
       typeof image === "string" ? image : URL.createObjectURL(image)
@@ -114,7 +127,9 @@ const PostForm = ({
     formData.append("videoLink", videoLink);
 
     images.forEach((image) => {
-      formData.append("images", image);
+      if (image instanceof File) {
+        formData.append("images", image);
+      }
     });
 
     // removed images
@@ -146,14 +161,14 @@ const PostForm = ({
   };
 
   const createRecipePost = async (formData) => {
-    return await axios.post("http://localhost:8000/api/users/post", formData, {
+    return await axios.post(`${BASE_URL}/api/users/post`, formData, {
       withCredentials: true,
     });
   };
 
   const editRecipePost = async (postId, formData) => {
     return await axios.patch(
-      `http://localhost:8000/api/users/update/${postId}`,
+      `${BASE_URL}/api/users/update/${postId}`,
       formData,
       { withCredentials: true }
     );
@@ -168,7 +183,9 @@ const PostForm = ({
 
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col lg:flex-row justify-between items-center overflow-scroll lg:items-stretch p-4 lg:p-12 h-[40rem] w-80 md:w-full xl:w-full  lg:h-[35rem] xl:h-[45rem]"
+        className={`flex flex-col lg:flex-row justify-between ${
+          isNative ? "w-full h-full" : "w-80 h-[40rem]"
+        } items-center overflow-scroll lg:items-stretch p-4 lg:p-12    md:w-full xl:w-full  lg:h-[35rem] xl:h-[45rem]`}
       >
         <div className="hidden lg:block lg:fixed right-4 top-2  pb-10">
           <button className="text-blue-500 font-semibold hover:text-blue-300">

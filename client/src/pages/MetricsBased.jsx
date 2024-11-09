@@ -5,6 +5,7 @@ import RecipeResults from "../components/viewCards/RecipeResults";
 import MetricsForm from "../components/forms/MetricsForm";
 import MetricsHeader from "../components/headers/MetricsHeader";
 import ShowMoreButton from "../components/buttons/ShowMoreButton";
+import BASE_URL from "../../apiConfig";
 
 const MetricsBased = ({ userData }) => {
   let gridView = true;
@@ -38,7 +39,7 @@ const MetricsBased = ({ userData }) => {
     setLoading(true);
     try {
       const response = await axios.get(
-        "http://localhost:8000/api/users/get-user-metrics",
+        `${BASE_URL}/api/users/get-user-metrics`,
         { withCredentials: true }
       );
       if (response.status === 200) {
@@ -94,7 +95,7 @@ const MetricsBased = ({ userData }) => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "http://localhost:8000/api/recipes/get-metrics-recipes",
+        `${BASE_URL}/api/recipes/get-metrics-recipes`,
         {
           gender: gender,
           age: age,

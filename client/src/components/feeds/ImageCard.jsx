@@ -6,6 +6,7 @@ import {
   FaChevronLeft,
   FaChevronRight,
 } from "react-icons/fa6";
+import BASE_URL from "../../../apiConfig";
 
 const ImageCard = ({ selectedPost }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -41,7 +42,7 @@ const ImageCard = ({ selectedPost }) => {
         </Tooltip>
       </span>
       <img
-        src={`http://localhost:8000/${selectedPost.posts.images[currentImageIndex]}`}
+        src={`${BASE_URL}/${selectedPost.posts.images[currentImageIndex]}`}
         className="rounded-md w-full h-72 md:h-64 lg:w-full lg:h-full xl:w-full   object-contain"
       />
       <span>

@@ -5,6 +5,7 @@ import AutoCompleteComponent from "./AutoCompleteComponent";
 import IngredientsList from "../viewCards/IngredientsList";
 import TextAreaInput from "./TextAreaInput";
 import { mealCategories } from "../../../../server/utils/helper";
+import { isNative } from "../../../apiConfig";
 
 const InputArea = ({
   error,
@@ -117,13 +118,23 @@ const InputArea = ({
         </div>
       </div>
 
-      <div className="text-sm flex  lg:pb-0 flex-col gap-2">
+      <div
+        className={`text-sm flex  lg:pb-0 flex-col gap-2 ${
+          isNative ? "pb-32 " : "pb-4"
+        }`}
+      >
         <TextAreaInput
           instructions={instructions}
           setInstructions={setInstructions}
         />
       </div>
-      <div className="lg:hidden pb-12">
+      <div
+        className={`${
+          isNative
+            ? "fixed bottom-0 right-0 left-0 dark:bg-[#0c0c0c] bg-white z-10"
+            : ""
+        }  px-4  w-full lg:hidden pb-12`}
+      >
         <button
           type="submit"
           className=" bg-blue-600  text-white p-2 w-full rounded-md font-semibold hover:bg-blue-700"

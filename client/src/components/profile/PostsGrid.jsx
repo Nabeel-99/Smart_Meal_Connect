@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import ManagePostButtons from "../buttons/ManagePostButtons";
 import { HiSquare2Stack } from "react-icons/hi2";
 import { Link } from "react-router-dom";
@@ -6,6 +6,21 @@ import { MdGridOn } from "react-icons/md";
 import ModalComponent from "../popupCards/ModalComponent";
 import PostForm from "../forms/PostForm";
 import DialogComponent from "../popupCards/DialogComponent";
+import BASE_URL from "../../../apiConfig";
+import { Capacitor } from "@capacitor/core";
+import {
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonInput,
+  IonItem,
+  IonModal,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+} from "@ionic/react";
+import NativeDialog from "../NativeDialog";
 
 const PostsGrid = ({
   userPosts,
@@ -24,6 +39,8 @@ const PostsGrid = ({
   handleDelete,
   currentUserId,
 }) => {
+  const isNative =
+    Capacitor.getPlatform() === "android" || Capacitor.getPlatform() === "ios";
   return (
     <div className="flex flex-col gap-8 w-full  h-full">
       <div className="flex  text-sm xl:text-base items-center gap-2 justify-center ">
@@ -35,7 +52,7 @@ const PostsGrid = ({
             <div key={index} className="relative">
               <Link to={`/recipe-details/${post.posts._id}`}>
                 <img
-                  src={`http://localhost:8000/${post.posts?.images[currentImageIndex]}`}
+                  src={`${BASE_URL}/${post.posts?.images[currentImageIndex]}`}
                   className="h-28 w-full md:h-52 lg:h-44 xl:h-80 xl:w-full rounded-sm object-cover"
                 />
                 {post.posts.images.length > 1 && (
@@ -52,19 +69,35 @@ const PostsGrid = ({
                 />
               )}
 
-              <ModalComponent
-                theme={theme}
-                setShowModal={setShowModal}
-                showModal={showModal}
-              >
-                <PostForm
-                  selectedPost={selectedPost}
+              {isNative ? (
+                <NativeDialog
+                  showModal={showModal}
                   setShowModal={setShowModal}
-                  fetchUserPosts={fetchUserPosts}
-                  setShowSuccessSnackbar={setShowSuccessSnackbar}
-                  setSuccessMessage={setSuccessMessage}
-                />
-              </ModalComponent>
+                  theme={theme}
+                >
+                  <PostForm
+                    selectedPost={selectedPost}
+                    setShowModal={setShowModal}
+                    fetchUserPosts={fetchUserPosts}
+                    setShowSuccessSnackbar={setShowSuccessSnackbar}
+                    setSuccessMessage={setSuccessMessage}
+                  />
+                </NativeDialog>
+              ) : (
+                <ModalComponent
+                  theme={theme}
+                  setShowModal={setShowModal}
+                  showModal={showModal}
+                >
+                  <PostForm
+                    selectedPost={selectedPost}
+                    setShowModal={setShowModal}
+                    fetchUserPosts={fetchUserPosts}
+                    setShowSuccessSnackbar={setShowSuccessSnackbar}
+                    setSuccessMessage={setSuccessMessage}
+                  />
+                </ModalComponent>
+              )}
 
               <DialogComponent
                 title={"Are you sure you want to delete this post?"}

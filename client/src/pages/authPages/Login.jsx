@@ -24,7 +24,6 @@ const Login = ({ authenticateUser }) => {
     setLoading(true);
     try {
       const response = await axios.post(
-        // "http://localhost:8000/api/auth/login",
         `${BASE_URL}/api/auth/login`,
         {
           email: email,

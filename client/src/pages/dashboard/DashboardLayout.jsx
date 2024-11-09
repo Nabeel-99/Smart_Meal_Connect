@@ -10,6 +10,9 @@ import Content from "../../components/viewCards/Content";
 import ContentViews from "../../components/viewCards/ContentViews";
 import MainMenu from "../../components/menuCards/MainMenu";
 import LayoutSkeleton from "../../components/LayoutSkeleton";
+import BASE_URL, { isNative } from "../../../apiConfig";
+import NativeDialog from "../../components/NativeDialog";
+import IconTabs from "../../components/IconTabs";
 
 const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
   const [loading, setLoading] = useState(true);
@@ -59,7 +62,7 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:8000/api/users/profile/${userId || ""}`,
+        `${BASE_URL}/api/users/profile/${userId || ""}`,
         { withCredentials: true }
       );
 
@@ -77,11 +80,9 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
   const handleLogout = async () => {
     setLoading(true);
     try {
-      const response = await axios.post(
-        "http://localhost:8000/api/auth/logout",
-        null,
-        { withCredentials: true }
-      );
+      const response = await axios.post(`${BASE_URL}/api/auth/logout`, null, {
+        withCredentials: true,
+      });
 
       if (response.status === 200) {
         window.location = "/";
@@ -97,7 +98,7 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
     setLoading(true);
     try {
       const response = await axios.get(
-        "http://localhost:8000/api/users/get-user-metrics",
+        `${BASE_URL}/api/users/get-user-metrics`,
         { withCredentials: true }
       );
       if (response.status === 200) {
@@ -126,7 +127,7 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
     setFetchingInProgress(true);
     try {
       const response = await axios.get(
-        "http://localhost:8000/api/recipes/dashboard-recipes",
+        `${BASE_URL}/api/recipes/dashboard-recipes`,
         { withCredentials: true }
       );
       if (response.status === 200) {
@@ -263,28 +264,48 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
           renderContentView={renderContentView}
           location={location}
         />
+        {/* <IconTabs /> */}
+        {isNative && (
+          <div className="fixed dark:bg-[#0c0c0c] p-4 border-t dark:border-t-[#2a2a2a] border-t-[#08090a] bg-[#e0e0e0] bottom-0 left-0 right-0 w-full">
+            <IconTabs />
+          </div>
+        )}
       </div>
 
-      <ModalComponent
-        theme={theme}
-        showModal={showModal}
-        setShowModal={setShowModal}
-      >
-        <PostForm
+      {isNative ? (
+        <NativeDialog
           theme={theme}
+          showModal={showModal}
           setShowModal={setShowModal}
-          setShowSuccessSnackbar={setShowSuccessSnackbar}
-          setSuccessMessage={setSuccessMessage}
-          fetchUserPosts={fetchUserPosts}
-        />
-      </ModalComponent>
-
+        >
+          <PostForm
+            theme={theme}
+            setShowModal={setShowModal}
+            setShowSuccessSnackbar={setShowSuccessSnackbar}
+            setSuccessMessage={setSuccessMessage}
+            fetchUserPosts={fetchUserPosts}
+          />
+        </NativeDialog>
+      ) : (
+        <ModalComponent
+          theme={theme}
+          showModal={showModal}
+          setShowModal={setShowModal}
+        >
+          <PostForm
+            theme={theme}
+            setShowModal={setShowModal}
+            setShowSuccessSnackbar={setShowSuccessSnackbar}
+            setSuccessMessage={setSuccessMessage}
+            fetchUserPosts={fetchUserPosts}
+          />
+        </ModalComponent>
+      )}
       <AutoHideSnackbar
         message={successMessage}
         setSnackbar={setShowSuccessSnackbar}
         openSnackbar={showSuccessSnackbar}
       />
-
       <DialogComponent
         showDialog={showDialog}
         setShowDialog={setShowDialog}

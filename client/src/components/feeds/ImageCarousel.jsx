@@ -1,6 +1,7 @@
 import { Tooltip } from "@mui/material";
 import React, { useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
+import BASE_URL from "../../../apiConfig";
 
 const ImageCarousel = ({ post, likeRecipe, images }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -37,7 +38,7 @@ const ImageCarousel = ({ post, likeRecipe, images }) => {
       </span>
       {images.length > 0 && (
         <img
-          src={`http://localhost:8000/${images[currentImageIndex]}`}
+          src={`${BASE_URL}/${images[currentImageIndex]}`}
           onDoubleClick={() => likeRecipe(post.postId)}
           className="w-full h-[450px] md:h-[550px] lg:h-[650px] rounded-md object-contain "
         />

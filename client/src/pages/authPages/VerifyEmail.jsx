@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { Link, useParams } from "react-router-dom";
+import BASE_URL from "../../../apiConfig";
 
 const VerifyEmail = ({ userData }) => {
   const { token } = useParams();
@@ -12,7 +13,7 @@ const VerifyEmail = ({ userData }) => {
   const checkIfVerified = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/api/auth/verify-email/${token}`,
+        `${BASE_URL}/api/auth/verify-email/${token}`,
         { withCredentials: true }
       );
       if (response.status === 200) {

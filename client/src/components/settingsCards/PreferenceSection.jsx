@@ -8,6 +8,7 @@ import {
   goalOptions,
 } from "../../../../server/utils/helper";
 import axios from "axios";
+import BASE_URL from "../../../apiConfig";
 
 const PreferenceSection = ({
   userMetrics,
@@ -58,7 +59,7 @@ const PreferenceSection = ({
     updateData.defaultMetrics = false;
     try {
       const response = await axios.patch(
-        "http://localhost:8000/api/users/update-metrics",
+        `${BASE_URL}/api/users/update-metrics`,
         updateData,
         {
           withCredentials: true,

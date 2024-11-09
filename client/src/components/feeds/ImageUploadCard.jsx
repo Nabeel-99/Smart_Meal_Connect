@@ -1,6 +1,8 @@
 import React from "react";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import PreviewCard from "../viewCards/PreviewCard";
+import { FaCamera } from "react-icons/fa6";
+import { isNative } from "../../../apiConfig";
 
 const ImageUploadCard = ({
   imagePreviews,
@@ -29,19 +31,26 @@ const ImageUploadCard = ({
             htmlFor="file-upload"
             className="cursor-pointer flex flex-col items-center justify-center"
           >
-            <IoCloudUploadOutline className="text-xl" />
+            {isNative ? (
+              <FaCamera onClick={handleImageUpload} />
+            ) : (
+              <IoCloudUploadOutline className="text-xl" />
+            )}
+
             <div>Upload file</div>
             <div className="text-sm text-[#969696]">maximum of 3 images.</div>
           </label>
 
-          <input
-            type="file"
-            accept="image/*"
-            className="hidden"
-            id="file-upload"
-            multiple
-            onChange={handleImageUpload}
-          />
+          {!isNative && (
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              id="file-upload"
+              multiple
+              onChange={handleImageUpload}
+            />
+          )}
         </div>
       )}
     </div>

@@ -54,10 +54,9 @@ const AccountSection = ({ userData, theme, updateTheme, refreshUserData }) => {
   const deleteAccount = async () => {
     setLoading(true);
     try {
-      const response = await axios.delete(
-        "http://localhost:8000/api/auth/delete-user",
-        { withCredentials: true }
-      );
+      const response = await axios.delete("${BASE_URL}/api/auth/delete-user", {
+        withCredentials: true,
+      });
       console.log(response.data);
       if (response.status === 200) {
         window.location = "/";
@@ -88,7 +87,7 @@ const AccountSection = ({ userData, theme, updateTheme, refreshUserData }) => {
     if (password) updatedData.password = password;
     try {
       const response = await axios.patch(
-        "http://localhost:8000/api/auth/update",
+        "${BASE_URL}/api/auth/update",
         updatedData,
         { withCredentials: true }
       );

@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import AnimationComponent from "../components/AnimationComponent";
 import axios from "axios";
 import PreferenceForm from "../components/forms/PreferenceForm";
+import BASE_URL from "../../apiConfig";
 
 const Preferences = () => {
   const [getStarted, setGetStarted] = useState(true);
@@ -47,7 +48,7 @@ const Preferences = () => {
     });
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/users/create-metrics",
+        `${BASE_URL}/api/users/create-metrics`,
         {
           gender: gender || "male",
           age: age || 18,

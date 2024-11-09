@@ -2,6 +2,7 @@ import React from "react";
 import { FaTrash } from "react-icons/fa6";
 import { HiSquare2Stack } from "react-icons/hi2";
 import { Link } from "react-router-dom";
+import BASE_URL from "../../../apiConfig";
 
 const ListView = ({
   meal,
@@ -29,7 +30,7 @@ const ListView = ({
                 meal.images[currentImageIndex]
                   ? meal.images[currentImageIndex].startsWith("http")
                     ? meal.images[currentImageIndex]
-                    : `http://localhost:8000/${meal.images[currentImageIndex]}`
+                    : `${BASE_URL}/${meal.images[currentImageIndex]}`
                   : "default"
               }
               alt=""

@@ -4,6 +4,7 @@ import axios from "axios";
 import AutoHideSnackbar from "../../components/popupCards/AutoHideSnackbar";
 import UserFeedsCard from "../../components/feeds/UserFeedsCard";
 import PostDetailsModal from "../../components/feeds/PostDetailsModal";
+import BASE_URL from "../../../apiConfig";
 
 const Feeds = ({
   anchorRef,
@@ -20,22 +21,21 @@ const Feeds = ({
   const [comment, setComment] = useState("");
   const [snackbarMsg, setSnackbarMsg] = useState("");
   const [displaySnackbar, setDisplaySnackbar] = useState(false);
-
+  console.log("posts", posts);
   const fetchAllPosts = async () => {
     setLoading(true);
     try {
       const savedRecipeResponse = await axios.get(
-        "http://localhost:8000/api/recipes/get-saved-recipes",
+        `${BASE_URL}/api/recipes/get-saved-recipes`,
         { withCredentials: true }
       );
       const savedRecipeIds = savedRecipeResponse.data.map(
         (recipe) => recipe._id
       );
 
-      const response = await axios.get(
-        "http://localhost:8000/api/users/posts",
-        { withCredentials: true }
-      );
+      const response = await axios.get(`${BASE_URL}/api/users/posts`, {
+        withCredentials: true,
+      });
 
       const feedPosts = response.data.map((post) => ({
         ...post,
@@ -53,10 +53,9 @@ const Feeds = ({
   useEffect(() => {
     const fetchLikedPosts = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8000/api/users/liked-posts",
-          { withCredentials: true }
-        );
+        const response = await axios.get(`${BASE_URL}/api/users/liked-posts`, {
+          withCredentials: true,
+        });
 
         const likedPostIds = response.data.likedPostIds;
         const likedPostsMap = {};
@@ -89,7 +88,7 @@ const Feeds = ({
         [postId]: !prev[postId],
       }));
       const response = await axios.post(
-        "http://localhost:8000/api/users/like",
+        `${BASE_URL}/api/users/like`,
         {
           postId: postId,
         },
@@ -114,7 +113,7 @@ const Feeds = ({
     }
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/users/post-comment",
+        `${BASE_URL}/api/users/post-comment`,
         {
           postId: postId,
           comment: comment,
@@ -143,7 +142,7 @@ const Feeds = ({
   const deleteComment = async (postId, commentId) => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/users/delete-comment",
+        `${BASE_URL}/api/users/delete-comment`,
         {
           postId: postId,
           commentId: commentId,

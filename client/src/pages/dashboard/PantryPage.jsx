@@ -5,6 +5,7 @@ import AutoHideSnackbar from "../../components/popupCards/AutoHideSnackbar";
 import SelectedPantryItems from "../../components/pantry/SelectedPantryItems";
 import PantrySelection from "../../components/pantry/PantrySelection";
 import ingredientsData from "../../../../server/utils/ingredientsHelper.json";
+import BASE_URL from "../../../apiConfig";
 
 const PantryPage = ({ theme }) => {
   const [loading, setLoading] = useState(false);
@@ -20,7 +21,7 @@ const PantryPage = ({ theme }) => {
   const fetchPantryItems = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8000/api/users/get-user-pantry",
+        `${BASE_URL}/api/users/get-user-pantry`,
         { withCredentials: true }
       );
       console.log(response.data);
@@ -34,7 +35,7 @@ const PantryPage = ({ theme }) => {
     setLoading(true);
     try {
       const response = await axios.patch(
-        "http://localhost:8000/api/users/update-pantry",
+        `${BASE_URL}/api/users/update-pantry`,
         {
           items: selectedItems,
         },

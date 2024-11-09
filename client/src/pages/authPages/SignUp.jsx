@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import SignUpForm from "../../components/forms/SignUpForm";
 import CloseButtonHeader from "../../components/buttons/CloseButtonHeader";
+import BASE_URL from "../../../apiConfig";
 
 const SignUp = () => {
   const [firstName, setFirstName] = useState("");
@@ -23,15 +24,12 @@ const SignUp = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post(
-        "http://localhost:8000/api/auth/signup",
-        {
-          firstName: firstName,
-          lastName: lastName,
-          email: email,
-          password: password,
-        }
-      );
+      const response = await axios.post(`${BASE_URL}/api/auth/signup`, {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: password,
+      });
       if (response.status === 200) {
         setLoading(true);
         console.log(response);

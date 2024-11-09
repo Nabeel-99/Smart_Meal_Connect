@@ -1,6 +1,7 @@
 import { Tooltip } from "@mui/material";
 import React, { useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
+import BASE_URL from "../../../apiConfig";
 
 const RecipeImageCarousel = ({ recipeDetails }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -42,7 +43,7 @@ const RecipeImageCarousel = ({ recipeDetails }) => {
           recipeDetails?.images?.[currentImageIndex]
             ? recipeDetails.images[currentImageIndex].startsWith("http")
               ? recipeDetails.images[currentImageIndex]
-              : `http://localhost:8000/${recipeDetails.images[currentImageIndex]}`
+              : `${BASE_URL}/${recipeDetails.images[currentImageIndex]}`
             : "default"
         }
         alt=""

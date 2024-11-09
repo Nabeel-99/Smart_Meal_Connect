@@ -9,6 +9,7 @@ import NutrientsCard from "../components/recipeDetailsCards/NutrientsCard";
 import MissingIngredientsCard from "../components/recipeDetailsCards/MissingIngredientsCard";
 import RecipeInstructionsCard from "../components/recipeDetailsCards/RecipeInstructionsCard";
 import RecipeIngredientsCard from "../components/recipeDetailsCards/RecipeIngredientsCard";
+import BASE_URL from "../../apiConfig";
 
 const RecipeDetails = () => {
   const [recipeDetails, setRecipeDetails] = useState({});
@@ -41,7 +42,7 @@ const RecipeDetails = () => {
     }
     try {
       const response = await axios.get(
-        `http://localhost:8000/api/recipes/get-recipe-details/${id}`
+        `${BASE_URL}/api/recipes/get-recipe-details/${id}`
       );
       if (response.status === 200) {
         setRecipeDetails(response.data);
@@ -54,7 +55,7 @@ const RecipeDetails = () => {
   const saveRecipe = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/recipes/save-recipe",
+        `${BASE_URL}/api/recipes/save-recipe`,
         {
           recipeDetails: recipeDetails,
         },

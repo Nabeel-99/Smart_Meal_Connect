@@ -4,6 +4,8 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import ProfileCard from "../../components/profile/ProfileCard";
 import PostsGrid from "../../components/profile/PostsGrid";
 import { useParams } from "react-router-dom";
+import BASE_URL from "../../../apiConfig";
+import ProfileSkeleton from "../../components/ProfileSkeleton";
 
 const Profile = ({
   currentUserId,
@@ -43,7 +45,7 @@ const Profile = ({
     setLoading(true);
     try {
       const response = await axios.post(
-        `http://localhost:8000/api/users/delete-post`,
+        `${BASE_URL}/api/users/delete-post`,
         {
           postId: postToDelete.postId,
           recipeId: postToDelete.posts._id,
@@ -69,7 +71,7 @@ const Profile = ({
     setLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:8000/api/users/profile/${userId || ""}`,
+        `${BASE_URL}/api/users/profile/${userId || ""}`,
         { withCredentials: true }
       );
 
@@ -91,7 +93,7 @@ const Profile = ({
     <div className="flex flex-col  h-full gap-8 pt-28 px-6 md:px-10 dark:text-white lg:px-20">
       {loading ? (
         <div className="flex  flex-col gap-4 items-center justify-center h-full w-full">
-          <AiOutlineLoading3Quarters className="spin text-3xl" />
+          <ProfileSkeleton />
         </div>
       ) : (
         <>

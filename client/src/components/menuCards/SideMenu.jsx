@@ -1,28 +1,11 @@
 import React from "react";
-import { CiBookmark, CiGrid41, CiSettings } from "react-icons/ci";
+import { CiBookmark, CiSettings } from "react-icons/ci";
 import { IoIosAddCircleOutline, IoIosLogOut } from "react-icons/io";
-import {
-  MdOutlineKeyboardArrowDown,
-  MdOutlineKeyboardArrowUp,
-} from "react-icons/md";
 import { useLocation, useNavigate } from "react-router-dom";
-import { mapText } from "../../../../server/utils/helper";
 import { TbFridge } from "react-icons/tb";
-import DialogComponent from "../popupCards/DialogComponent";
 import { GoHome, GoHomeFill } from "react-icons/go";
-import { BsBrightnessHigh } from "react-icons/bs";
-import { FaMoon } from "react-icons/fa6";
-import { LuMoonStar } from "react-icons/lu";
-
-const SideMenu = ({
-  showPreferences,
-  preferences,
-  userData,
-  userMetrics,
-  openDialog,
-  showPostModal,
-  theme,
-}) => {
+import { MdDynamicFeed } from "react-icons/md";
+const SideMenu = ({ userData, openDialog, showPostModal, theme }) => {
   const navigate = useNavigate();
   const location = useLocation();
   return (
@@ -65,7 +48,7 @@ const SideMenu = ({
                   : ""
               }`}
             >
-              <CiGrid41 className="w-6 text-2xl " />
+              <MdDynamicFeed className="w-6 text-2xl " />
               Feeds
             </button>
 

@@ -4,6 +4,7 @@ import MealCard from "../../components/viewCards/MealCard";
 import DialogComponent from "../../components/popupCards/DialogComponent";
 import SavedMealsHeader from "../../components/headers/SavedMealsHeader";
 import MealSkeletonLoader from "../../components/MealSkeletonLoader";
+import BASE_URL from "../../../apiConfig";
 
 const SavedMeals = ({ showGridView, showListView, gridView, listView }) => {
   const [viewOptions, setViewOptions] = useState(false);
@@ -21,7 +22,7 @@ const SavedMeals = ({ showGridView, showListView, gridView, listView }) => {
     setLoading(true);
     try {
       const response = await axios.get(
-        "http://localhost:8000/api/recipes/get-saved-recipes",
+        `${BASE_URL}/api/recipes/get-saved-recipes`,
         { withCredentials: true }
       );
       console.log(response.data);
@@ -36,7 +37,7 @@ const SavedMeals = ({ showGridView, showListView, gridView, listView }) => {
   const deleteRecipe = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:8000/api/recipes/delete-recipe`,
+        `${BASE_URL}/api/recipes/delete-recipe`,
         {
           id: selectedId,
         },

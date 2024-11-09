@@ -21,6 +21,7 @@ import CommentButton from "../buttons/CommentButton";
 import SaveButton from "../buttons/SaveButton";
 import PostBottomSection from "./PostBottomSection";
 import AutoHideSnackbar from "../popupCards/AutoHideSnackbar";
+import BASE_URL from "../../../apiConfig";
 
 const PostCard = ({
   post,
@@ -37,7 +38,7 @@ const PostCard = ({
   const saveRecipe = async (post) => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/recipes/save-recipe",
+        `${BASE_URL}/api/recipes/save-recipe`,
         {
           recipeDetails: post.posts,
         },
@@ -59,7 +60,7 @@ const PostCard = ({
       if (error.response && error.response.status === 400) {
         console.log("already saved");
         const newResponse = await axios.post(
-          "http://localhost:8000/api/recipes/delete-recipe",
+          `${BASE_URL}/api/recipes/delete-recipe`,
           {
             id: post.posts._id,
           },

@@ -6,6 +6,7 @@ import IngredientsHeader from "../components/headers/IngredientsHeader";
 import RecipeResults from "../components/viewCards/RecipeResults";
 import GetStartedSection from "../components/GetStartedSection";
 import ShowMoreButton from "../components/buttons/ShowMoreButton";
+import BASE_URL from "../../apiConfig";
 
 const IngredientsBased = ({ userData }) => {
   const [item, setItem] = useState("");
@@ -75,7 +76,7 @@ const IngredientsBased = ({ userData }) => {
     }
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/recipes/get-ingredients-recipes",
+        `${BASE_URL}/api/recipes/get-ingredients-recipes`,
         {
           ingredients: ingredients,
           dietaryPreferences: selectedDietaryPreferences,

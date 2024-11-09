@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import ResetPasswordForm from "../../components/forms/ResetPasswordForm";
 import CloseButtonHeader from "../../components/buttons/CloseButtonHeader";
+import BASE_URL from "../../../apiConfig";
 
 const ResetPassword = () => {
   const [password, setPassword] = useState("");
@@ -29,14 +30,11 @@ const ResetPassword = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post(
-        "http://localhost:8000/api/auth/reset-password",
-        {
-          token,
-          newPassword: password,
-          confirmPassword: confirmPassword,
-        }
-      );
+      const response = await axios.post(`${BASE_URL}/api/auth/reset-password`, {
+        token,
+        newPassword: password,
+        confirmPassword: confirmPassword,
+      });
       console.log(response.data);
       if (response.status === 200) {
         setShowSuccess(true);

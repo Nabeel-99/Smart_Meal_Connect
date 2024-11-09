@@ -1,10 +1,6 @@
-import React, { Children, useEffect, useState } from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import ReactPlayer from "react-player";
-import { color, height, width } from "@mui/system";
 import useTheme from "../UseTheme";
 
 const ModalComponent = ({ showModal, setShowModal, children, theme }) => {
@@ -26,16 +22,25 @@ const ModalComponent = ({ showModal, setShowModal, children, theme }) => {
     bgcolor: modalTheme === "dark" ? "black" : "#F7F7F8",
     border: modalTheme === "dark" ? "2px solid #1f1f1f" : "2px solid #E0E0E0",
     color: modalTheme === "dark" ? "white" : "black",
-    boxShadow: 24,
+    boxShadow: 2,
   };
+
+  const backdropStyle = {
+    backgroundColor: "rgba(0, 0, 0, 0.2)",
+  };
+
   return (
     <div>
       <Modal
-        keepMounted
         open={showModal}
         onClose={handleClose}
         aria-labelledby="keep-mounted-modal-title"
         aria-describedby="keep-mounted-modal-description"
+        slotProps={{
+          backdrop: {
+            style: backdropStyle,
+          },
+        }}
       >
         <Box sx={style}>{children}</Box>
       </Modal>

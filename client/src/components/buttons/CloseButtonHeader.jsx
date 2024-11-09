@@ -6,7 +6,7 @@ const CloseButtonHeader = ({ goBack }) => {
   return (
     <div
       style={{ paddingTop: `calc(env(safe-area-inset-top) + 16px)` }}
-      className="flex justify-between items-center backdrop-blur-lg lg:backdrop-blur-0 fixed top-0 pt-8 right-0 left-0 pr-8 pl-8 lg:pl-0 pb-4 lg:pr-0 lg:right-16 lg:top-0 lg:left-24"
+      className="flex justify-between items-center backdrop-blur-lg lg:backdrop-blur-0 fixed top-2 pt-10 right-0 left-0 pr-8 pl-8 lg:pl-0 pb-4 lg:pr-0 lg:right-16 lg:top-10 lg:left-24"
     >
       <SiGreasyfork className="text-2xl lg:text-4xl   backdrop-blur-lg" />
       {goBack ? (

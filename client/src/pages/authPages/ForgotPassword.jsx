@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ForgotPasswordForm from "../../components/forms/ForgotPasswordForm";
 import CloseButtonHeader from "../../components/buttons/CloseButtonHeader";
+import BASE_URL from "../../../apiConfig";
 
 const ForgotPassword = () => {
   const [loading, setLoading] = useState(false);
@@ -16,7 +17,7 @@ const ForgotPassword = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/auth/request-reset-password",
+        `${BASE_URL}/api/auth/request-reset-password`,
         { email }
       );
       console.log(response.data);
@@ -52,7 +53,7 @@ const ForgotPassword = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "http://localhost:8000/api/auth/request-reset-password",
+        `${BASE_URL}/api/auth/request-reset-password`,
         { email }
       );
       if (response.status === 200) {

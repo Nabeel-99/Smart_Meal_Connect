@@ -17,6 +17,13 @@
   /* padding-top: calc(env(safe-area-inset-top) + 16px); */
   /* scroll-behavior: smooth; */
 }
+
+:root {
+  --ion-background-color: transparent;
+  --ion-text-color: inherit;
+  --ion-color-primary: inherit;
+  --ion-color-secondary: inherit;
+}
 .transition-container {
   transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
   overflow: hidden;
