@@ -10,6 +10,7 @@ import ChangeEmailForm from "../forms/ChangeEmailForm";
 import ChangePasswordForm from "../forms/ChangePasswordForm";
 import ThemeInput from "../formInputs/ThemeInput";
 import DeleteAccountButton from "../buttons/DeleteAccountButton";
+import BASE_URL from "../../../apiConfig";
 
 const AccountSection = ({ userData, theme, updateTheme, refreshUserData }) => {
   const [firstName, setFirstName] = useState(userData.firstName);
@@ -54,7 +55,7 @@ const AccountSection = ({ userData, theme, updateTheme, refreshUserData }) => {
   const deleteAccount = async () => {
     setLoading(true);
     try {
-      const response = await axios.delete("${BASE_URL}/api/auth/delete-user", {
+      const response = await axios.delete(`${BASE_URL}/api/auth/delete-user`, {
         withCredentials: true,
       });
       console.log(response.data);
@@ -135,7 +136,7 @@ const AccountSection = ({ userData, theme, updateTheme, refreshUserData }) => {
   };
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 ">
       <ChangeNameForm
         isChangingName={isChangingName}
         updateAccount={updateAccount}

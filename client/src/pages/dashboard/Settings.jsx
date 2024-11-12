@@ -24,7 +24,7 @@ const Settings = ({
   };
 
   return (
-    <div className="flex flex-col h-full gap-8 pt-20 px-6 lg:px-10 dark:text-white">
+    <div className="flex flex-col h-full w-full gap-8 pt-20 px-6 lg:px-10 dark:text-white dark:bg-[#0c0c0c]">
       <div className="flex sticky top-[60px] pt-8 lg:pt-4 z-20 dark:bg-[#0c0c0c] bg-[#F7F7F8] items-center border-b border-b-[#e0e0e0] dark:border-b-[#343333] pb-3 gap-10">
         <button
           onClick={showAccount}

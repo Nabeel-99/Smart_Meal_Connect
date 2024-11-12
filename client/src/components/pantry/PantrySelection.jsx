@@ -22,7 +22,7 @@ const PantrySelection = ({
   savePantryItems,
 }) => {
   return (
-    <div className="flex flex-col items-center w-full  pb-24   gap-2">
+    <div className="flex flex-col order-2 lg:order-none items-center w-full  pb-24   gap-2">
       <div className="flex flex-col mt-4 items-start  xl:justify-start gap-4 w-full">
         <div className="flex items-center   gap-2">
           Select All

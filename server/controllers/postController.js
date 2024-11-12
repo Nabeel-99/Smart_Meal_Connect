@@ -142,6 +142,7 @@ export const updateRecipePost = async (req, res) => {
 export const getAllPosts = async (req, res) => {
   try {
     const { userId } = req;
+    const { page = 1, limit = 10 } = req.query;
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
@@ -152,7 +153,9 @@ export const getAllPosts = async (req, res) => {
         path: "comments.userId",
         select: "firstName lastName",
       })
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(Number(limit));
 
     const allPosts = posts.map((post) => ({
       postId: post._id,
@@ -165,7 +168,8 @@ export const getAllPosts = async (req, res) => {
       comments: post.comments,
       commentsCount: post.comments.length,
     }));
-    if (!posts) {
+    console.log("posts", posts.length);
+    if (!posts || posts.length === 0) {
       return res.status(404).json({ message: "No posts found" });
     }
 

@@ -6,7 +6,6 @@ import { useNavigate, useParams } from "react-router-dom";
 const EmailPrompt = ({ showVerifyEmail, userData, setShowVerifyEmail }) => {
   const [loading, setLoading] = useState(false);
   const [newVerification, setNewVerification] = useState(false);
-  console.log("user data", userData);
   const verifyEmail = async () => {
     setLoading(true);
     try {

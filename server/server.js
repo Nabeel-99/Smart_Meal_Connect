@@ -9,6 +9,7 @@ import authRoutes from "./routes/authRoutes.js";
 import recipeRoutes from "./routes/recipeRoutes.js";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
+import { deleteFakeData, seedDatabase } from "./utils/faker.js";
 
 dotenv.config();
 
@@ -44,6 +45,11 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // connect to DB
 connectDB();
 
+// // faker
+// seedDatabase();
+
+// // deletefaker
+// deleteFakeData();
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);

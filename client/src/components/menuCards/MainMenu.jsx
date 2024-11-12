@@ -5,6 +5,7 @@ import MobileSideMenu from "./MobileSideMenu";
 
 const MainMenu = ({
   userData,
+  updateTheme,
   userMetrics,
   theme,
   showPreferences,
@@ -19,7 +20,10 @@ const MainMenu = ({
   viewNotifications,
   setViewNotifications,
   getCurrentView,
+  getUserMetrics,
   setSideMenu,
+  fetchUserData,
+  fetchUserDashboardRecipes,
 }) => {
   return (
     <>
@@ -38,6 +42,11 @@ const MainMenu = ({
 
       {/* mobile header */}
       <MobileHeader
+        userData={userData}
+        userMetrics={userMetrics}
+        theme={theme}
+        openDialog={openDialog}
+        getUserMetrics={getUserMetrics}
         showSideMenu={showSideMenu}
         sideMenu={sideMenu}
         location={location}
@@ -46,6 +55,9 @@ const MainMenu = ({
         viewNotifications={viewNotifications}
         setViewNotifications={setViewNotifications}
         getCurrentView={getCurrentView}
+        fetchUserData={fetchUserData}
+        updateTheme={updateTheme}
+        fetchUserDashboardRecipes={fetchUserDashboardRecipes}
       />
       {/* mobile side menu */}
       {sideMenu && userData && userMetrics && (

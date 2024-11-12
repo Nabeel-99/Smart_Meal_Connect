@@ -5,7 +5,7 @@ import AutoHideSnackbar from "../../components/popupCards/AutoHideSnackbar";
 import SelectedPantryItems from "../../components/pantry/SelectedPantryItems";
 import PantrySelection from "../../components/pantry/PantrySelection";
 import ingredientsData from "../../../../server/utils/ingredientsHelper.json";
-import BASE_URL from "../../../apiConfig";
+import BASE_URL, { isNative } from "../../../apiConfig";
 
 const PantryPage = ({ theme }) => {
   const [loading, setLoading] = useState(false);
@@ -90,8 +90,10 @@ const PantryPage = ({ theme }) => {
     fetchPantryItems();
   }, []);
   return (
-    <div className="flex flex-col  w-full h-full  px-8 ">
-      <div className="pt-32 md:pt-28   w-full   ">
+    <div
+      className={`flex flex-col  w-full h-full  ${isNative ? "px-0" : "px-8"} `}
+    >
+      <div className={`${isNative ? "pt-0" : "pt-32 md:pt-28 w-full "}  `}>
         <button
           onClick={showEditPantry}
           className="dark:text-blue-400  text-blue-600 text-sm"
@@ -99,7 +101,7 @@ const PantryPage = ({ theme }) => {
           {isEditingPantry ? "Cancel" : "Edit Pantry"}
         </button>
       </div>
-      <div className="flex flex-col gap-8 pt-8 md:pt-8  lg:gap-0 lg:flex-row w-full   h-full  ">
+      <div className="flex flex-col pt-8 md:pt-8  lg:gap-0 lg:flex-row w-full   h-full  ">
         {isEditingPantry && (
           <PantrySelection
             pantryItems={pantryItems}

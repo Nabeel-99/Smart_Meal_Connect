@@ -1,3 +1,4 @@
+import path from "path";
 import Metrics from "../models/metricsModel.js";
 import Recipe from "../models/recipeModel.js";
 import UserDashboard from "../models/userDashboardModel.js";
@@ -11,6 +12,12 @@ import {
   categorizeRecipes,
   fetchDashboardRecipes,
 } from "../utils/recipeLogic.js";
+import { sendEmail } from "../config/notifications.js";
+import { fileURLToPath } from "url";
+import fs from "fs";
+//file helper
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const prepareRecipesForInsertion = (recipes) => {
   return recipes.map((recipe) => ({
@@ -194,7 +201,28 @@ export const manageDashboardRecipes = async (req, res) => {
         savedRecipes.find((r) => r._id.equals(meal.recipeId))
       ),
     };
-
+    let htmlContent;
+    const user = await User.findById(userId);
+    if (user && user.email) {
+      const templatePath = path.join(
+        __dirname,
+        "../emailTemplates/dashboard-ready.html"
+      );
+      try {
+        htmlContent = fs.readFileSync(templatePath, "utf-8");
+      } catch (error) {
+        console.log(error);
+      }
+      htmlContent = htmlContent
+        .replace("{{firstName}}", user.firstName)
+        .replace("{{APP_NAME}}", process.env.APP_NAME);
+      await sendEmail(
+        user.email,
+        "Your new Dashboard meals are Ready!",
+        htmlContent
+      );
+    }
+    console.log("user", user);
     return res.status(200).json({
       message: "Dashboard prepared successfully",
       recipes: newRecipes,

@@ -131,7 +131,7 @@ const InputArea = ({
       <div
         className={`${
           isNative
-            ? "fixed bottom-0 right-0 left-0 dark:bg-[#0c0c0c] bg-white z-10"
+            ? "fixed bottom-0 right-0 left-0 pt-3 dark:bg-[#0c0c0c] bg-white z-10"
             : ""
         }  px-4  w-full lg:hidden pb-12`}
       >

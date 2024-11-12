@@ -108,24 +108,24 @@ const PostForm = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (
-      !title ||
-      !instructions ||
-      !prepTime ||
-      !ingredients ||
-      !imagePreviews ||
-      !category
-    ) {
-      return;
-    }
+    // if (
+    //   !title ||
+    //   !instructions ||
+    //   !prepTime ||
+    //   !ingredients ||
+    //   !imagePreviews ||
+    //   !category
+    // ) {
+    //   return;
+    // }
     const formData = new FormData();
     formData.append("title", title);
     formData.append("instructions", instructions);
-    formData.append("ingredients", ingredients);
+    formData.append("ingredients", JSON.stringify(ingredients));
     formData.append("category", category);
     formData.append("prepTime", prepTime);
     formData.append("videoLink", videoLink);
-
+    console.log("ingrede", ingredients);
     images.forEach((image) => {
       if (image instanceof File) {
         formData.append("images", image);
@@ -155,7 +155,7 @@ const PostForm = ({
         error.response.status >= 400 &&
         error.response.status <= 500
       ) {
-        setError(error.response.message);
+        setError(error.response.data.message);
       }
     }
   };

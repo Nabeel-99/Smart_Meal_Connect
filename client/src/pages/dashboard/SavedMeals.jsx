@@ -65,7 +65,7 @@ const SavedMeals = ({ showGridView, showListView, gridView, listView }) => {
       />
 
       {loading ? (
-        <MealSkeletonLoader count={savedMeals?.length} />
+        <MealSkeletonLoader count={3} />
       ) : savedMeals.length > 0 ? (
         <MealCard
           meals={savedMeals}

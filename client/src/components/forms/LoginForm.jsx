@@ -34,11 +34,11 @@ const LoginForm = ({
         />
         <div className="relative">
           <TextInput
-            label={"Confirm Password"}
-            htmlFor={"confirm-password"}
-            id={"confirm-password"}
+            label={"Password"}
+            htmlFor={"password"}
+            id={"password"}
             type={isPasswordVisible ? "text" : "password"}
-            labelClassName="lg:text-sm"
+            labelClassName="lg:text-lg"
             className="lg:w-96 pr-10"
             value={password}
             onChange={(e) => setPassword(e.target.value)}

@@ -103,7 +103,7 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
       );
       if (response.status === 200) {
         setUserMetrics(response.data.metrics);
-        console.log("repsonse", response.data);
+
         if (response.data.metrics.defaultMetrics) {
           setShowMetricsPrompt(true);
         }
@@ -142,6 +142,7 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
 
   const getCurrentView = () => {
     if (location.pathname === "/profile") return "Profile";
+    if (location.pathname === "/feeds") return "Feeds";
     if (location.pathname === "/dashboard") return "Dashboard";
     if (location.pathname === "/saved-meals") return "Saved Meals";
     if (location.pathname === "/settings") return "Settings";
@@ -243,7 +244,9 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
         <MainMenu
           userData={userData}
           userMetrics={userMetrics}
+          getUserMetrics={getUserMetrics}
           theme={theme}
+          updateTheme={updateTheme}
           showPreferences={showPreferences}
           preferences={preferences}
           openDialog={openDialog}
@@ -257,6 +260,8 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
           setViewNotifications={setViewNotifications}
           getCurrentView={getCurrentView}
           setSideMenu={setSideMenu}
+          fetchUserData={fetchUserData}
+          fetchUserDashboardRecipes={fetchUserDashboardRecipes}
         />
         {/* Content area */}
         <Content
@@ -267,7 +272,7 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
         {/* <IconTabs /> */}
         {isNative && (
           <div className="fixed dark:bg-[#0c0c0c] p-4 border-t dark:border-t-[#2a2a2a] border-t-[#08090a] bg-[#e0e0e0] bottom-0 left-0 right-0 w-full">
-            <IconTabs />
+            <IconTabs showPostModal={showPostModal} />
           </div>
         )}
       </div>
@@ -277,6 +282,8 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
           theme={theme}
           showModal={showModal}
           setShowModal={setShowModal}
+          direction={"up"}
+          title={"Manage Post"}
         >
           <PostForm
             theme={theme}

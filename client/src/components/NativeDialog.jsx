@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import ListItemText from "@mui/material/ListItemText";
@@ -14,10 +14,16 @@ import Slide from "@mui/material/Slide";
 import useTheme from "./UseTheme";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
+  return <Slide direction={props.direction} ref={ref} {...props} />;
 });
-
-const NativeDialog = ({ showModal, setShowModal, children, theme }) => {
+const NativeDialog = ({
+  showModal,
+  setShowModal,
+  children,
+  theme,
+  direction = "up",
+  title,
+}) => {
   const handleClose = () => {
     setShowModal(false);
   };
@@ -30,6 +36,7 @@ const NativeDialog = ({ showModal, setShowModal, children, theme }) => {
         open={showModal}
         onClose={handleClose}
         TransitionComponent={Transition}
+        TransitionProps={{ direction }}
         sx={{
           "& .MuiDialog-paper": {
             backgroundColor: modalTheme === "dark" ? "#0c0c0c" : "#F7F7F8",
@@ -54,7 +61,7 @@ const NativeDialog = ({ showModal, setShowModal, children, theme }) => {
               <CloseIcon />
             </IconButton>
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Manage Post
+              {title}
             </Typography>
           </Toolbar>
         </AppBar>

@@ -56,7 +56,7 @@ export const requestResetPassword = async (req, res) => {
     htmlContent = htmlContent
       .replace("{{firstName}}", user.firstName)
       .replace("{{resetLink}}", resetLink)
-      .replace("{{APP_NAME}}", process.env.APP_NAME);
+      .replace(/{{APP_NAME}}/g, process.env.APP_NAME);
 
     await sendEmail(user.email, "Password Reset", htmlContent);
     return res.status(200).json({ message: "Password reset link sent" });
@@ -129,7 +129,7 @@ export const verifyEmailToken = async (req) => {
     htmlContent = htmlContent
       .replace("{{firstName}}", user.firstName)
       .replace("{{verificationLink}}", verifyEmailLink)
-      .replace("{{APP_NAME}}", process.env.APP_NAME);
+      .replace(/{{APP_NAME}}/g, process.env.APP_NAME);
 
     await sendEmail(user.email, "Verify your email", htmlContent);
     return { status: 200, message: "Verification email sent" };
