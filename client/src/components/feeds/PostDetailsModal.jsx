@@ -24,7 +24,7 @@ const PostDetailsModal = ({
           showModal={showModal}
           setShowModal={setShowModal}
         >
-          <div className="flex flex-col gap-4 lg:flex-row justify-between items-center overflow-scroll lg:items-stretch p-8 h-[40rem]  lg:h-[35rem] xl:h-[45rem] w-full">
+          <div className="flex flex-col gap-4 lg:flex-row justify-between items-center overflow-scroll hide-scrollbar lg:items-stretch p-8 h-[40rem]  lg:h-[35rem] xl:h-[45rem] w-full">
             <ImageCard selectedPost={selectedPost} />
 
             <div className="flex flex-col  px-4 lg:w-[200rem] xl:w-[230rem] h-full">
@@ -38,7 +38,7 @@ const PostDetailsModal = ({
                 }
               />
               {/* comments  */}
-              <div className="flex flex-col gap-4 pb-2  pt-8   h-96  xl:h-full overflow-y-scroll">
+              <div className="flex flex-col gap-4 pb-2  pt-8   h-96  xl:h-full overflow-y-scroll hide-scrollbar">
                 {selectedPost.comments.length > 0 ? (
                   selectedPost.comments.map((comment, index) => (
                     <CommentsCard

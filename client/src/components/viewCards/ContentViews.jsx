@@ -125,6 +125,7 @@ const ContentViews = ({
         path="settings"
         element={
           <Settings
+            showVerifyEmail={showVerifyEmail}
             userData={userData}
             refreshUserData={fetchUserData}
             userMetrics={userMetrics}

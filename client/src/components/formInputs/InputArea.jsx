@@ -27,7 +27,7 @@ const InputArea = ({
   selectedPost,
 }) => {
   return (
-    <div className="flex flex-col  pt-8 gap-3  w-full lg:px-4 l lg:w-[200rem] xl:w-[230rem] h-full lg:overflow-scroll">
+    <div className="flex flex-col  pt-8 gap-3  w-full lg:px-4 l lg:w-[200rem] xl:w-[230rem] h-full lg:overflow-scroll hide-scrollbar">
       {error && <div className="text-red-500 text-sm">{error}</div>}
       <TextInput
         label={"Title"}
@@ -36,7 +36,6 @@ const InputArea = ({
         type={"text"}
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        required
       />
       <div className="flex flex-col lg:flex-row items-center gap-4 w-full">
         <TextInput
@@ -47,7 +46,6 @@ const InputArea = ({
           bgColor="dark:bg-[#0c0c0c] bg-[#e9e9e9]"
           value={prepTime}
           onChange={(e) => setPrepTime(e.target.value)}
-          required
         />
         <SelectInput
           label={"Category"}
@@ -57,7 +55,6 @@ const InputArea = ({
           className=" w-full"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          required
         />
       </div>
       <div className="flex flex-col gap-3 ">

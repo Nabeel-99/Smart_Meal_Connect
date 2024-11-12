@@ -12,34 +12,62 @@ import ThemeInput from "../formInputs/ThemeInput";
 import DeleteAccountButton from "../buttons/DeleteAccountButton";
 import BASE_URL from "../../../apiConfig";
 
-const AccountSection = ({ userData, theme, updateTheme, refreshUserData }) => {
+const AccountSection = ({
+  userData,
+  theme,
+  updateTheme,
+  refreshUserData,
+  showVerifyEmail,
+}) => {
   const [firstName, setFirstName] = useState(userData.firstName);
   const [lastName, setLastName] = useState(userData.lastName);
   const [email, setEmail] = useState(userData.email);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
   const [isChangingName, setIsChangingName] = useState(false);
   const [isChangingEmail, setIsChangingEmail] = useState(false);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
-  const [showPasswordError, setShowPasswordError] = useState(false);
+
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
     useState(false);
-  const [passwordError, setPasswordError] = useState("");
-  const [passwordSuccess, setPasswordSuccess] = useState("");
-  const [showPasswordSuccess, setShowPasswordSuccess] = useState(false);
-  const [success, setSuccess] = useState("");
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [emailSuccess, setEmailSuccess] = useState("");
-  const [showEmailSuccess, setShowEmailSuccess] = useState(false);
+
   const [error, setError] = useState("");
-  const [showError, setShowError] = useState(false);
+  const [nameError, setNameError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
+  const [success, setSuccess] = useState("");
+  const [passwordSuccess, setPasswordSuccess] = useState("");
+  const [emailSuccess, setEmailSuccess] = useState("");
+
+  const [showEmailSuccess, setShowEmailSuccess] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [showPasswordSuccess, setShowPasswordSuccess] = useState(false);
+
+  const [showNameError, setShowNameError] = useState(false);
+  const [showPasswordError, setShowPasswordError] = useState(false);
+  const [showEmailError, setShowEmailError] = useState(false);
+
   const [loading, setLoading] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
-  const showInput = () => setIsChangingName(!isChangingName);
-  const showEmailInput = () => setIsChangingEmail(!isChangingEmail);
-  const showPasswordFields = () => setIsChangingPassword(true);
-  const closePasswordFields = () => setIsChangingPassword(false);
+  const showInput = () => {
+    setIsChangingName(true);
+  };
+  const showEmailInput = () => {
+    setIsChangingEmail(true);
+  };
+  const showPasswordFields = () => {
+    setIsChangingPassword(true);
+    setPassword("");
+    setConfirmPassword("");
+  };
+  const closePasswordFields = () => {
+    setIsChangingPassword(false);
+    setPassword("");
+    setConfirmPassword("");
+  };
 
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
@@ -88,7 +116,7 @@ const AccountSection = ({ userData, theme, updateTheme, refreshUserData }) => {
     if (password) updatedData.password = password;
     try {
       const response = await axios.patch(
-        "${BASE_URL}/api/auth/update",
+        `${BASE_URL}/api/auth/update`,
         updatedData,
         { withCredentials: true }
       );
@@ -121,14 +149,31 @@ const AccountSection = ({ userData, theme, updateTheme, refreshUserData }) => {
       }
     } catch (error) {
       setLoading(false);
-      setShowError(true);
       console.log(error);
       if (
         error.response &&
         error.response.status >= 400 &&
         error.response.status <= 500
       ) {
-        setError(error.response.message);
+        const { message } = error.response.data;
+        if (message.toLowerCase().includes("email")) {
+          setEmailError(message);
+          setShowEmailError(true);
+        } else if (message.toLowerCase().includes("password")) {
+          setPasswordError(message);
+          setShowPasswordError(true);
+        } else if (message.toLowerCase().includes("name")) {
+          setNameError(message);
+          setShowNameError(true);
+        }
+        setTimeout(() => {
+          setNameError("");
+          setEmailError("");
+          setPasswordError("");
+          setShowEmailError(false);
+          setShowPasswordError(false);
+          setShowNameError(false);
+        }, 10000);
       }
     } finally {
       setLoading(false);
@@ -148,10 +193,14 @@ const AccountSection = ({ userData, theme, updateTheme, refreshUserData }) => {
         showSuccess={showSuccess}
         success={success}
         showInput={showInput}
+        nameError={nameError}
+        setIsChangingName={setIsChangingName}
+        showNameError={showNameError}
       />
       <ChangeEmailForm
-        showError={showError}
-        error={error}
+        showEmailError={showEmailError}
+        showVerifyEmail={showVerifyEmail}
+        emailError={emailError}
         isChangingEmail={isChangingEmail}
         updateAccount={updateAccount}
         email={email}
@@ -160,6 +209,7 @@ const AccountSection = ({ userData, theme, updateTheme, refreshUserData }) => {
         showEmailSuccess={showEmailSuccess}
         emailSuccess={emailSuccess}
         showEmailInput={showEmailInput}
+        setIsChangingEmail={setIsChangingEmail}
       />
       <ChangePasswordForm
         showPasswordFields={showPasswordFields}

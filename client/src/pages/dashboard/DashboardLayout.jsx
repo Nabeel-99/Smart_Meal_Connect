@@ -13,6 +13,8 @@ import LayoutSkeleton from "../../components/LayoutSkeleton";
 import BASE_URL, { isNative } from "../../../apiConfig";
 import NativeDialog from "../../components/NativeDialog";
 import IconTabs from "../../components/IconTabs";
+import { SiGreasyfork } from "react-icons/si";
+import LoadingAnimation from "../../components/LoadingAnimation";
 
 const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
   const [loading, setLoading] = useState(true);
@@ -196,6 +198,7 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
       setShowVerifyEmail(true);
     }
   }, [userData?.isVerified]);
+  console.log("user verified?", userData);
 
   useEffect(() => {
     fetchUserPosts();
@@ -231,11 +234,7 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
   }, [sideMenu]);
 
   if (loading || !userData) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <LayoutSkeleton />
-      </div>
-    );
+    return <LoadingAnimation />;
   }
   return (
     <>
@@ -271,7 +270,7 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
         />
         {/* <IconTabs /> */}
         {isNative && (
-          <div className="fixed dark:bg-[#0c0c0c] p-4 border-t dark:border-t-[#2a2a2a] border-t-[#08090a] bg-[#e0e0e0] bottom-0 left-0 right-0 w-full">
+          <div className="fixed dark:bg-[#0c0c0c] p-4 border-t z-50 dark:border-t-[#2a2a2a] border-t-[#08090a] bg-[#e0e0e0] bottom-0 left-0 right-0 w-full">
             <IconTabs showPostModal={showPostModal} />
           </div>
         )}

@@ -31,7 +31,7 @@ const GridView = ({
                 : "default"
             }
             alt=""
-            className="w-full h-[250px] object-cover rounded-xl"
+            className="w-full h-[250px] 2xl:w-[550px] 2xl:h-[300px] object-cover rounded-xl"
           />
           {meal.images.length > 1 && (
             <div className="absolute right-2 top-2 text-xl font-bold">

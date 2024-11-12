@@ -10,6 +10,7 @@ const Settings = ({
   theme,
   updateTheme,
   fetchUserDashboardRecipes,
+  showVerifyEmail,
 }) => {
   const [isAccount, setIsAccount] = useState(true);
   const [isPreferenecs, setIsPreferences] = useState(false);
@@ -46,6 +47,7 @@ const Settings = ({
       {/* account */}
       {isAccount && (
         <AccountSection
+          showVerifyEmail={showVerifyEmail}
           userData={userData}
           theme={theme}
           updateTheme={updateTheme}
@@ -55,6 +57,7 @@ const Settings = ({
       {/* Preferences */}
       {isPreferenecs && (
         <PreferenceSection
+          theme={theme}
           userMetrics={userMetrics}
           refreshSideMenu={refreshSideMenu}
           setIsPreferences={setIsPreferences}

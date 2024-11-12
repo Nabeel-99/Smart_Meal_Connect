@@ -45,6 +45,21 @@ const AutoCompleteComponent = ({
     typeof customStyles === "function"
       ? customStyles(autoCompleteTheme)
       : customStyles;
+
+  const filterOptions = (options, state) => {
+    const inputValue = state.inputValue.toLowerCase();
+    const exactMatches = options.filter(
+      (option) => option.name.toLowerCase() === inputValue
+    );
+    const partialMatches = options.filter(
+      (option) =>
+        option.name.toLowerCase().includes(inputValue) &&
+        option.name.toLowerCase() !== inputValue
+    );
+
+    const sortedOptions = [...exactMatches, ...partialMatches];
+    return sortedOptions.slice(0, 10);
+  };
   return (
     <Autocomplete
       id={id}
@@ -55,6 +70,7 @@ const AutoCompleteComponent = ({
         ...baseStyles,
         ...customSx,
       }}
+      filterOptions={filterOptions}
       renderInput={(params) => (
         <TextField
           {...params}

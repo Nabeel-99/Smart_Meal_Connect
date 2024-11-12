@@ -19,7 +19,7 @@ const MealCard = ({
   return (
     <>
       {/* Grid view */}
-      <div className="grid grid-col-1  md:grid-cols-2 xl:grid-cols-3 gap-10">
+      <div className="grid grid-col-1  md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-10 ">
         {meals.map(
           (meal, index) =>
             isGridView && (

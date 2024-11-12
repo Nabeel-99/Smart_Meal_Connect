@@ -6,7 +6,7 @@ import { MdGridOn } from "react-icons/md";
 import ModalComponent from "../popupCards/ModalComponent";
 import PostForm from "../forms/PostForm";
 import DialogComponent from "../popupCards/DialogComponent";
-import BASE_URL from "../../../apiConfig";
+import BASE_URL, { isNative } from "../../../apiConfig";
 import { Capacitor } from "@capacitor/core";
 import {
   IonButton,
@@ -39,8 +39,6 @@ const PostsGrid = ({
   handleDelete,
   currentUserId,
 }) => {
-  const isNative =
-    Capacitor.getPlatform() === "android" || Capacitor.getPlatform() === "ios";
   return (
     <div className="flex flex-col gap-8 w-full  h-full">
       <div className="flex  text-sm xl:text-base items-center gap-2 justify-center ">
@@ -53,7 +51,7 @@ const PostsGrid = ({
               <Link to={`/recipe-details/${post.posts._id}`}>
                 <img
                   src={`${BASE_URL}/${post.posts?.images[currentImageIndex]}`}
-                  className="h-28 w-full md:h-52 lg:h-44 xl:h-80 xl:w-full rounded-sm object-cover"
+                  className="h-28 w-full md:h-52 lg:h-44 xl:h-80 2xl:h-96 xl:w-full rounded-sm object-cover"
                 />
                 {post.posts.images.length > 1 && (
                   <div className="absolute right-2 top-2 text-xl font-bold">

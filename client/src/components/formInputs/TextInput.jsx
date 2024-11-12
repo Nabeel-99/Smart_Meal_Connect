@@ -44,7 +44,6 @@ const TextInput = ({
         value={value}
         placeholder={placeholder}
         onChange={onChange}
-        required
       />
     </div>
   );

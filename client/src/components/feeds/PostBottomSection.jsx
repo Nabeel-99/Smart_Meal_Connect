@@ -22,7 +22,7 @@ const PostBottomSection = ({ post, openModal }) => {
         {post.commentsCount > 0 ? (
           <button
             onClick={openModal}
-            className="text-sm text-gray-500 hover:text-white"
+            className="text-sm text-gray-500 dark:hover:text-white hover:text-black"
           >
             View {post.commentsCount === 1 ? "" : "all"} {post.commentsCount}{" "}
             {post.commentsCount === 1 ? "comment" : "comments"}

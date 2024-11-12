@@ -23,7 +23,7 @@ const UserFeedsCard = ({
           <PostCardSkeleton />
         </div>
       ) : (
-        <div className="flex flex-col gap-4 w-full">
+        <div className="flex flex-col gap-4 items-center w-full">
           {posts.length > 0 ? (
             posts.map((post, index) => {
               const images = post.posts.images || [];

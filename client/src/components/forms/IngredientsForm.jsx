@@ -62,7 +62,11 @@ const IngredientsForm = ({
         </div>
       </div>
       <ErrorText error={error} />
-      <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4  max-h-44 overflow-auto">
+      <div
+        className={`grid md:grid-cols-2 xl:grid-cols-3 gap-4  hide-scrollbar ${
+          ingredients.length > 0 ? "border" : ""
+        }  p-3 rounded border-[#3d3d3d] max-h-44 overflow-auto`}
+      >
         {ingredients.length > 0 &&
           ingredients.map((ingredient, index) => (
             <IngredientsList
@@ -73,6 +77,11 @@ const IngredientsForm = ({
             />
           ))}
       </div>
+      {ingredients.length === 0 && (
+        <div className="h-44 border  w-96 p-4 text-center flex items-center justify-center rounded border-[#3d3d3d]">
+          Ingredients will appear here
+        </div>
+      )}
       <DietaryPreferences
         handleChecboxChange={handleChecboxChange}
         selectedDietaryPreferences={selectedDietaryPreferences}

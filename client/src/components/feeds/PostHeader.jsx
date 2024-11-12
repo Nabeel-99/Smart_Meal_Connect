@@ -18,7 +18,7 @@ const PostHeader = ({ firstName, lastName, title, time, recipeId }) => {
         <p className="text-sm  dark:text-gray-200">{title}</p>
         <Link
           to={`/recipe-details/${recipeId}`}
-          className="text-sm text-nowrap text-gray-400 hover:text-black dark:hover:text-white"
+          className="text-sm text-nowrap text-gray-600 hover:text-black dark:hover:text-white"
         >
           View full details
         </Link>

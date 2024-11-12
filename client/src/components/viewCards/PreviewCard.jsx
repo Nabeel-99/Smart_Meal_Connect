@@ -21,6 +21,8 @@ const PreviewCard = ({
   setImagePreviews,
   setDeletedImages,
 }) => {
+  console.log("preview card", imagePreviews);
+  console.log("images", images);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const handleNextImage = () => {
     if (currentImageIndex < imagePreviews.length - 1) {
@@ -54,14 +56,18 @@ const PreviewCard = ({
 
   const isLastImage = currentImageIndex === imagePreviews.length - 1;
   const isFirstImage = currentImageIndex === 0;
-
+  console.log(
+    "type of iamge preview and image",
+    typeof imagePreviews,
+    typeof images
+  );
   return (
     <div className="flex h-full ">
       <span>
         <Tooltip title="previous">
           <span>
             <button
-              className={`absolute flex dark:text-black dark:hover:text-white dark:bg-white   backdrop-blur-md dark:hover:bg-[#484848] hover:bg-[#dadada]   p-2  rounded-full  items-center justify-center top-[50%] ${
+              className={`absolute flex dark:text-black dark:hover:text-white dark:bg-white bg-[#c2c2c2]   backdrop-blur-md dark:hover:bg-[#484848] hover:bg-[#dadada]   p-2  rounded-full  items-center justify-center top-[50%] ${
                 isFirstImage ? "hidden" : ""
               }`}
               onClick={handlePreviousImage}
@@ -139,13 +145,13 @@ const PreviewCard = ({
             : imagePreviews[currentImageIndex]
         }
         alt={`uploaded image - ${currentImageIndex + 1}`}
-        className=" rounded-md w-full h-[16rem] md:h-[20rem] lg:w-full lg:h-full xl:w-full  xl:h-full object-contain"
+        className="rounded-md w-full h-[16rem] md:h-[20rem] lg:w-full lg:h-full xl:w-full xl:h-full object-contain"
       />
       <span>
         <Tooltip title="next">
           <span>
             <button
-              className={`absolute flex  backdrop-blur-md dark:text-black dark:hover:text-white dark:bg-white  dark:hover:bg-[#484848] hover:bg-[#dadada]  p-2  rounded-full right-0 items-center justify-center top-[50%] ${
+              className={`absolute flex  backdrop-blur-md dark:text-black dark:hover:text-white dark:bg-white bg-[#c2c2c2] dark:hover:bg-[#484848] hover:bg-[#dadada]  p-2  rounded-full right-0 items-center justify-center top-[50%] ${
                 isLastImage ? "hidden" : ""
               }`}
               type="button"

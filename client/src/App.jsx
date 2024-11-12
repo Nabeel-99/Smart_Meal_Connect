@@ -111,8 +111,9 @@ const App = () => {
   return (
     <div
       style={{ paddingTop: "env(safe-area-inset-top)" }}
-      className="flex  flex-col h-full w-screen  gap-10"
+      className="flex  flex-col h-full w-screen  gap-10 "
     >
+      {/* dark:bg-[#0c0c0c] bg-[#F7F7F8] text-black dark:text-white" */}
       <Router>
         <ScrollToTop />
         <MaybeShowComponent>

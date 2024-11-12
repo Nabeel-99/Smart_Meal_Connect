@@ -93,26 +93,25 @@ const Feeds = ({
   //     setIsIntersecting(false);
   //   }
   // }, [isIntersecting]);
+  const fetchLikedPosts = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/api/users/liked-posts`, {
+        withCredentials: true,
+      });
 
+      const likedPostIds = response.data.likedPostIds;
+      const likedPostsMap = {};
+
+      likedPostIds.forEach((postId) => {
+        likedPostsMap[postId] = true;
+      });
+
+      setLikedPosts(likedPostsMap);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
-    const fetchLikedPosts = async () => {
-      try {
-        const response = await axios.get(`${BASE_URL}/api/users/liked-posts`, {
-          withCredentials: true,
-        });
-
-        const likedPostIds = response.data.likedPostIds;
-        const likedPostsMap = {};
-
-        likedPostIds.forEach((postId) => {
-          likedPostsMap[postId] = true;
-        });
-
-        setLikedPosts(likedPostsMap);
-      } catch (error) {
-        console.log(error);
-      }
-    };
     fetchLikedPosts();
   }, []);
 
@@ -174,9 +173,8 @@ const Feeds = ({
           ...prevPost,
           comments: [...prevPost.comments, newComment],
         }));
-
-        await fetchAllPosts();
       }
+      fetchAllPosts();
       setComment("");
     } catch (error) {
       console.log("Error posting comment:", error);
@@ -221,8 +219,8 @@ const Feeds = ({
 
   return (
     <>
-      <div className="px-4 lg:px-10 pt-14 lg:pt-0 flex flex-col gap-8 w-full">
-        <div className="hidden pt-6  lg:flex gap-2 items-center justify-between border-b dark:border-b-[#1d1d1d] border-b-[#E0E0E0] w-full pb-2">
+      <div className="px-4 lg:px-10 2xl:px-24 pt-14 lg:pt-0 flex flex-col gap-8 w-full">
+        <div className="hidden pt-6   lg:flex gap-2 items-center justify-between border-b dark:border-b-[#1d1d1d] border-b-[#E0E0E0] w-full pb-2">
           For you
           <div className="lg:block  xl:hidden">
             <button ref={anchorRef} onClick={showNotifications}>

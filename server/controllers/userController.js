@@ -11,6 +11,7 @@ import Recipe from "../models/recipeModel.js";
 import path from "path";
 import * as fs from "node:fs/promises";
 import { verifyEmailToken } from "./authController.js";
+import { sendEmail } from "../config/notifications.js";
 
 // create user
 const __dirname = path.resolve();
@@ -137,7 +138,7 @@ export const updateUser = async (req, res) => {
     const updatedData = {
       ...(firstName && { firstName }),
       ...(lastName && { lastName }),
-      ...(email && { email }),
+      ...(email && { email, isVerified: false }),
       ...(password && { password: hashPassword }),
     };
 
@@ -148,6 +149,15 @@ export const updateUser = async (req, res) => {
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
     }
+    if (email) {
+      const emailResponse = await verifyEmailToken(req);
+      if (emailResponse.status !== 200) {
+        return res
+          .status(emailResponse.status)
+          .json({ message: emailResponse.message });
+      }
+    }
+
     return res
       .status(200)
       .json({ message: "User updated successfully", user: updatedUser });

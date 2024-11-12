@@ -12,6 +12,9 @@ const ChangeNameForm = ({
   showSuccess,
   success,
   showInput,
+  nameError,
+  showNameError,
+  setIsChangingName,
 }) => {
   return (
     <div className="flex flex-col items-start gap-4">
@@ -22,6 +25,15 @@ const ChangeNameForm = ({
             onSubmit={updateAccount}
             className="flex flex-col  items-start lg:flex-row lg:items-center gap-3 lg:gap-8"
           >
+            {showNameError && (
+              <div
+                className={`text-red-500 text-sm mt-1 transition-opacity ease-in-out  duration-1000 ${
+                  showNameError ? "opacity-100" : "opacity-0"
+                }`}
+              >
+                {nameError}
+              </div>
+            )}
             <TextInput
               label={"First name"}
               className="w-64"
@@ -60,13 +72,25 @@ const ChangeNameForm = ({
           )}
         </div>
       )}
-
-      <button
-        onClick={showInput}
-        className="dark:text-blue-400 text-blue-700 text-sm"
-      >
-        {isChangingName ? "Cancel" : "Change name"}
-      </button>
+      {isChangingName ? (
+        <button
+          onClick={() => {
+            setIsChangingName(false);
+            setFirstName(userData.firstName);
+            setLastName(userData.lastName);
+          }}
+          className="dark:text-blue-400 text-blue-700 text-sm"
+        >
+          Cancel
+        </button>
+      ) : (
+        <button
+          onClick={showInput}
+          className="dark:text-blue-400 text-blue-700 text-sm"
+        >
+          Change Name
+        </button>
+      )}
     </div>
   );
 };

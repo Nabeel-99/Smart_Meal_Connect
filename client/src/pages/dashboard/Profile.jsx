@@ -90,7 +90,7 @@ const Profile = ({
     fetchUserPosts();
   }, [userId]);
   return (
-    <div className="flex flex-col  h-full gap-8 pt-28 px-6 md:px-10 dark:text-white lg:px-20">
+    <div className="flex flex-col   h-full gap-8 pt-28 px-6 md:px-10 dark:text-white lg:px-20">
       {loading ? (
         <div className="flex  flex-col gap-4 items-center justify-center h-full w-full">
           <ProfileSkeleton />

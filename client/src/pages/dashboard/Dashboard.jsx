@@ -79,7 +79,7 @@ const Dashboard = ({
 
   return (
     <div className="flex flex-col h-full gap-8 pt-28 px-6 lg:px-10">
-      <div className="flex flex-col xl:flex-row lg:items-center gap-4 w-full lg:gap-10">
+      <div className="flex flex-col xl:flex-row lg:items-center gap-4 w-full lg:gap-10 2xl:gap-0">
         <IngredientsMetricsButtons />
         <CaloriesBar
           caloriePercentage={caloriePercentage}

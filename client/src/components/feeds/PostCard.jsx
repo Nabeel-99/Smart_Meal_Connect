@@ -92,7 +92,7 @@ const PostCard = ({
         />
         <Link
           to={`/recipe-details/${post.posts._id}`}
-          className="text-sm text-nowrap text-gray-400 hover:text-black dark:hover:text-white"
+          className="text-sm text-nowrap text-gray-600 hover:text-black dark:hover:text-white"
         >
           View full details
         </Link>

@@ -59,7 +59,7 @@ const ChangePasswordForm = ({
               id={"new-password"}
               type={isPasswordVisible ? "text" : "password"}
               labelClassName="lg:text-sm"
-              className="lg:w-72 pr-10"
+              className="lg:w-full pr-10"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -79,7 +79,7 @@ const ChangePasswordForm = ({
               id={"confirm-password"}
               type={isConfirmPasswordVisible ? "text" : "password"}
               labelClassName="lg:text-sm"
-              className="lg:w-72 pr-10"
+              className="lg:w-full pr-10"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />

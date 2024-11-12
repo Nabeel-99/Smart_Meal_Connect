@@ -16,6 +16,7 @@ const PreferenceSection = ({
   setIsPreferences,
   setIsAccount,
   fetchUserDashboardRecipes,
+  theme,
 }) => {
   const [isChangingPreferences, setIsChangingPreferences] = useState(false);
   const [gender, setGender] = useState(userMetrics.gender || "");
@@ -68,17 +69,15 @@ const PreferenceSection = ({
       console.log(response.data);
 
       if (response.status === 200) {
-        await fetchUserDashboardRecipes();
+        // await fetchUserDashboardRecipes();
         setIsChangingPreferences(false);
-        setIsPreferences(true);
-        setIsAccount(false);
         setPreferenceSuccess("Preferences updated successfully.");
         setShowPreferenceSuccess(true);
         setTimeout(() => {
           setShowPreferenceSuccess(false);
           setPreferenceSuccess("");
         }, 3000);
-        await refreshSideMenu();
+        // await refreshSideMenu();
       }
     } catch (error) {
       console.log(error);
@@ -142,6 +141,7 @@ const PreferenceSection = ({
             value={gender}
             onChange={(e) => setGender(e.target.value)}
             disabled={!isChangingPreferences}
+            theme={theme}
           />
           <TextInput
             label={"Height (cm)"}
@@ -167,6 +167,7 @@ const PreferenceSection = ({
             disabled={!isChangingPreferences}
             value={goal}
             onChange={(e) => setGoal(e.target.value)}
+            theme={theme}
           />
 
           <TextInput
@@ -194,6 +195,7 @@ const PreferenceSection = ({
             disabled={!isChangingPreferences}
             value={exerciseLevel}
             onChange={(e) => setExerciseLevel(e.target.value)}
+            theme={theme}
           />
         </div>
         <div className=" flex flex-col gap-3">

@@ -9,8 +9,8 @@ const SelectedPantryItems = ({
   return (
     <div
       className={` rounded-md dark:bg-[#0f0f0f] bg-[#dadada] ${
-        isEditingPantry ? "h-96 max-h-96" : "h-4/5"
-      }  md:h-full lg:max-h-[650px] p-8 w-full border dark:border-[#1d1d1d] border-[#e0e0e0] overflow-auto  `}
+        isEditingPantry ? "h-96 max-h-96 xl:w-full" : "h-4/5 xl:w-3/4"
+      }  md:h-full lg:max-h-[650px] p-8 w-full  border dark:border-[#1d1d1d] border-[#e0e0e0] overflow-auto  hide-scrollbar `}
     >
       {" "}
       <div
