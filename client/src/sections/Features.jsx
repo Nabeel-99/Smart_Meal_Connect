@@ -1,19 +1,27 @@
 import React, { useEffect } from "react";
 import { FaDiceD6, FaKeyboard } from "react-icons/fa6";
 import formImg from "../assets/form-lg.png";
+import formImgLight from "../assets/form-lg-light.png";
 import formImgMobile from "../assets/form-mobile.png";
+import formImgMobileLight from "../assets/form-mobile-light.png";
 import bgAlgorithm from "../assets/algorithm-bg.png";
+import bgAlgorithmLight from "../assets/algorithm-bg-light.png";
 import bgAlgorithmMobile from "../assets/algorithm-bg-mobile.png";
+import bgAlgorithmMobileLight from "../assets/algorithm-bg-mobile-light.png";
 import formMetrics from "../assets/form-metrics.png";
+import formMetricsLight from "../assets/form-metrics-light.png";
 import formMetricsMobile from "../assets/form-metrics-mobile.png";
+import formMetricsMobileLight from "../assets/form-metrics-mobile-light.png";
 import personLG from "../assets/person-lg.png";
 import personMobile from "../assets/person-small.png";
 import { Link, useLocation } from "react-router-dom";
-const Features = () => {
+import useTheme from "../components/UseTheme";
+const Features = ({ theme }) => {
+  const appTheme = useTheme(theme);
   return (
     <div
       id="features"
-      className="pt-14 flex flex-col items-center justify-start w-full pb-20 "
+      className="pt-14 flex  flex-col items-center justify-start w-full pb-20 "
     >
       <h1 className="text-[16px] lg:text-xl tracking-[5px] font-medium">
         FEATURES
@@ -24,7 +32,7 @@ const Features = () => {
             Ingredient-Based
             <span className="block"> Recipe Generation</span>
           </p>
-          <p className="text-[#bababa] text-sm md:text-lg">
+          <p className="dark:text-[#bababa] text-sm md:text-lg">
             Meals are generated based on{" "}
             <span className="text-[#ffffff]">provided items</span>
             <span className="md:block">
@@ -44,9 +52,13 @@ const Features = () => {
         </div>
         {/* bigger screen */}
         <div className="hidden max-w-[568px] max-h-[635px] md:block relative ">
-          <img src={formImg} alt="" className="lg:h-2/2 lg:ml-28 relative" />
-          <div className="absolute bottom-10 left-36  gap-8">
-            <p className="text-[#A3A3A3] text-sm lg:text-xl">
+          <img
+            src={appTheme === "dark" ? formImg : formImgLight}
+            alt=""
+            className="lg:h-2/2 lg:ml-28 relative"
+          />
+          <div className="absolute dark:bottom-10 bottom-5  left-36  gap-8">
+            <p className="dark:text-[#A3A3A3] text-sm lg:text-lg">
               The Algorithm optimizes the ingredient-{" "}
               <span className="block">
                 matching, suggesting the recipes based on{" "}
@@ -56,7 +68,7 @@ const Features = () => {
             <div className="pt-8">
               <Link
                 to={"/ingredients-based"}
-                className="bg-[#B678F0]  rounded-lg px-8 py-2 text-lg "
+                className="bg-[#B678F0] text-white rounded-lg px-8 py-2 text-lg "
               >
                 Test
               </Link>
@@ -65,9 +77,13 @@ const Features = () => {
         </div>
         {/* mobile screen  */}
         <div className="md:hidden max-w-[336px] max-h-[442px] relative ">
-          <img src={formImgMobile} alt="" className="relative h-full" />
+          <img
+            src={appTheme === "dark" ? formImgMobile : formImgMobileLight}
+            alt=""
+            className="relative h-full"
+          />
           <div className="absolute bottom-5 left-4  gap-8">
-            <p className="text-[#A3A3A3] text-sm lg:text-xl">
+            <p className="dark:text-[#A3A3A3] text-sm ">
               The Algorithm optimizes the ingredient-{" "}
               <span className="block">
                 matching, suggesting the recipes based on{" "}
@@ -77,7 +93,7 @@ const Features = () => {
             <div className="pt-4">
               <Link
                 to={"/ingredients-based"}
-                className="bg-[#B678F0]  rounded-lg px-6 py-2 text-sm "
+                className="bg-[#B678F0] text-white  rounded-lg px-6 py-2 text-sm "
               >
                 Test
               </Link>
@@ -104,8 +120,11 @@ const Features = () => {
             ingredients. <span className="lg:block"> </span>{" "}
           </p>
         </div>
-        <div className="absolute  top-56 lg:top-36 -z-10">
-          <img src={bgAlgorithm} alt="" />
+        <div className="absolute  top-56 lg:top-36 z-10">
+          <img
+            src={appTheme === "dark" ? bgAlgorithm : bgAlgorithmLight}
+            alt=""
+          />
         </div>
       </div>
       {/* mobile screen */}
@@ -120,11 +139,16 @@ const Features = () => {
             to find your perfect meal.{" "}
           </p>
         </div>
-        <div className="absolute top-52  -z-10">
-          <img src={bgAlgorithmMobile} alt="" />
+        <div className="absolute top-52 ">
+          <img
+            src={
+              appTheme === "dark" ? bgAlgorithmMobile : bgAlgorithmMobileLight
+            }
+            alt=""
+          />
         </div>
-        <div className="flex flex-col gap-4 ">
-          <h1 className="text-xl font-bold"> Pantry Integration</h1>
+        <div className="flex flex-col gap-4">
+          <h1 className="text-xl font-bold "> Pantry Integration</h1>
           <p className="text-sm">
             Easily connect your pantry for recipe ideas customized to your
             ingredients. <span className="block"> </span>{" "}
@@ -139,7 +163,7 @@ const Features = () => {
             Body Metrics-Based{" "}
             <span className="block">Meal Recommendations</span>{" "}
           </h1>
-          <p className="text-[#bababa] ">
+          <p className="dark:text-[#bababa] ">
             Using body metrics such as age, weight, height,{" "}
             <span className="block">
               {" "}
@@ -150,12 +174,12 @@ const Features = () => {
         </div>
         <div className="relative">
           <img
-            src={formMetrics}
+            src={appTheme === "dark" ? formMetrics : formMetricsLight}
             alt=""
             className="max-h-[700px] max-w-[900px] px-20 xl:px-0"
           />
           <div className="absolute bottom-10 left-28 xl:left-8  gap-8">
-            <p className="text-[#A3A3A3] text-sm lg:text-xl">
+            <p className="dark:text-[#A3A3A3] text-sm lg:text-xl">
               The Algorithm creates personalized daily meals,{" "}
               <span className="block">
                 supporting goals like weight loss, muscle gains, or overall
@@ -165,7 +189,7 @@ const Features = () => {
             <div className="pt-8">
               <Link
                 to={"/metrics-based"}
-                className="bg-[#B678F0]  rounded-lg px-8 py-2 text-lg "
+                className="bg-[#B678F0] text-white rounded-lg px-8 py-2 text-lg "
               >
                 Test
               </Link>
@@ -183,7 +207,7 @@ const Features = () => {
             Body Metrics-Based{" "}
             <span className="block">Meal Recommendations</span>{" "}
           </h1>
-          <p className="text-[#bababa] ">
+          <p className="dark:text-[#bababa] ">
             Using body metrics such as age, weight, height,{" "}
             <span className="">
               {" "}
@@ -194,7 +218,9 @@ const Features = () => {
         </div>
         <div className="relative">
           <img
-            src={formMetricsMobile}
+            src={
+              appTheme === "dark" ? formMetricsMobile : formMetricsMobileLight
+            }
             alt=""
             className="max-h-[700px] max-w-[353px] px-2"
           />
@@ -209,7 +235,7 @@ const Features = () => {
             <div className="pt-8">
               <Link
                 to={"/metrics-based"}
-                className="bg-[#B678F0]  rounded-lg px-8 py-2 text-lg "
+                className="bg-[#B678F0] text-white  rounded-lg px-8 py-2 text-lg "
               >
                 Test
               </Link>

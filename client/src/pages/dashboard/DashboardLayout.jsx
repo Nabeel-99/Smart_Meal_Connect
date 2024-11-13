@@ -133,7 +133,24 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
         { withCredentials: true }
       );
       if (response.status === 200) {
-        setDashboardRecipes(response.data);
+        const filteredBreakfast = (
+          response.data.recipes?.breakfast || []
+        ).filter((meal) => meal !== null);
+        const filteredLunch = (response.data.recipes?.lunch || []).filter(
+          (meal) => meal !== null
+        );
+        const filteredDinner = (response.data.recipes?.dinner || []).filter(
+          (meal) => meal !== null
+        );
+
+        setDashboardRecipes({
+          ...response.data,
+          recipes: {
+            breakfast: filteredBreakfast,
+            lunch: filteredLunch,
+            dinner: filteredDinner,
+          },
+        });
       }
     } catch (error) {
       console.log(error);
@@ -198,7 +215,6 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
       setShowVerifyEmail(true);
     }
   }, [userData?.isVerified]);
-  console.log("user verified?", userData);
 
   useEffect(() => {
     fetchUserPosts();

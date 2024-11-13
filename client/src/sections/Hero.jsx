@@ -7,16 +7,19 @@ import GridCard from "../components/viewCards/GridCard";
 
 const Hero = () => {
   return (
-    <div id="/" className="flex flex-col gap-2  justify-center items-center">
+    <div
+      id="/"
+      className="bg-hero h-full pt-44 flex flex-col gap-2  justify-center items-center"
+    >
+      <div className="absolute animate-gradient-pulse  w-[1200px] h-full flex items-center justify-center bg-gradient-to-t from-[#57a8ff33]  to-[#57a8ff55] dark:from-[#0e222e66] dark:to-[#11263399] rounded-full blur-3xl opacity-30 z-0"></div>
       <h1 className="text-4xl md:text-6xl font-bold text-center tracking-tighter">
         Smart <span className="block">Meal Connect</span>{" "}
       </h1>
-      <p className="text-center px-10 lg:px-0 text-sm lg:text-xl text-[#A3A3A3]">
+      <p className="text-center px-10 lg:px-0 text-sm lg:text-xl dark:text-[#A3A3A3]">
         Discover personalized recipes and connect with a community{" "}
         <span className="lg:block">to share your favorite dishes</span>
       </p>
-      <div className="relative pt-10  bg-gradient-to-b  from-[#08090a] to-[#02031A] w-full pb-9">
-        <div className="absolute -bottom-10 h-44 w-full bg-gradient-to-t from-[#08090a]  to-[#02031A] "></div>
+      <div className="relative pt-10  bg-gradient-to-b   w-full pb-9">
         <div className="flex flex-col md:flex-row items-center justify-center gap-10 px-8 lg:px-0">
           <GridCard
             header={"Get recipes based on Ingredients"}

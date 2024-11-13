@@ -111,7 +111,7 @@ const App = () => {
   return (
     <div
       style={{ paddingTop: "env(safe-area-inset-top)" }}
-      className="flex  flex-col h-full w-screen  gap-10 "
+      className="flex  flex-col h-full w-screen   dark:bg-[#0c0c0c] dark:text-white bg-[#F7F7F8] text-black "
     >
       {/* dark:bg-[#0c0c0c] bg-[#F7F7F8] text-black dark:text-white" */}
       <Router>
@@ -122,7 +122,10 @@ const App = () => {
 
         <Routes>
           <Route path="/layout" element={<LayoutSkeleton />} />
-          <Route path="/" element={<Home userData={userData} />} />
+          <Route
+            path="/"
+            element={<Home userData={userData} theme={theme} />}
+          />
           <Route path="/sign-up" element={<SignUp />} />
           <Route
             path="/login"

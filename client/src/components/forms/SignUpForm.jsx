@@ -49,9 +49,6 @@ const SignUpForm = ({
           // className="lg:w-64"
           onChange={(e) => setFirstName(e.target.value)}
           labelClassName="lg:text-lg"
-          bgColor="bg-[#171717]"
-          borderColor="border-[#343333]"
-          applyDarkMode={true}
         />
         <TextInput
           label={"Last name"}
@@ -62,9 +59,6 @@ const SignUpForm = ({
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
           labelClassName="lg:text-lg"
-          bgColor="bg-[#171717]"
-          borderColor="border-[#343333]"
-          applyDarkMode={true}
         />
         {/* </div> */}
 
@@ -77,9 +71,6 @@ const SignUpForm = ({
           onChange={(e) => setEmail(e.target.value)}
           labelClassName="lg:text-lg"
           className="lg:w-full"
-          bgColor="bg-[#171717]"
-          borderColor="border-[#343333]"
-          applyDarkMode={true}
         />
         <div className="relative">
           <TextInput
@@ -91,9 +82,6 @@ const SignUpForm = ({
             onChange={(e) => setPassword(e.target.value)}
             labelClassName="lg:text-lg"
             className="lg:w-full"
-            bgColor="bg-[#171717]"
-            borderColor="border-[#343333]"
-            applyDarkMode={true}
           />
           <button
             type="button"
@@ -103,7 +91,7 @@ const SignUpForm = ({
             {isPasswordVisible ? <FaEyeSlash /> : <FaEye />}
           </button>
         </div>
-        <div className="text-sm text-[#a3a3a3]">
+        <div className="text-sm dark:text-[#a3a3a3]">
           Password must meet the following criteria:
           <ul className="list-disc pl-5">
             <li>At least 8 characters long</li>
@@ -119,12 +107,10 @@ const SignUpForm = ({
           <button
             type="submit"
             disabled={loading}
-            className={`bg-[#B678F0] py-2 text-center flex items-center justify-center w-full  rounded-lg ${
-              loading ? "cursor-not-allowed" : ""
-            }`}
+            className="bg-[#B678F0] transition-all duration-300 hover:bg-[#a977d9] py-2 text-center flex text-white items-center justify-center w-full lg:w-96 rounded-lg"
           >
             {loading ? (
-              <AiOutlineLoading3Quarters className="spin text-2xl" />
+              <AiOutlineLoading3Quarters className="spin text-2xl " />
             ) : (
               "Create account"
             )}
@@ -134,7 +120,12 @@ const SignUpForm = ({
 
       <div className="flex gap-2 pt-4">
         <p>Already have an account?</p>
-        <Link to={"/login"}>Log in</Link>
+        <Link
+          to={"/login"}
+          className="text-[#8553b6] dark:text-[#bd94e6] dark:hover:text-[#d7b7f7] hover:text-[#a46adf]  font-bold"
+        >
+          Login
+        </Link>
       </div>
     </div>
   );

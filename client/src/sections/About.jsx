@@ -1,8 +1,12 @@
 import React from "react";
 import metricsRecipe from "../assets/metrics-recipe.png";
+import metricsRecipeLight from "../assets/metrics-recipe-light.png";
 import metricsRecipeMobile from "../assets/metrics-recipe-mobile.png";
+import metricsRecipeMobileLight from "../assets/metrics-recipe-mobile-light.png";
 import { Link } from "react-router-dom";
-const About = () => {
+import useTheme from "../components/UseTheme";
+const About = ({ theme }) => {
+  const appTheme = useTheme(theme);
   return (
     <div
       id="about"
@@ -53,13 +57,23 @@ const About = () => {
         </div>
       </div>
       <div className="hidden md:block">
-        <img src={metricsRecipe} alt="" className="max-h-[600px] px-10" />
+        <img
+          src={appTheme === "dark" ? metricsRecipe : metricsRecipeLight}
+          alt=""
+          className="max-h-[600px] px-10"
+        />
       </div>
       <div className="md:hidden px-8">
-        <img src={metricsRecipeMobile} alt="" className="" />
+        <img
+          src={
+            appTheme === "dark" ? metricsRecipeMobile : metricsRecipeMobileLight
+          }
+          alt=""
+          className=""
+        />
       </div>
       {/* CTA */}
-      <div className="flex flex-col px-8 gap-20 md:flex-row items-start md:items-center border-b border-b-[#343333] pt-20 pb-20 w-full md:justify-between md:px-16  xl:justify-around bg-gradient-to-b from-[#08090a] to-[#161616]">
+      <div className="flex flex-col px-8 gap-20 md:flex-row items-start md:items-center border-b border-b-[#d1d1d1] dark:border-b-[#343333] pt-20 pb-20 w-full md:justify-between md:px-16  xl:justify-around bg-gradient-to-b from-[#dadada] to-[#e8e8e8] dark:from-[#08090a] dark:to-[#161616]">
         <div>
           <h2 className="text-2xl  md:text-5xl xl:text-6xl tracking-tighter">
             Plan the present. <span className="block">Cook Later.</span>
@@ -68,7 +82,7 @@ const About = () => {
         <div>
           <Link
             to={"/login"}
-            className="bg-[#e6e6e6] text-black rounded-md px-4 py-2"
+            className="dark:bg-[#e6e6e6] bg-black text-white hover:bg-[#252526] dark:text-black rounded-md px-4 py-2"
           >
             Get Started
           </Link>

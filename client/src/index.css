@@ -5,19 +5,26 @@
 @tailwind utilities;
 
 :root {
+  --background-color: #f7f7f8; /* Light mode default */
+  --text-color: #000000; /* Light mode default */
+}
+
+.dark {
+  --background-color: #0c0c0c; /* Dark mode background */
+  --text-color: #ffffff; /* Dark mode text color */
+}
+
+html,
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  /* color-scheme: light dark; */
-  /* color: rgba(255, 255, 255, 0.87); */
-  background-color: #08090a;
-  color: #ffffff;
-  font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* padding-top: calc(env(safe-area-inset-top) + 16px); */
-  /* scroll-behavior: smooth; */
 }
 .hide-scrollbar {
   scrollbar-width: none;
@@ -25,8 +32,39 @@
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
-/* Center the loader */
+.bg-hero {
+  position: relative;
+  background-image: url("./assets/bghero.svg");
+}
 
+.bg-hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("./assets/bghero.svg");
+  filter: brightness(2);
+}
+
+@keyframes gradient-pulse {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+.animate-gradient-pulse {
+  background-size: 200% 200%;
+  animation: gradient-pulse 5s ease-in-out infinite;
+}
+/* Center the loader */
 /* Spinning Animation */
 @keyframes spin-pulse {
   0% {
@@ -107,6 +145,17 @@ body {
   max-width: 1200px;
   overflow: auto;
 }
+@media (min-width: 1600px) {
+  .container {
+    max-width: 1400px; /* Restrict the width of the content */
+    margin-left: auto;
+    margin-right: auto; /* Center the content */
+  }
+}
+/* @media (min-width: 1600px) {
+  body {
+    max-width: 1400px; /* Restrict width for very large screens */
+/* } */
 
 /* body::-webkit-scrollbar {
   display: none;
