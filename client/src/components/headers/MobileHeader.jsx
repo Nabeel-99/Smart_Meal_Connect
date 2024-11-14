@@ -63,25 +63,6 @@ const MobileHeader = ({
             )}
           </button>
         )}
-
-        {location.pathname === "/feeds" && (
-          <button
-            ref={anchorRef}
-            onClick={showNotifications}
-            className="fixed right-5"
-          >
-            <FaRegHeart className="text-2xl" />
-          </button>
-        )}
-        {viewNotifications && (
-          <PopperComponent
-            viewPopper={viewNotifications}
-            anchorRef={anchorRef}
-            setViewPopper={setViewNotifications}
-          >
-            <MobileNotificationCard />
-          </PopperComponent>
-        )}
       </div>
       <div className="flex items-center justify-between w-full">
         <div className="mb-1 text-lg">{getCurrentView()}</div>

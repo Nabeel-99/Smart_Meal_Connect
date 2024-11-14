@@ -24,11 +24,15 @@ import axios from "axios";
 import PantryItems from "./pages/PantryItems";
 import DashboardLayout from "./pages/dashboard/DashboardLayout";
 import VerifyEmail from "./pages/authPages/VerifyEmail";
-import { IonApp, IonContent, setupIonicReact } from "@ionic/react";
+import { PushNotifications } from "@capacitor/push-notifications";
 import { StatusBar } from "@capacitor/status-bar";
-import BASE_URL from "../apiConfig";
+import BASE_URL, { isNative } from "../apiConfig";
 import LayoutSkeleton from "./components/LayoutSkeleton";
-setupIonicReact();
+/**
+ * @typedef {import('@capacitor/push-notifications').PushNotificationSchema} PushNotificationSchema
+ * @typedef {import('@capacitor/push-notifications').Token} Token
+ * @typedef {import('@capacitor/push-notifications').ActionPerformed} ActionPerformed
+ */
 const App = () => {
   const [userData, setUserData] = useState(null);
   const [isFetching, setIsFetching] = useState(false);
@@ -78,6 +82,69 @@ const App = () => {
       systemMode();
     }
   };
+
+  useEffect(() => {
+    console.log("Initializing HomePage");
+    if (isNative && userData) {
+      // Request permission to use push notifications
+      // iOS will prompt user and return if they granted permission or not
+      // Android will just grant without prompting
+      PushNotifications.requestPermissions().then((result) => {
+        if (result.receive === "granted") {
+          // Register with Apple / Google to receive push via APNS/FCM
+          PushNotifications.register();
+        } else {
+          // Show some error
+        }
+      });
+
+      // On success, we should be able to receive notifications
+      PushNotifications.addListener(
+        "registration",
+        /** @param {Token} token */ (token) => {
+          saveToken(token.value);
+          console.log("push registration token", token.value);
+        }
+      );
+
+      // Some issue with our setup and push will not work
+      PushNotifications.addListener("registrationError", (error) => {
+        alert("Error on registration: " + JSON.stringify(error));
+      });
+
+      // Show us the notification payload if the app is open on our device
+      PushNotifications.addListener(
+        "pushNotificationReceived",
+        /** @param {PushNotificationSchema} notification */ (notification) => {
+          alert("Push received: " + JSON.stringify(notification));
+          console.log("push received", JSON.stringify(notification));
+        }
+      );
+
+      // Method called when tapping on a notification
+      PushNotifications.addListener(
+        "pushNotificationActionPerformed",
+        /** @param {ActionPerformed} notification */ (notification) => {
+          alert("Push action performed: " + JSON.stringify(notification));
+          console.log("push action", JSON.stringify(notification));
+        }
+      );
+    }
+  }, []);
+  const saveToken = async (token) => {
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/api/auth/save-notification-token`,
+        {
+          fcmToken: token,
+        },
+        { withCredentials: true }
+      );
+      console.log("response", response.data);
+    } catch (error) {
+      console.log("error saving token", error);
+    }
+  };
   useEffect(() => {
     if (theme === "system") {
       systemMode();
@@ -107,6 +174,12 @@ const App = () => {
 
   useEffect(() => {
     authenticateUser();
+  }, []);
+
+  useEffect(() => {
+    if (userData) {
+      window.location = "/dashboard";
+    }
   }, []);
   return (
     <div

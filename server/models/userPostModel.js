@@ -12,10 +12,7 @@ const userPostSchema = new mongoose.Schema(
       ref: "recipe",
       required: true,
     },
-    profilePicture: {
-      type: String,
-      required: false,
-    },
+
     likes: {
       type: Map,
       of: Boolean,

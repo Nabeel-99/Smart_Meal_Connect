@@ -5,10 +5,15 @@ import AutoHideSnackbar from "../../components/popupCards/AutoHideSnackbar";
 import UserFeedsCard from "../../components/feeds/UserFeedsCard";
 import PostDetailsModal from "../../components/feeds/PostDetailsModal";
 import BASE_URL from "../../../apiConfig";
+import NotificationCard from "../../components/notificationCards/NotificationCard";
+import MobileNotificationCard from "../../components/notificationCards/MobileNotificationCard";
+import PopperComponent from "../../components/popupCards/PopperComponent";
 
 const Feeds = ({
   anchorRef,
   showNotifications,
+  viewNotifications,
+  setViewNotifications,
   currentUserId,
   showPostModal,
   theme,
@@ -18,6 +23,7 @@ const Feeds = ({
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [likedPosts, setLikedPosts] = useState({});
+  const [likers, setLikers] = useState([]);
   const [comment, setComment] = useState("");
   const [snackbarMsg, setSnackbarMsg] = useState("");
   const [displaySnackbar, setDisplaySnackbar] = useState(false);
@@ -145,6 +151,8 @@ const Feeds = ({
           post.postId === postId ? { ...post, likesCount } : post
         )
       );
+
+      console.log("response likes", response.data);
     } catch (error) {
       console.log(error);
     }
@@ -217,26 +225,67 @@ const Feeds = ({
     }
   };
 
+  const fetchLikeNotifications = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/api/users/likers`, {
+        withCredentials: true,
+      });
+      console.log("response", response.data);
+      setLikers(response.data.likers);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchLikeNotifications();
+  }, []);
   return (
     <>
       <div className="px-4 lg:px-10 2xl:px-24 pt-14 lg:pt-0 flex flex-col gap-8 w-full">
         <div className="hidden pt-6   lg:flex gap-2 items-center justify-between border-b dark:border-b-[#1d1d1d] border-b-[#E0E0E0] w-full pb-2">
           For you
-          <div className="lg:block  xl:hidden">
-            <button ref={anchorRef} onClick={showNotifications}>
-              <FaRegHeart className="text-2xl w-6" />
-            </button>
-          </div>
         </div>
-        <UserFeedsCard
-          loading={loading}
-          posts={posts}
-          likeRecipe={likeRecipe}
-          openModal={openModal}
-          showPostModal={showPostModal}
-          likedPosts={likedPosts}
-          fetchAllPosts={fetchAllPosts}
-        />
+        <div className="block fixed z-50 top-6 right-10  xl:hidden">
+          <button ref={anchorRef} onClick={showNotifications}>
+            <FaRegHeart className="text-2xl w-6" />
+          </button>
+        </div>
+        <div className="flex w-full">
+          <UserFeedsCard
+            loading={loading}
+            posts={posts}
+            likeRecipe={likeRecipe}
+            openModal={openModal}
+            showPostModal={showPostModal}
+            likedPosts={likedPosts}
+            fetchAllPosts={fetchAllPosts}
+            viewNotifications={viewNotifications}
+          />
+          {/* notification card */}
+          <div className="mt-16 ">
+            <NotificationCard likers={likers} />
+          </div>
+          {/* {location.pathname === "/feeds" && (
+            <button
+              ref={anchorRef}
+              onClick={showNotifications}
+              className="fixed right-5"
+            >
+              <FaRegHeart className="text-2xl" />
+            </button>
+          )} */}
+          {viewNotifications && (
+            <PopperComponent
+              viewPopper={viewNotifications}
+              anchorRef={anchorRef}
+              setViewPopper={setViewNotifications}
+            >
+              <MobileNotificationCard likers={likers} />
+            </PopperComponent>
+          )}
+        </div>
+
         {/* <div ref={spinnerRef}>loading here</div> */}
       </div>
 

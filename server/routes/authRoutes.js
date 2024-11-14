@@ -14,6 +14,7 @@ import {
   getUserData,
   loginUser,
   logout,
+  saveNotificationToken,
   updateUser,
 } from "../controllers/userController.js";
 
@@ -29,5 +30,6 @@ router.post("/reset-password", resetPassword);
 router.get("/verify-email/:token", verifyEmail);
 router.post("/resend-verification-email", resendVerificationEmail);
 router.get("/", verifyUser, getUserData);
+router.post("/save-notification-token", verifyUser, saveNotificationToken);
 
 export default router;

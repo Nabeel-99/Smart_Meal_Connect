@@ -5,6 +5,8 @@ import EmptyPosts from "./EmptyPosts";
 import PostCard from "./PostCard";
 import AutoHideSnackbar from "../popupCards/AutoHideSnackbar";
 import PostCardSkeleton from "../PostCardSkeleton";
+import MobileNotificationCard from "../notificationCards/MobileNotificationCard";
+import PopperComponent from "../popupCards/PopperComponent";
 
 const UserFeedsCard = ({
   loading,
@@ -23,7 +25,7 @@ const UserFeedsCard = ({
           <PostCardSkeleton />
         </div>
       ) : (
-        <div className="flex flex-col gap-4 items-center w-full">
+        <div className="flex flex-col gap-4 items-center  pb-20 w-full">
           {posts.length > 0 ? (
             posts.map((post, index) => {
               const images = post.posts.images || [];
@@ -46,11 +48,6 @@ const UserFeedsCard = ({
           )}
         </div>
       )}
-
-      {/* notification card */}
-      <div className="mt-16 ">
-        <NotificationCard />
-      </div>
     </div>
   );
 };

@@ -100,6 +100,24 @@ export const getUserData = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+// save notification token
+export const saveNotificationToken = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const { fcmToken } = req.body;
+    user.fcmToken = fcmToken;
+    await user.save();
+    console.log("token saved successfully");
+    return res.status(200).json({ message: "Notification token saved" });
+  } catch (error) {
+    console.log("error saving token", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
 // logout user
 export const logout = (req, res) => {
   try {

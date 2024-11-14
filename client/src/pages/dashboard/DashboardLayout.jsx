@@ -185,6 +185,8 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
         dashboardRecipes={dashboardRecipes}
         anchorRef={anchorRef}
         showNotifications={showNotifications}
+        viewNotifications={viewNotifications}
+        setViewNotifications={setViewNotifications}
         userData={userData}
         showPostModal={showPostModal}
         theme={theme}

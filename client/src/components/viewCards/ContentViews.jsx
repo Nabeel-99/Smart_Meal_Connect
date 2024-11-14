@@ -39,6 +39,8 @@ const ContentViews = ({
   setShowMetricsPrompt,
   fetchUserDashboardRecipes,
   fetchingInProgress,
+  viewNotifications,
+  setViewNotifications,
 }) => {
   return (
     <Routes>
@@ -69,6 +71,8 @@ const ContentViews = ({
           <Feeds
             anchorRef={anchorRef}
             showNotifications={showNotifications}
+            viewNotifications={viewNotifications}
+            setViewNotifications={setViewNotifications}
             currentUserId={userData._id}
             showPostModal={showPostModal}
             theme={theme}

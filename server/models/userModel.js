@@ -18,6 +18,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    profilePicture: {
+      type: String,
+      required: false,
+    },
     bodyMetrics: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "metrics",
@@ -35,6 +39,10 @@ const userSchema = new mongoose.Schema(
     isVerified: {
       type: Boolean,
       default: false,
+    },
+    fcmToken: {
+      type: String,
+      required: false,
     },
     isFake: {
       type: Boolean,

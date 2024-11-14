@@ -13,7 +13,7 @@
   --background-color: #0c0c0c; /* Dark mode background */
   --text-color: #ffffff; /* Dark mode text color */
 }
-
+/* width: calc(100vw - (var(--page-padding-left) / 2) - (var(--page-padding-right) / 2)); */
 html,
 body {
   background-color: var(--background-color);

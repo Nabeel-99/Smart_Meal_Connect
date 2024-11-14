@@ -13,6 +13,7 @@ import {
   deletePost,
   getAllPosts,
   getLikedPosts,
+  getUserPostNotificationLikers,
   getUserPosts,
   likePost,
   postComment,
@@ -54,6 +55,7 @@ router.post("/delete-post", verifyUser, deletePost);
 router.get("/posts", verifyUser, getAllPosts);
 router.post("/like", verifyUser, likePost);
 router.get("/liked-posts", verifyUser, getLikedPosts);
+router.get("/likers", verifyUser, getUserPostNotificationLikers);
 router.post("/post-comment", verifyUser, postComment);
 router.post("/delete-comment", verifyUser, deleteComment);
 router.get("/profile", verifyUser, getUserPosts);

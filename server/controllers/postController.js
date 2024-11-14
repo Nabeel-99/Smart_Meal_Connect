@@ -4,6 +4,7 @@ import User from "../models/userModel.js";
 import UserPost from "../models/userPostModel.js";
 import * as fs from "node:fs/promises";
 import { validatePost, validateUpdatePost } from "../utils/validation.js";
+import { sendLikesNotification } from "../config/notifications.js";
 // post recipe
 const __dirname = path.resolve();
 // export const postRecipe = async (req, res) => {
@@ -349,15 +350,55 @@ export const likePost = async (req, res) => {
       post.likes.delete(userId); //unlike
     } else {
       post.likes.set(userId, true); //like
+      if (userId.toString() !== post.userId.toString()) {
+        await sendLikesNotification(userId, postId);
+      }
     }
     await post.save();
+    const likers = await User.find({
+      _id: { $in: Array.from(post.likes.keys()) },
+    }).select("firstName");
     return res
       .status(200)
-      .json({ likes: post.likes, likesCount: post.likes.size });
+      .json({ likes: post.likes, likesCount: post.likes.size, likers: likers });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal server error" });
   }
+};
+
+export const getUserPostNotificationLikers = async (req, res) => {
+  try {
+    const { userId } = req;
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    const userPosts = UserPost.find({ userId });
+
+    const notifications = (await userPosts).flatMap((post) => {
+      return Array.from(post.likes.keys())
+        .filter((likerId) => likerId.toString() !== userId.toString())
+        .map((likerId) => ({
+          likerId,
+          postId: post._id,
+          likerFirstName: post.likes.get(likerId).firstName,
+        }));
+    });
+
+    const likers = await User.find({
+      _id: { $in: notifications.map((n) => n.likerId) },
+    }).select("firstName");
+
+    return res.status(200).json({ likers });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const getUserPostCommenters = async (req, res) => {
+  try {
+  } catch (error) {}
 };
 
 // get liked stated
