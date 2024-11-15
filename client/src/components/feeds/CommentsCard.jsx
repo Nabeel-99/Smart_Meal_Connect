@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import moment from "moment";
+import { FaTrash } from "react-icons/fa6";
+import { Tooltip } from "@mui/material";
 
 const CommentsCard = ({
   comment,
@@ -11,7 +13,7 @@ const CommentsCard = ({
 
   const toggleExpand = () => setIsExpanded(!isExpanded);
   return (
-    <div className="relative w-full  group hover:visible flex items-center gap-4">
+    <div className="relative w-full   flex items-center gap-4">
       <div className="min-w-10 max-w-10 h-10 rounded-full font-bold text-sm text-center flex items-center justify-center bg-[#B678F0]">
         N
       </div>
@@ -40,13 +42,15 @@ const CommentsCard = ({
         <div className="text-gray-500 justify-between flex items-center w-full">
           {moment(comment.timestamp).fromNow()}
           {comment.userId._id === currentUserId && (
-            <button
-              onClick={() => deleteComment(selectedPost.postId, comment._id)}
-              className="text-red-600 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity
+            <Tooltip title="delete">
+              <button
+                onClick={() => deleteComment(selectedPost.postId, comment._id)}
+                className=" hover:text-red-500 
           "
-            >
-              delete
-            </button>
+              >
+                <FaTrash />
+              </button>
+            </Tooltip>
           )}
         </div>
       </div>

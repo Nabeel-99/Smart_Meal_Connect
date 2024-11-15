@@ -13,7 +13,7 @@ const PostComment = ({
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col md:flex-row items-end  pt-8 border-t border-t-[#e0e0e0] dark:border-t-[#1d1d1d] justify-between gap-10 "
+      className={`flex flex-col md:flex-row items-end fixed bottom-0 right-0 left-0 px-4 lg:px-0 pb-4 lg:pb-0 dark:bg-[#0c0c0c] bg-white lg:dark:bg-transparent lg:bg-transparent  lg:relative  pt-8 border-t border-t-[#e0e0e0] dark:border-t-[#1d1d1d] justify-between gap-10 w-full `}
     >
       <textarea
         value={comment}
@@ -24,7 +24,13 @@ const PostComment = ({
       />
       <button
         type="submit"
-        className="dark:text-blue-500 text-blue-700 text-sm font-semibold hover:text-blue-300"
+        className="hidden md:flex dark:text-blue-500 text-blue-700 text-sm font-semibold hover:text-blue-300"
+      >
+        Post
+      </button>
+      <button
+        type="submit"
+        className="md:hidden bg-blue-600  text-white p-2 w-full rounded-md font-semibold hover:bg-blue-700"
       >
         Post
       </button>

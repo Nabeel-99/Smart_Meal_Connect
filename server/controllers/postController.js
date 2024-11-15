@@ -4,7 +4,7 @@ import User from "../models/userModel.js";
 import UserPost from "../models/userPostModel.js";
 import * as fs from "node:fs/promises";
 import { validatePost, validateUpdatePost } from "../utils/validation.js";
-import { sendLikesNotification } from "../config/notifications.js";
+import { sendNotifications } from "../config/notifications.js";
 // post recipe
 const __dirname = path.resolve();
 // export const postRecipe = async (req, res) => {
@@ -154,15 +154,13 @@ export const postRecipe = async (req, res) => {
     const { title, ingredients, instructions, category, videoLink, prepTime } =
       req.body;
     const images = req.files;
-    if (
-      !title ||
-      !instructions ||
-      !prepTime ||
-      !ingredients ||
-      !images ||
-      !category
-    ) {
+    if (!title || !instructions || !prepTime || !ingredients || !category) {
       return res.status(400).json({ message: "Fields are required" });
+    }
+    if (!images || images.length === 0) {
+      return res
+        .status(400)
+        .json({ message: "At least one image is required" });
     }
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
@@ -337,7 +335,7 @@ export const likePost = async (req, res) => {
   try {
     const { userId } = req;
     const { postId } = req.body;
-
+    const currentDate = new Date();
     const post = await UserPost.findById(postId);
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
@@ -350,8 +348,9 @@ export const likePost = async (req, res) => {
       post.likes.delete(userId); //unlike
     } else {
       post.likes.set(userId, true); //like
+      post.likesTimestamp.set(userId, currentDate);
       if (userId.toString() !== post.userId.toString()) {
-        await sendLikesNotification(userId, postId);
+        await sendNotifications(userId, postId, "like");
       }
     }
     await post.save();
@@ -373,23 +372,37 @@ export const getUserPostNotificationLikers = async (req, res) => {
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
-    const userPosts = UserPost.find({ userId });
+    const userPosts = await UserPost.find({ userId }).populate(
+      "recipeId",
+      "images"
+    );
 
-    const notifications = (await userPosts).flatMap((post) => {
+    const notifications = userPosts.flatMap((post) => {
       return Array.from(post.likes.keys())
         .filter((likerId) => likerId.toString() !== userId.toString())
         .map((likerId) => ({
-          likerId,
+          userId: likerId,
           postId: post._id,
-          likerFirstName: post.likes.get(likerId).firstName,
+          type: "like",
+          image: post.recipeId.images ? post.recipeId.images[0] : null,
+          timestamp: post.likesTimestamp.get(likerId),
         }));
     });
 
     const likers = await User.find({
-      _id: { $in: notifications.map((n) => n.likerId) },
+      _id: { $in: notifications.map((n) => n.userId) },
     }).select("firstName");
 
-    return res.status(200).json({ likers });
+    const notificationsWithNames = notifications.map((notif) => {
+      const user = likers.find(
+        (u) => u._id.toString() === notif.userId.toString()
+      );
+      return {
+        ...notif,
+        firstName: user ? user.firstName : "Unknown",
+      };
+    });
+    return res.status(200).json({ notificationsWithNames });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal server error" });
@@ -398,7 +411,45 @@ export const getUserPostNotificationLikers = async (req, res) => {
 
 export const getUserPostCommenters = async (req, res) => {
   try {
-  } catch (error) {}
+    const { userId } = req;
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    const userPosts = await UserPost.find({ userId }).populate(
+      "recipeId",
+      "images"
+    );
+
+    const notifications = userPosts.flatMap((post) =>
+      post.comments
+        .filter((comment) => comment.userId.toString() !== userId.toString())
+        .map((comment) => ({
+          userId: comment.userId,
+          postId: post._id,
+          text: comment.text,
+          type: "comment",
+          image: post.recipeId.images ? post.recipeId.images[0] : null,
+          timestamp: comment.timestamp,
+        }))
+    );
+    const commenters = await User.find({
+      _id: { $in: notifications.map((n) => n.userId) },
+    }).select("firstName");
+
+    const notificationsWithNames = notifications.map((notif) => {
+      const user = commenters.find(
+        (u) => u._id.toString() === notif.userId.toString()
+      );
+      return {
+        ...notif,
+        firstName: user ? user.firstName : "Unknown",
+      };
+    });
+    return res.status(200).json({ notificationsWithNames });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
 };
 
 // get liked stated
@@ -441,6 +492,11 @@ export const postComment = async (req, res) => {
         "comments.userId",
         "firstName lastName"
       );
+      if (userId.toString() !== post.userId.toString()) {
+        await sendNotifications(userId, postId, "comment", {
+          text: comment,
+        });
+      }
       return res
         .status(200)
         .json({ message: "comment posted", comment: updatedPost });

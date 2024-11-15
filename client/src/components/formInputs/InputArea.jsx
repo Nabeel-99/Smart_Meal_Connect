@@ -52,6 +52,7 @@ const InputArea = ({
           options={mealCategories}
           id={"category"}
           bgColor="dark:bg-[#0c0c0c] bg-[#e9e9e9]"
+          applyDarkMode={true}
           className=" w-full"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
@@ -70,20 +71,6 @@ const InputArea = ({
               autocompleteValue={autocompleteValue}
               id="ingredients-autocomplete"
               placeholder={"e.g chicken, rice, beans..."}
-              customStyles={(theme) => ({
-                width: 300,
-                "& .MuiInputBase-root": {
-                  backgroundColor: theme === "dark" ? "#0c0c0c" : "#e9e9e9",
-                  borderRadius: "8px",
-                  color: theme === "dark" ? "white" : "black",
-                },
-                "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: theme === "dark" ? "#1d1d1d" : "#e0e0e0",
-                },
-                "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#ffffff",
-                },
-              })}
             />
 
             <button

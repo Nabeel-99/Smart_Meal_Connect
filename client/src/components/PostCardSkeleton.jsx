@@ -2,7 +2,7 @@ import React from "react";
 
 const PostCardSkeleton = () => {
   return (
-    <div className="flex pt-8 lg:px-10 flex-col w-full px-8 animate-pulse lg:w-[650px] gap-3  ">
+    <div className="flex pt-8 lg:px-10 flex-col w-full px-8 animate-pulse lg:w-[550px] gap-3  ">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="dark:bg-[#2e2e2e] bg-[#ededed] p-3 rounded-full"></div>

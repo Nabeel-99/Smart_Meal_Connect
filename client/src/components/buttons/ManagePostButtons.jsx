@@ -5,7 +5,7 @@ import { MdEdit } from "react-icons/md";
 
 const ManagePostButtons = ({ post, editPost, deletePost }) => {
   return (
-    <div className="absolute right-2 flex items-center gap-2 bottom-0 text-xl font-bold">
+    <div className="hidden absolute right-2 lg:flex items-center gap-2 bottom-0 text-xl font-bold">
       <Tooltip title="edit post">
         <button
           onClick={() => editPost(post)}

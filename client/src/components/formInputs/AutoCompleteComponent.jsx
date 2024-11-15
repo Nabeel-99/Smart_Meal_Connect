@@ -24,15 +24,15 @@ const AutoCompleteComponent = ({
     },
     maxWidth: "400px",
     "& .MuiInputBase-root": {
-      backgroundColor: autoCompleteTheme === "dark" ? "#171717" : "#F7F7F8",
+      backgroundColor: autoCompleteTheme === "dark" ? "#0c0c0c" : "#F7F7F8",
       border:
         autoCompleteTheme === "dark"
-          ? "1px solid #343333"
+          ? "1px solid #1d1d1d"
           : "1px solid #E0E0E0",
       color: autoCompleteTheme === "dark" ? "white" : "#333333",
     },
     "& .MuiOutlinedInput-notchedOutline": {
-      borderColor: autoCompleteTheme === "dark" ? "#343333" : "#E0E0E0",
+      borderColor: autoCompleteTheme === "dark" ? "#1d1d1d" : "#E0E0E0",
     },
     "&:hover .MuiOutlinedInput-notchedOutline": {
       borderColor: autoCompleteTheme === "dark" ? "#ffffff" : "#333333",
@@ -58,7 +58,7 @@ const AutoCompleteComponent = ({
     );
 
     const sortedOptions = [...exactMatches, ...partialMatches];
-    return sortedOptions.slice(0, 10);
+    return sortedOptions.slice(0, 5);
   };
   return (
     <Autocomplete
@@ -81,6 +81,15 @@ const AutoCompleteComponent = ({
             inputLabel: {
               style: { color: "#a3a3a3" },
             },
+          }}
+          sx={{
+            backgroundColor:
+              autoCompleteTheme === "dark" ? "#0c0c0c" : "#F7F7F8",
+            border:
+              autoCompleteTheme === "dark"
+                ? "1px solid #1d1d1d"
+                : "1px solid #E0E0E0",
+            color: autoCompleteTheme === "dark" ? "white" : "#333333",
           }}
         />
       )}

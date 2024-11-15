@@ -179,6 +179,7 @@ const PostForm = ({
       !instructions ||
       !prepTime ||
       !ingredients ||
+      !images ||
       !imagePreviews ||
       !category
     ) {

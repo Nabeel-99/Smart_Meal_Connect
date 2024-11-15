@@ -18,6 +18,11 @@ const userPostSchema = new mongoose.Schema(
       of: Boolean,
       default: {},
     },
+    likesTimestamp: {
+      type: Map,
+      of: Date,
+      default: {},
+    },
     isFake: {
       type: Boolean,
       default: false,

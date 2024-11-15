@@ -11,15 +11,16 @@ import RecipeInstructionsCard from "../components/recipeDetailsCards/RecipeInstr
 import RecipeIngredientsCard from "../components/recipeDetailsCards/RecipeIngredientsCard";
 import BASE_URL from "../../apiConfig";
 
-const RecipeDetails = () => {
+const RecipeDetails = ({ userData }) => {
   const [recipeDetails, setRecipeDetails] = useState({});
   const [displayMsg, setDisplayMsg] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
+  const [postOwner, setPostOwner] = useState(null);
   const [message, setMessage] = useState("");
   const { id } = useParams();
   const location = useLocation();
   const source = location.state?.source;
-
+  let currentUserId = userData._id || null;
   const handleShowVideo = () => setShowVideo(true);
   const navigate = useNavigate();
 
@@ -44,8 +45,11 @@ const RecipeDetails = () => {
       const response = await axios.get(
         `${BASE_URL}/api/recipes/get-recipe-details/${id}`
       );
+      console.log("response,", response.data);
       if (response.status === 200) {
-        setRecipeDetails(response.data);
+        console.log("response,", response.data.recipe);
+        setRecipeDetails(response.data.recipe);
+        setPostOwner(response.data.post.userId._id);
       }
     } catch (error) {
       console.error("Error fetching recipe from API", error);
@@ -97,6 +101,8 @@ const RecipeDetails = () => {
         showVideo={showVideo}
         setShowVideo={setShowVideo}
         saveRecipe={saveRecipe}
+        postOwner={postOwner}
+        currentUserId={currentUserId}
       />
       <div className="flex flex-col w-full justify-center md:w-[600px] lg:w-auto lg:flex-row gap-10">
         <RecipeImageCarousel recipeDetails={recipeDetails} />

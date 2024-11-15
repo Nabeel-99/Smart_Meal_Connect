@@ -25,7 +25,9 @@ const Feeds = ({
   const [likedPosts, setLikedPosts] = useState({});
   const [likers, setLikers] = useState([]);
   const [comment, setComment] = useState("");
+  const [commenters, setCommenters] = useState([]);
   const [snackbarMsg, setSnackbarMsg] = useState("");
+  const mobileRef = useRef();
   const [displaySnackbar, setDisplaySnackbar] = useState(false);
   const spinnerRef = useRef(null);
   const [isIntersecting, setIsIntersecting] = useState(false);
@@ -231,7 +233,18 @@ const Feeds = ({
         withCredentials: true,
       });
       console.log("response", response.data);
-      setLikers(response.data.likers);
+      setLikers(response.data.notificationsWithNames);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+  const fetchCommentNotifications = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/api/users/commenters`, {
+        withCredentials: true,
+      });
+      console.log("response", response.data);
+      setCommenters(response.data.notificationsWithNames);
     } catch (error) {
       console.log("error", error);
     }
@@ -240,6 +253,9 @@ const Feeds = ({
   useEffect(() => {
     fetchLikeNotifications();
   }, []);
+  useEffect(() => {
+    fetchCommentNotifications();
+  }, []);
   return (
     <>
       <div className="px-4 lg:px-10 2xl:px-24 pt-14 lg:pt-0 flex flex-col gap-8 w-full">
@@ -247,7 +263,7 @@ const Feeds = ({
           For you
         </div>
         <div className="block fixed z-50 top-6 right-10  xl:hidden">
-          <button ref={anchorRef} onClick={showNotifications}>
+          <button className="" ref={anchorRef} onClick={showNotifications}>
             <FaRegHeart className="text-2xl w-6" />
           </button>
         </div>
@@ -264,26 +280,16 @@ const Feeds = ({
           />
           {/* notification card */}
           <div className="mt-16 ">
-            <NotificationCard likers={likers} />
+            <NotificationCard commenters={commenters} likers={likers} />
           </div>
-          {/* {location.pathname === "/feeds" && (
-            <button
-              ref={anchorRef}
-              onClick={showNotifications}
-              className="fixed right-5"
-            >
-              <FaRegHeart className="text-2xl" />
-            </button>
-          )} */}
-          {viewNotifications && (
-            <PopperComponent
-              viewPopper={viewNotifications}
-              anchorRef={anchorRef}
-              setViewPopper={setViewNotifications}
-            >
-              <MobileNotificationCard likers={likers} />
-            </PopperComponent>
-          )}
+          {/* mobile */}
+          <PopperComponent
+            viewPopper={viewNotifications}
+            anchorRef={anchorRef}
+            setViewPopper={setViewNotifications}
+          >
+            <MobileNotificationCard commenters={commenters} likers={likers} />
+          </PopperComponent>
         </div>
 
         {/* <div ref={spinnerRef}>loading here</div> */}

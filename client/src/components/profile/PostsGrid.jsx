@@ -72,8 +72,10 @@ const PostsGrid = ({
                   showModal={showModal}
                   setShowModal={setShowModal}
                   theme={theme}
+                  title={"Update Post"}
                 >
                   <PostForm
+                    theme={theme}
                     selectedPost={selectedPost}
                     setShowModal={setShowModal}
                     fetchUserPosts={fetchUserPosts}
@@ -88,6 +90,7 @@ const PostsGrid = ({
                   showModal={showModal}
                 >
                   <PostForm
+                    theme={theme}
                     selectedPost={selectedPost}
                     setShowModal={setShowModal}
                     fetchUserPosts={fetchUserPosts}

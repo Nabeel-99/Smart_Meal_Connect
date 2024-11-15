@@ -27,7 +27,9 @@ import VerifyEmail from "./pages/authPages/VerifyEmail";
 import { PushNotifications } from "@capacitor/push-notifications";
 import { StatusBar } from "@capacitor/status-bar";
 import BASE_URL, { isNative } from "../apiConfig";
-import LayoutSkeleton from "./components/LayoutSkeleton";
+import { Toast } from "@capacitor/toast";
+import ProtectedRoute from "./pages/ProtectedRoute";
+
 /**
  * @typedef {import('@capacitor/push-notifications').PushNotificationSchema} PushNotificationSchema
  * @typedef {import('@capacitor/push-notifications').Token} Token
@@ -83,6 +85,21 @@ const App = () => {
     }
   };
 
+  /**
+   * Handle push received
+   * @param {import('@capacitor/push-notifications').PushNotificationSchema} notification
+   */
+  const handlePushReceived = async (notification) => {
+    console.log("Push notification received:", notification);
+    const message = notification.body || "You have a new notification!";
+
+    await Toast.show({
+      text: message,
+      duration: "long",
+      position: "top",
+    });
+  };
+
   useEffect(() => {
     console.log("Initializing HomePage");
     if (isNative && userData) {
@@ -112,13 +129,11 @@ const App = () => {
         alert("Error on registration: " + JSON.stringify(error));
       });
 
+      const message = firebase.messaging();
       // Show us the notification payload if the app is open on our device
       PushNotifications.addListener(
         "pushNotificationReceived",
-        /** @param {PushNotificationSchema} notification */ (notification) => {
-          alert("Push received: " + JSON.stringify(notification));
-          console.log("push received", JSON.stringify(notification));
-        }
+        handlePushReceived
       );
 
       // Method called when tapping on a notification
@@ -181,12 +196,13 @@ const App = () => {
       window.location = "/dashboard";
     }
   }, []);
+
+  const isAuthenticated = Boolean(userData);
   return (
     <div
       style={{ paddingTop: "env(safe-area-inset-top)" }}
-      className="flex  flex-col h-full w-screen   dark:bg-[#0c0c0c] dark:text-white bg-[#F7F7F8] text-black "
+      className="flex flex-col h-full w-screen dark:bg-[#0c0c0c] dark:text-white bg-[#F7F7F8] text-black"
     >
-      {/* dark:bg-[#0c0c0c] bg-[#F7F7F8] text-black dark:text-white" */}
       <Router>
         <ScrollToTop />
         <MaybeShowComponent>
@@ -194,7 +210,7 @@ const App = () => {
         </MaybeShowComponent>
 
         <Routes>
-          <Route path="/layout" element={<LayoutSkeleton />} />
+          {/* Public routes */}
           <Route
             path="/"
             element={<Home userData={userData} theme={theme} />}
@@ -204,21 +220,6 @@ const App = () => {
             path="/login"
             element={<Login authenticateUser={authenticateUser} />}
           />
-
-          <Route
-            path="/*"
-            element={
-              <DashboardLayout
-                userData={userData}
-                fetchUserData={authenticateUser}
-                theme={theme}
-                updateTheme={updateTheme}
-              />
-            }
-          />
-
-          <Route path="preferences" element={<Preferences />} />
-          <Route path="pantry" element={<PantryItems theme={theme} />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route
             path="/verify-email/:token"
@@ -226,16 +227,66 @@ const App = () => {
           />
           <Route path="/forgot-password" element={<ForgotPassword />} />
 
+          {/* Protected routes */}
+          {/* Dashboard layout with nested routes */}
+          <Route
+            path="/*"
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <DashboardLayout
+                  userData={userData}
+                  fetchUserData={authenticateUser}
+                  theme={theme}
+                  updateTheme={updateTheme}
+                />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/preferences"
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Preferences />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/pantry"
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <PantryItems theme={theme} />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/ingredients-based"
-            element={<IngredientsBased userData={userData} />}
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <IngredientsBased userData={userData} />
+              </ProtectedRoute>
+            }
           />
           <Route
             path="/metrics-based"
-            element={<MetricsBased userData={userData} />}
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <MetricsBased userData={userData} />
+              </ProtectedRoute>
+            }
           />
-          <Route path="/recipe-details/:id" element={<RecipeDetails />} />
+          <Route
+            path="/recipe-details/:id"
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <RecipeDetails userData={userData} />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Fallback route or 404 */}
+          <Route path="*" element={<div>Page not found</div>} />
         </Routes>
+
         <MaybeShowComponent>
           <Footer />
         </MaybeShowComponent>

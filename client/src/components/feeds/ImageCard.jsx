@@ -6,7 +6,7 @@ import {
   FaChevronLeft,
   FaChevronRight,
 } from "react-icons/fa6";
-import BASE_URL from "../../../apiConfig";
+import BASE_URL, { isNative } from "../../../apiConfig";
 
 const ImageCard = ({ selectedPost }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -24,7 +24,11 @@ const ImageCard = ({ selectedPost }) => {
     currentImageIndex === selectedPost.posts.images.length - 1;
   const isFirstImage = currentImageIndex === 0;
   return (
-    <div className="relative w-[15rem] lg:w-[200rem] xl:w-[230rem]  border dark:border-[#2a2a2a]  border-[#e0e0e0] rounded-md">
+    <div
+      className={`relative ${
+        isNative ? "w-full" : " w-[20rem] lg:w-[200rem] xl:w-[230rem]"
+      }   border dark:border-[#2a2a2a]  border-[#e0e0e0] rounded-md`}
+    >
       <span>
         <Tooltip title="previous">
           <span>

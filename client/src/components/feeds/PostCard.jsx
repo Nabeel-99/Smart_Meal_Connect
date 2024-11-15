@@ -82,7 +82,7 @@ const PostCard = ({
   };
 
   return (
-    <div className="flex pt-8 lg:px-10 flex-col w-full lg:w-[650px] gap-3">
+    <div className="flex pt-8 lg:px-10 flex-col w-full lg:w-[550px] gap-3">
       <div className="flex items-center justify-between">
         <UserLink
           userId={post.userId}

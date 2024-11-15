@@ -1,5 +1,5 @@
 import React from "react";
-import { FaBookmark, FaYoutube } from "react-icons/fa6";
+import { FaBookmark, FaPencil, FaYoutube } from "react-icons/fa6";
 import ReactPlayer from "react-player";
 import ModalComponent from "../popupCards/ModalComponent";
 
@@ -9,6 +9,8 @@ const RecipeHeaderInfo = ({
   showVideo,
   setShowVideo,
   saveRecipe,
+  currentUserId,
+  postOwner,
 }) => {
   return (
     <div className="flex flex-col items-center justify-center bg-[#0E0F10] w-full md:min-w-[200px] md:max-w-[400px] p-4 lg:min-w-[200px] lg:max-w-[500px] min-h-[100px] border border-[#1d1d1d] rounded-xl gap-4">
@@ -50,7 +52,12 @@ const RecipeHeaderInfo = ({
             />
           </ModalComponent>
         )}
-
+        {/* {currentUserId === postOwner && (
+          <button className="flex py-1 items-center border px-3 rounded-md bg-[#dadada] hover:bg-[#ffffff] text-black gap-2">
+            Edit Recipe
+            <FaPencil className="text-xl" />
+          </button>
+        )} */}
         <button
           onClick={saveRecipe}
           className="flex py-1 items-center border px-3 rounded-md bg-[#dadada] hover:bg-[#ffffff] text-black gap-2"

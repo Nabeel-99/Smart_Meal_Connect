@@ -41,7 +41,7 @@ const About = ({ theme }) => {
             <p className="pt-2">
               In a fast-paced world, making daily decisions about food can be a
               <span className="md:block">
-                challenge. At Smart Meal Finder, our goal is to simplify this
+                challenge. At Smart Meal Connect, our goal is to simplify this
                 process
               </span>
               <span className="md:block">

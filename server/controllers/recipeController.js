@@ -12,6 +12,7 @@ import {
   getUserPantryData,
 } from "../utils/helper.js";
 import SavedRecipe from "../models/savedRecipeModel.js";
+import UserPost from "../models/userPostModel.js";
 
 export const generateIngredientsBasedRecipes = async (req, res) => {
   try {
@@ -110,7 +111,16 @@ export const getRecipeDetails = async (req, res) => {
     if (!foundRecipe) {
       return res.status(404).json({ message: "recipe not found" });
     }
-    return res.status(200).json(foundRecipe);
+    const foundPost = await UserPost.findOne({ recipeId: id }).populate(
+      "userId",
+      "firstName"
+    );
+
+    const recipeDetails = {
+      recipe: foundRecipe,
+      post: foundPost || null,
+    };
+    return res.status(200).json(recipeDetails);
   } catch (error) {
     return res.status(500).json({ message: "Internal server error" });
   }

@@ -25,3 +25,5 @@ temp/
 # Build output
 dist/
 build/
+
+config/serviceAccount.json

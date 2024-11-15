@@ -4,7 +4,17 @@ import ModalComponent from "../popupCards/ModalComponent";
 import ImageCard from "./ImageCard";
 import PostHeader from "./PostHeader";
 import CommentsCard from "./CommentsCard";
-
+import { isNative } from "../../../apiConfig";
+import {
+  Button,
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
+import NativeDialog from "../NativeDialog";
+import PostDetails from "../PostDetails";
 const PostDetailsModal = ({
   showModal,
   theme,
@@ -18,52 +28,37 @@ const PostDetailsModal = ({
 }) => {
   return (
     <div>
-      {showModal && (
+      {isNative ? (
+        <NativeDialog
+          showModal={showModal}
+          setShowModal={setShowModal}
+          title={"Comment"}
+          theme={theme}
+        >
+          <PostDetails
+            selectedPost={selectedPost}
+            deleteComment={deleteComment}
+            comment={comment}
+            setComment={setComment}
+            postUserComment={postUserComment}
+            currentUserId={currentUserId}
+          />
+        </NativeDialog>
+      ) : (
         <ModalComponent
           theme={theme}
           showModal={showModal}
           setShowModal={setShowModal}
         >
-          <div className="flex flex-col gap-4 lg:flex-row justify-between items-center overflow-scroll hide-scrollbar lg:items-stretch p-8 h-[40rem]  lg:h-[35rem] xl:h-[45rem] w-full">
-            <ImageCard selectedPost={selectedPost} />
-
-            <div className="flex flex-col  px-4 lg:w-[200rem] xl:w-[230rem] h-full">
-              <PostHeader
-                firstName={selectedPost.firstName}
-                lastName={selectedPost.lastName}
-                title={selectedPost.posts.title}
-                recipeId={selectedPost.posts._id}
-                time={
-                  selectedPost.posts.updatedAt || selectedPost.posts.createdAt
-                }
-              />
-              {/* comments  */}
-              <div className="flex flex-col gap-4 pb-2  pt-8   h-96  xl:h-full overflow-y-scroll hide-scrollbar">
-                {selectedPost.comments.length > 0 ? (
-                  selectedPost.comments.map((comment, index) => (
-                    <CommentsCard
-                      key={index}
-                      comment={comment}
-                      deleteComment={deleteComment}
-                      selectedPost={selectedPost}
-                      currentUserId={currentUserId}
-                    />
-                  ))
-                ) : (
-                  <div className="text-sm text-center text-gray-400">
-                    No comments yet
-                  </div>
-                )}
-              </div>
-              {/* post comment */}
-              <PostComment
-                comment={comment}
-                setComment={setComment}
-                postUserComment={postUserComment}
-                selectedPost={selectedPost}
-              />
-            </div>
-          </div>
+          <PostDetails
+            selectedPost={selectedPost}
+            deleteComment={deleteComment}
+            setShowModal={setShowModal}
+            comment={comment}
+            setComment={setComment}
+            postUserComment={postUserComment}
+            currentUserId={currentUserId}
+          />
         </ModalComponent>
       )}
     </div>

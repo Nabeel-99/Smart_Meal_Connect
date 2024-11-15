@@ -45,7 +45,7 @@ const ImageCarousel = ({ post, likeRecipe, images }) => {
               : `${BASE_URL}/${images[currentImageIndex]}`
           }
           onDoubleClick={() => likeRecipe(post.postId)}
-          className="w-full h-[450px] md:h-[550px] lg:h-[650px] rounded-md object-contain "
+          className="w-full h-[450px] md:h-[550px] lg:h-[550px] rounded-md object-contain "
         />
       )}
       <span>
