@@ -111,7 +111,6 @@ export const saveNotificationToken = async (req, res) => {
     const { fcmToken } = req.body;
     user.fcmToken = fcmToken;
     await user.save();
-    console.log("token saved successfully");
     return res.status(200).json({ message: "Notification token saved" });
   } catch (error) {
     console.log("error saving token", error);

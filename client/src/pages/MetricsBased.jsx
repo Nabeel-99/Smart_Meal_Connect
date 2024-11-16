@@ -6,6 +6,7 @@ import MetricsForm from "../components/forms/MetricsForm";
 import MetricsHeader from "../components/headers/MetricsHeader";
 import ShowMoreButton from "../components/buttons/ShowMoreButton";
 import BASE_URL from "../../apiConfig";
+import RecipeResultsContainer from "../components/RecipeResultsContainer";
 
 const MetricsBased = ({ userData }) => {
   let gridView = true;
@@ -13,7 +14,7 @@ const MetricsBased = ({ userData }) => {
   const [ingredientCount, setIngredientCount] = useState(() =>
     isLoggedIn ? 24 : 10
   );
-  const [gender, setGender] = useState("male");
+  const [gender, setGender] = useState("");
   const [goal, setGoal] = useState("weight_loss");
   const [age, setAge] = useState(0);
   const [height, setHeight] = useState(0);
@@ -25,16 +26,31 @@ const MetricsBased = ({ userData }) => {
   const [loading, setLoading] = useState(false);
   const [fetchedRecipes, setFetchedRecipes] = useState([]);
   const [error, setError] = useState("");
-  const [showMore, setShowMore] = useState(6);
   const [tryCount, setTryCount] = useState(
     () => parseInt(localStorage.getItem("tryCountMetrics")) || 0
   );
   const cardRef = useRef(null);
   const TRY_LIMIT = 1;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalRecipes, setTotalRecipes] = useState();
+  const recipesPerPage = 8;
 
-  const loadMore = () => {
-    setShowMore((prev) => prev + 6);
+  const totalPages = Math.ceil(fetchedRecipes.length / recipesPerPage);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage((prev) => prev + 1);
+    }
   };
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prev) => prev - 1);
+    }
+  };
+  const paginatedRecipes = fetchedRecipes.slice(
+    (currentPage - 1) * recipesPerPage,
+    currentPage * recipesPerPage
+  );
   const getUserMetrics = async () => {
     setLoading(true);
     try {
@@ -86,7 +102,9 @@ const MetricsBased = ({ userData }) => {
     e.preventDefault();
     console.log("fields", gender, age, height, weight, goal, exerciseLevel);
     if (!isLoggedIn && tryCount >= TRY_LIMIT) {
-      setError("Please create an account to continue using this feature.");
+      setError(
+        "Please create an account or login to continue using this feature."
+      );
       setTimeout(() => {
         setError("");
       }, 10000);
@@ -115,9 +133,13 @@ const MetricsBased = ({ userData }) => {
         localStorage.setItem("tryCountMetrics", tryCount + 1);
         setTryCount((prevCount) => prevCount + 1);
         setFetchedRecipes(recipes);
+        setTotalRecipes(recipes.length);
       }
     } catch (error) {
       console.log(error);
+      if (error.response && error.response.status === 400) {
+        setError("Please fill out all fields.");
+      }
       setLoading(false);
     } finally {
       setLoading(false);
@@ -143,6 +165,7 @@ const MetricsBased = ({ userData }) => {
     const storedRecipes = sessionStorage.getItem("metricsBased");
     if (storedRecipes) {
       setFetchedRecipes(JSON.parse(storedRecipes));
+      setTotalRecipes(JSON.parse(storedRecipes).length);
     }
   }, []);
   return (
@@ -176,20 +199,20 @@ const MetricsBased = ({ userData }) => {
           />
         </div>
         {/* showing results */}
-        <div className="relative ">
-          <RecipeResults
-            cardRef={cardRef}
-            loading={loading}
-            fetchedRecipes={fetchedRecipes.slice(0, showMore)}
-            gridView={gridView}
-            sourceType={"metricsBased"}
-          />
-        </div>
-        <ShowMoreButton
-          loadMore={loadMore}
-          loading={loading}
+
+        {/* showing results */}
+        <RecipeResultsContainer
           fetchedRecipes={fetchedRecipes}
-          showMore={showMore}
+          handlePreviousPage={handlePreviousPage}
+          currentPage={currentPage}
+          cardRef={cardRef}
+          loading={loading}
+          paginatedRecipes={paginatedRecipes}
+          gridView={gridView}
+          sourceType={"metricsBased"}
+          totalRecipes={totalRecipes}
+          totalPages={totalPages}
+          handleNextPage={handleNextPage}
         />
       </div>
       {!isLoggedIn && <GetStartedSection />}

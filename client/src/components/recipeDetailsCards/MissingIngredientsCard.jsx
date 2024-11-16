@@ -9,7 +9,10 @@ const MissingIngredientsCard = ({ recipeDetails }) => {
       <div className="px-6 overflow-y-scroll hide-scrollbar pt-4  ">
         <ul className="list-disc">
           {recipeDetails?.missingIngredients?.map((item, index) => (
-            <li key={index} className="pb-2 flex items-center w-full">
+            <li
+              key={index}
+              className="pb-2 text-red-500 flex items-center w-full"
+            >
               {item}
             </li>
           ))}

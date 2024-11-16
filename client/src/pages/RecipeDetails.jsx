@@ -20,7 +20,7 @@ const RecipeDetails = ({ userData }) => {
   const { id } = useParams();
   const location = useLocation();
   const source = location.state?.source;
-  let currentUserId = userData._id || null;
+  // let currentUserId = userData._id || null;
   const handleShowVideo = () => setShowVideo(true);
   const navigate = useNavigate();
 
@@ -76,6 +76,9 @@ const RecipeDetails = ({ userData }) => {
       if (error.response && error.response.status === 400) {
         setMessage("You’ve already saved this recipe.");
         setDisplayMsg(true);
+      } else if (error.response && error.response.status === 401) {
+        setMessage("You must be logged in to save a recipe.");
+        setDisplayMsg(true);
       }
     }
   };
@@ -86,7 +89,7 @@ const RecipeDetails = ({ userData }) => {
 
   return (
     // <div>hey</div>
-    <div className="flex flex-col gap-8 pt-10 pb-44 justify-center items-center px-4">
+    <div className="flex flex-col gap-8 pt-10 pb-44 justify-center items-center  px-4">
       <CloseButtonHeader goBack={goBack} />
 
       <AutohideSnackbar
@@ -102,14 +105,12 @@ const RecipeDetails = ({ userData }) => {
         setShowVideo={setShowVideo}
         saveRecipe={saveRecipe}
         postOwner={postOwner}
-        currentUserId={currentUserId}
+        // currentUserId={currentUserId}
       />
       <div className="flex flex-col w-full justify-center md:w-[600px] lg:w-auto lg:flex-row gap-10">
         <RecipeImageCarousel recipeDetails={recipeDetails} />
         <div className="flex flex-col gap-4">
-          {recipeDetails.nutrients && (
-            <NutrientsCard recipeDetails={recipeDetails} />
-          )}
+          <RecipeIngredientsCard recipeDetails={recipeDetails} />
 
           {recipeDetails.missingIngredients &&
             recipeDetails.missingIngredients?.length > 0 && (
@@ -117,9 +118,11 @@ const RecipeDetails = ({ userData }) => {
             )}
         </div>
       </div>
-      <div className="flex flex-col w-full md:w-[600px] lg:w-auto justify-center lg:flex-row gap-10">
+      <div className="flex flex-col w-full md:w-[600px] lg:w-auto items-start justify-start lg:flex-row gap-10">
         <RecipeInstructionsCard recipeDetails={recipeDetails} />
-        <RecipeIngredientsCard recipeDetails={recipeDetails} />
+        {recipeDetails.nutrients && (
+          <NutrientsCard recipeDetails={recipeDetails} />
+        )}
       </div>
     </div>
   );

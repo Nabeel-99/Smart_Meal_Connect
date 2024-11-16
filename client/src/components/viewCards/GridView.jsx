@@ -31,7 +31,7 @@ const GridView = ({
                 : "default"
             }
             alt=""
-            className="w-full h-[250px] 2xl:w-[550px] 2xl:h-[300px] object-cover rounded-xl"
+            className="w-full  xl:h-[200px] h-[250px] lg:h-[200px] 2xl:w-[550px] 2xl:h-[300px] object-cover rounded-xl"
           />
           {meal.images.length > 1 && (
             <div className="absolute right-2 top-2 text-xl font-bold">
@@ -42,10 +42,10 @@ const GridView = ({
       </Link>
 
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="flex flex-col gap-2">
-            {meal.title.length > 23
-              ? meal.title.slice(0, 23).concat("...")
+        <div className="flex items-center gap-2 text-sm">
+          <div className="flex flex-col gap-2 text-sm">
+            {meal.title.length > 15
+              ? meal.title.slice(0, 10).concat("...")
               : meal.title}
           </div>
           {showInput && (

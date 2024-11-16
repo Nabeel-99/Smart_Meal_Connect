@@ -7,6 +7,8 @@ import RecipeResults from "../components/viewCards/RecipeResults";
 import GetStartedSection from "../components/GetStartedSection";
 import ShowMoreButton from "../components/buttons/ShowMoreButton";
 import BASE_URL from "../../apiConfig";
+import { FaAngleLeft, FaAngleRight, FaCaretLeft } from "react-icons/fa6";
+import RecipeResultsContainer from "../components/RecipeResultsContainer";
 
 const IngredientsBased = ({ userData }) => {
   const [item, setItem] = useState("");
@@ -17,22 +19,35 @@ const IngredientsBased = ({ userData }) => {
     []
   );
   const [fetchedRecipes, setFetchedRecipes] = useState([]);
-  const [showMore, setShowMore] = useState(6);
   const [loading, setLoading] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState("");
   const [tryCount, setTryCount] = useState(
     () => parseInt(localStorage.getItem("tryCountIngredients")) || 0
   );
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [isEnding, setIsEnding] = useState(false);
+  const [totalRecipes, setTotalRecipes] = useState();
   const cardRef = useRef(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const recipesPerPage = 8;
+
+  const totalPages = Math.ceil(fetchedRecipes.length / recipesPerPage);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage((prev) => prev + 1);
+    }
+  };
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prev) => prev - 1);
+    }
+  };
+  const paginatedRecipes = fetchedRecipes.slice(
+    (currentPage - 1) * recipesPerPage,
+    currentPage * recipesPerPage
+  );
   let gridView = true;
   const TRY_LIMIT = 1;
-
-  const loadMore = () => {
-    setShowMore((prev) => prev + 6);
-  };
   const handleToggle = () => {
     setIsConnected(!isConnected);
   };
@@ -55,8 +70,11 @@ const IngredientsBased = ({ userData }) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    cardRef.current.scrollIntoView({ behavior: "smooth" });
     if (!isLoggedIn && tryCount >= TRY_LIMIT) {
-      setError("Please create an account to continue using this feature.");
+      setError(
+        "Please create an account or login to continue using this feature."
+      );
       setTimeout(() => {
         setError("");
       }, 10000);
@@ -103,7 +121,7 @@ const IngredientsBased = ({ userData }) => {
         localStorage.setItem("tryCountIngredients", tryCount + 1);
         setTryCount((prevCount) => prevCount + 1);
         setFetchedRecipes(validRecipes);
-        cardRef.current.scrollIntoView({ behavior: "smooth" });
+        setTotalRecipes(validRecipes.length);
       }
     } catch (error) {
       console.error(error);
@@ -135,6 +153,7 @@ const IngredientsBased = ({ userData }) => {
     const storedRecipes = sessionStorage.getItem("ingredientsBased");
     if (storedRecipes) {
       setFetchedRecipes(JSON.parse(storedRecipes));
+      setTotalRecipes(JSON.parse(storedRecipes).length);
     }
   }, []);
   return (
@@ -162,20 +181,18 @@ const IngredientsBased = ({ userData }) => {
           />
         </div>
         {/* showing results */}
-        <div className="relative ">
-          <RecipeResults
-            cardRef={cardRef}
-            loading={loading}
-            fetchedRecipes={fetchedRecipes.slice(0, showMore)}
-            gridView={gridView}
-            sourceType={"ingredientsBased"}
-          />
-        </div>
-        <ShowMoreButton
-          loadMore={loadMore}
-          loading={loading}
+        <RecipeResultsContainer
           fetchedRecipes={fetchedRecipes}
-          showMore={showMore}
+          handlePreviousPage={handlePreviousPage}
+          currentPage={currentPage}
+          cardRef={cardRef}
+          loading={loading}
+          paginatedRecipes={paginatedRecipes}
+          gridView={gridView}
+          sourceType={"ingredientsBased"}
+          totalRecipes={totalRecipes}
+          totalPages={totalPages}
+          handleNextPage={handleNextPage}
         />
       </div>
       {!isLoggedIn && <GetStartedSection />}

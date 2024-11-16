@@ -71,7 +71,6 @@ const generateDashboardRecipes = async (req) => {
     }
 
     const allRecipes = await fetchDashboardRecipes(goal, dietaryPreferences);
-    console.log("recipes length", allRecipes.length);
     const filteredAndRankedRecipes = await categorizeRecipes(allRecipes);
 
     return {
@@ -222,7 +221,6 @@ export const manageDashboardRecipes = async (req, res) => {
         htmlContent
       );
     }
-    console.log("user", user);
     return res.status(200).json({
       message: "Dashboard prepared successfully",
       recipes: newRecipes,

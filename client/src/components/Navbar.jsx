@@ -15,7 +15,7 @@ import { MenuItem, MenuList } from "@mui/material";
 import { CiBrightnessUp } from "react-icons/ci";
 import { HiComputerDesktop } from "react-icons/hi2";
 
-const Navbar = ({ userData }) => {
+const Navbar = ({ userData, updateTheme }) => {
   const location = useLocation();
   const pathNames = ["/ingredients-based", "/metrics-based"];
   const [isBurgerMenu, setIsBurgerMenu] = useState(false);
@@ -36,7 +36,10 @@ const Navbar = ({ userData }) => {
       setIsLoggedIn(false);
     }
   }, [userData]);
-
+  const setMode = (theme) => {
+    updateTheme(theme);
+    setViewModes(false);
+  };
   useEffect(() => {
     // handle background scrolling when burger menu is open
     if (isBurgerMenu || viewModes) {
@@ -94,12 +97,50 @@ const Navbar = ({ userData }) => {
             </div>
 
             {isLoggedIn ? (
-              <Link
-                to={"/dashboard"}
-                className="hidden lg:flex hover:text-[#2f44a1] dark:hover:text-[#a1afee] cursor-pointer"
-              >
-                Dashboard
-              </Link>
+              <div className="hidden lg:flex items-center gap-6">
+                <div>
+                  <button ref={modeRef} onClick={showModes}>
+                    <BsMoonStarsFill />
+                  </button>
+                  <PopperComponent
+                    anchorRef={modeRef}
+                    viewPopper={viewModes}
+                    setViewPopper={setViewModes}
+                  >
+                    <MenuList className="absolute right-0 top-10 p-4 w-40 dark:bg-[#08090a] bg-[#F7F7F8] text-black dark:text-white border dark:border-[#1d1d1d] border-[#e0e0e0] flex flex-col z-40 gap-4 rounded-md">
+                      <MenuItem
+                        onClick={() => {
+                          setMode("dark");
+                        }}
+                        className="flex items-center text-sm gap-4 hover:dark:bg-[#171717] "
+                      >
+                        <BsMoonStarsFill />
+                        Dark
+                      </MenuItem>
+                      <MenuItem
+                        onClick={() => setMode("light")}
+                        className="flex items-center text-sm gap-4 hover:dark:bg-[#171717] "
+                      >
+                        <BsFillBrightnessHighFill />
+                        Light
+                      </MenuItem>
+                      <MenuItem
+                        onClick={() => setMode("system")}
+                        className="flex items-center text-sm gap-4 hover:dark:bg-[#171717] "
+                      >
+                        <HiComputerDesktop />
+                        System
+                      </MenuItem>
+                    </MenuList>
+                  </PopperComponent>
+                </div>
+                <Link
+                  to={"/dashboard"}
+                  className="hidden lg:flex hover:text-[#2f44a1] dark:hover:text-[#a1afee] cursor-pointer"
+                >
+                  Dashboard
+                </Link>
+              </div>
             ) : (
               <div className="hidden lg:flex items-center   gap-6 ">
                 <div>
@@ -112,15 +153,26 @@ const Navbar = ({ userData }) => {
                     setViewPopper={setViewModes}
                   >
                     <MenuList className="absolute right-0 top-10 p-4 w-40 dark:bg-[#08090a] bg-[#F7F7F8] text-black dark:text-white border dark:border-[#1d1d1d] border-[#e0e0e0] flex flex-col z-40 gap-4 rounded-md">
-                      <MenuItem className="flex items-center text-sm gap-4">
+                      <MenuItem
+                        onClick={() => {
+                          setMode("dark");
+                        }}
+                        className="flex items-center text-sm gap-4 hover:dark:bg-[#171717] "
+                      >
                         <BsMoonStarsFill />
                         Dark
                       </MenuItem>
-                      <MenuItem className="flex items-center text-sm gap-4">
+                      <MenuItem
+                        onClick={() => setMode("light")}
+                        className="flex items-center text-sm gap-4 hover:dark:bg-[#171717] "
+                      >
                         <BsFillBrightnessHighFill />
                         Light
                       </MenuItem>
-                      <MenuItem className="flex items-center text-sm gap-4">
+                      <MenuItem
+                        onClick={() => setMode("system")}
+                        className="flex items-center text-sm gap-4 hover:dark:bg-[#171717] "
+                      >
                         <HiComputerDesktop />
                         System
                       </MenuItem>

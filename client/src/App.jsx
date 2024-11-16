@@ -38,6 +38,7 @@ import ProtectedRoute from "./pages/ProtectedRoute";
 const App = () => {
   const [userData, setUserData] = useState(null);
   const [isFetching, setIsFetching] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "system");
 
   const authenticateUser = async () => {
@@ -54,6 +55,7 @@ const App = () => {
       console.log("Auth error", error);
     } finally {
       setIsFetching(false);
+      setLoading(false);
     }
   };
 
@@ -206,7 +208,7 @@ const App = () => {
       <Router>
         <ScrollToTop />
         <MaybeShowComponent>
-          <Navbar userData={userData} />
+          <Navbar userData={userData} updateTheme={updateTheme} />
         </MaybeShowComponent>
 
         <Routes>
@@ -226,13 +228,27 @@ const App = () => {
             element={<VerifyEmail userData={userData} />}
           />
           <Route path="/forgot-password" element={<ForgotPassword />} />
-
+          <Route
+            path="/ingredients-based"
+            element={<IngredientsBased userData={userData} />}
+          />
+          <Route
+            path="/metrics-based"
+            element={<MetricsBased userData={userData} />}
+          />
+          <Route
+            path="/recipe-details/:id"
+            element={<RecipeDetails userData={userData} />}
+          />
           {/* Protected routes */}
           {/* Dashboard layout with nested routes */}
           <Route
             path="/*"
             element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
+              <ProtectedRoute
+                loading={loading}
+                isAuthenticated={isAuthenticated}
+              >
                 <DashboardLayout
                   userData={userData}
                   fetchUserData={authenticateUser}
@@ -245,7 +261,10 @@ const App = () => {
           <Route
             path="/preferences"
             element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
+              <ProtectedRoute
+                loading={loading}
+                isAuthenticated={isAuthenticated}
+              >
                 <Preferences />
               </ProtectedRoute>
             }
@@ -253,32 +272,11 @@ const App = () => {
           <Route
             path="/pantry"
             element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
+              <ProtectedRoute
+                loading={loading}
+                isAuthenticated={isAuthenticated}
+              >
                 <PantryItems theme={theme} />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/ingredients-based"
-            element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <IngredientsBased userData={userData} />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/metrics-based"
-            element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <MetricsBased userData={userData} />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/recipe-details/:id"
-            element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <RecipeDetails userData={userData} />
               </ProtectedRoute>
             }
           />
