@@ -18,10 +18,10 @@ const RecipeResults = ({
       ref={cardRef}
       className={`flex rounded-xl ${
         recipesLength > 0 ? " border border-[#3b3b3b] " : ""
-      } mb-20 p-4 gap-3 items-center mt-24`}
+      } mb-20 p-4 gap-3 items-center w-full mt-24`}
     >
       {loading ? (
-        <div className="flex flex-col items-center gap-2">
+        <div className="flex flex-col items-center justify-center w-full gap-2">
           <AiOutlineLoading3Quarters className="spin duration-2000 text-[3rem] animate-bounce" />
           <p className="animate-pulse text-3xl">
             Generating meal recommendations...

@@ -10,7 +10,7 @@ import BASE_URL from "../../apiConfig";
 import { FaAngleLeft, FaAngleRight, FaCaretLeft } from "react-icons/fa6";
 import RecipeResultsContainer from "../components/RecipeResultsContainer";
 
-const IngredientsBased = ({ userData }) => {
+const IngredientsBased = ({ userData, theme }) => {
   const [item, setItem] = useState("");
   const [ingredients, setIngredients] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -21,6 +21,7 @@ const IngredientsBased = ({ userData }) => {
   const [fetchedRecipes, setFetchedRecipes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
+  const [resultError, setResultError] = useState("");
   const [error, setError] = useState("");
   const [tryCount, setTryCount] = useState(
     () => parseInt(localStorage.getItem("tryCountIngredients")) || 0
@@ -35,11 +36,13 @@ const IngredientsBased = ({ userData }) => {
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage((prev) => prev + 1);
+      cardRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
   const handlePreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage((prev) => prev - 1);
+      cardRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
   const paginatedRecipes = fetchedRecipes.slice(
@@ -70,7 +73,7 @@ const IngredientsBased = ({ userData }) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    cardRef.current.scrollIntoView({ behavior: "smooth" });
+
     if (!isLoggedIn && tryCount >= TRY_LIMIT) {
       setError(
         "Please create an account or login to continue using this feature."
@@ -81,6 +84,9 @@ const IngredientsBased = ({ userData }) => {
       return;
     }
     setLoading(true);
+    if (loading) {
+      cardRef.current.scrollIntoView({ behavior: "smooth" });
+    }
     sessionStorage.removeItem("ingredientsBased");
     setFetchedRecipes([]);
     sessionStorage.setItem("isToggled", JSON.stringify(isConnected));
@@ -116,8 +122,8 @@ const IngredientsBased = ({ userData }) => {
           "ingredientsBased",
           JSON.stringify(validRecipes)
         );
-        setIngredients([]);
-        setItem([]);
+        // setIngredients([]);
+        // setItem([]);
         localStorage.setItem("tryCountIngredients", tryCount + 1);
         setTryCount((prevCount) => prevCount + 1);
         setFetchedRecipes(validRecipes);
@@ -125,6 +131,15 @@ const IngredientsBased = ({ userData }) => {
       }
     } catch (error) {
       console.error(error);
+      if (
+        error.response &&
+        error.response.status >= 429 &&
+        error.response.status <= 500
+      ) {
+        setResultError(
+          "Oops! It looks like we’re getting a lot of requests right now. Please try again in a few moments."
+        );
+      }
       setLoading(false);
     } finally {
       setLoading(false);
@@ -157,7 +172,7 @@ const IngredientsBased = ({ userData }) => {
     }
   }, []);
   return (
-    <div className="overflow-hidden flex flex-col gap-8 pt-16 justify-center items-center">
+    <div className="container mx-auto overflow-x-hidden flex flex-col gap-8 pt-16 justify-center items-center">
       <IngredientsHeader />
       <div className="flex flex-col gap-6 items-center   w-full px-2 lg:px-44">
         <IngredientsBasedToggle
@@ -165,8 +180,9 @@ const IngredientsBased = ({ userData }) => {
           isLoggedIn={isLoggedIn}
           handleToggle={handleToggle}
         />
-        <div className=" border border-[#1d1d1d] w-96  md:w-2/3 rounded-xl py-2 px-2 bg-[#0E0F10] min-h-[700px] h-full  ">
+        <div className=" border bg-[#e0e0e0] dark:border-[#1d1d1d] w-96  md:w-2/3 rounded-xl py-2 px-2 dark:bg-[#0E0F10] min-h-[700px] h-full  ">
           <IngredientsForm
+            theme={theme}
             onSubmit={onSubmit}
             setAutocompleteValue={setAutocompleteValue}
             setItem={setItem}
@@ -183,6 +199,7 @@ const IngredientsBased = ({ userData }) => {
         {/* showing results */}
         <RecipeResultsContainer
           fetchedRecipes={fetchedRecipes}
+          resultError={resultError}
           handlePreviousPage={handlePreviousPage}
           currentPage={currentPage}
           cardRef={cardRef}

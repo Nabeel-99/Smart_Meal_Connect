@@ -6,6 +6,7 @@ import InputArea from "../formInputs/InputArea";
 import { Camera, CameraResultType } from "@capacitor/camera";
 import { Capacitor } from "@capacitor/core";
 import BASE_URL, { isNative } from "../../../apiConfig";
+import { FaXmark } from "react-icons/fa6";
 
 const PostForm = ({
   setShowModal,
@@ -250,7 +251,17 @@ const PostForm = ({
         handleCloseSnackbar={handleCloseSnackbar}
         snackbarMessage={snackbarMessage}
       />
-
+      {!isNative && (
+        <div className="fixed -top-5  cursor-pointer left-0 right-0 w-full flex items-center justify-center ">
+          <button
+            className="cursor-pointer"
+            onClick={() => setShowModal(false)}
+          >
+            {" "}
+            <FaXmark className="border text-3xl rounded-full backdrop-blur-xl" />
+          </button>
+        </div>
+      )}
       <form
         onSubmit={handleSubmit}
         className={`flex flex-col lg:flex-row justify-between ${

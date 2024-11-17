@@ -24,7 +24,7 @@ const PostDetails = ({
         }  h-full`}
       >
         {!isNative && (
-          <div className="fixed -top-5  left-0 right-0 w-full flex items-center justify-center ">
+          <div className="fixed -top-5  cursor-pointer left-0 right-0 w-full flex items-center justify-center ">
             <button
               className="cursor-pointer"
               onClick={() => setShowModal(false)}

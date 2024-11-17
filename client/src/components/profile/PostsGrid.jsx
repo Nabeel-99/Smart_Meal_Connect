@@ -45,7 +45,7 @@ const PostsGrid = ({
         <MdGridOn /> POSTS
       </div>
       {userPosts.length > 0 ? (
-        <div className="grid grid-cols-3 w-full gap-2">
+        <div className="grid grid-cols-3 2xl:grid-cols-4 w-full gap-2">
           {userPosts.map((post, index) => (
             <div key={index} className="relative">
               <Link to={`/recipe-details/${post.posts._id}`}>

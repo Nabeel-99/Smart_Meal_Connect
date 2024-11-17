@@ -49,7 +49,7 @@ const Navbar = ({ userData, updateTheme }) => {
     }
   }, [isBurgerMenu, viewModes]);
   return (
-    <div className="flex items-center fixed w-full lg:px-10 xl:px-52 2xl:px-64  top-6   z-50 ">
+    <div className="flex items-center fixed w-full lg:px-10 xl:px-52 2xl:container  top-6   z-50 ">
       <div className="hidden lg:flex items-center justify-between bg-[#FFFFFF80] dark:bg-transparent border-[#c5c5c5] dark:border-[#343333] backdrop-blur-lg gap-8 px-4 p-3 border rounded-2xl w-full">
         <div className="">
           <Link

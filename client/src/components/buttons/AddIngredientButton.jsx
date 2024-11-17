@@ -5,7 +5,7 @@ const AddIngredientButton = ({ addIngredient }) => {
     <button
       onClick={addIngredient}
       type="button"
-      className="bg-[#D9D9D9]  px-6 h-10 rounded-xl text-black"
+      className="dark:bg-[#D9D9D9] bg-[#08090a] text-white dark:text-black  px-6 h-10 rounded-xl "
     >
       Add
     </button>

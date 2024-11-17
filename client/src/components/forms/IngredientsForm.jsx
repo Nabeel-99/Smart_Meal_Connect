@@ -20,6 +20,7 @@ const IngredientsForm = ({
   handleChecboxChange,
   loading,
   selectedDietaryPreferences,
+  theme,
 }) => {
   return (
     <form
@@ -28,36 +29,16 @@ const IngredientsForm = ({
     >
       <div className="text-center text-xl">Enter the ingredients you have</div>
       <div className="flex flex-col lg:flex-row items-center justify-evenly w-full ">
-        <div className="flex flex-col lg:flex-row order-1 lg:order-none items-center gap-6">
+        <div className="flex flex-col lg:flex-row order-1 lg:order-none items-center gap-6 w-full">
           <AutoCompleteComponent
-            customStyles={{
-              width: 350,
-              "& .MuiInputBase-root": {
-                backgroundColor: "#171717",
-                border: "1px solid #343333",
-                color: "white",
-              },
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#343333",
-              },
-              "&:hover .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#ffffff",
-              },
-              "& .MuiAutocomplete-popupIndicator": {
-                color: "#ffffff",
-              },
-              "& .MuiAutocomplete-groupLabel": {
-                color: "#08090a",
-              },
-              "& .MuiAutocomplete-clearIndicator": {
-                color: "#ffffff",
-              },
-            }}
-            label={"e.g, rice, chicken, beans, ..."}
-            setAutocompleteValue={setAutocompleteValue}
+            theme={theme}
             setItem={setItem}
+            setAutocompleteValue={setAutocompleteValue}
             autocompleteValue={autocompleteValue}
+            id="ingredients-autocomplete"
+            placeholder={"e.g chicken, rice, beans..."}
           />
+
           <AddIngredientButton addIngredient={addIngredient} />
         </div>
       </div>
@@ -65,7 +46,7 @@ const IngredientsForm = ({
       <div
         className={`grid md:grid-cols-2 xl:grid-cols-3 gap-4  hide-scrollbar ${
           ingredients.length > 0 ? "border" : ""
-        }  p-3 rounded border-[#3d3d3d] max-h-44 overflow-auto`}
+        }  p-3 rounded border-[#a0a0a0] dark:border-[#3d3d3d] w-full px-6 max-h-44 overflow-auto`}
       >
         {ingredients.length > 0 &&
           ingredients.map((ingredient, index) => (
@@ -73,12 +54,12 @@ const IngredientsForm = ({
               key={index}
               ingredient={ingredient}
               removeIngredient={removeIngredient}
-              className={"bg-[#2d2d2d] border-[#444544]"}
+              // className={"bg-[#2d2d2d] border-[#444544]"}
             />
           ))}
       </div>
       {ingredients.length === 0 && (
-        <div className="h-44 border  w-96 p-4 text-center flex items-center justify-center rounded border-[#3d3d3d]">
+        <div className="h-44 border  w-full xl:w-96 xl:p-4  text-center flex items-center justify-center rounded-xl border-[#3d3d3d]">
           Ingredients will appear here
         </div>
       )}

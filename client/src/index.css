@@ -26,6 +26,24 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.mask-marquee {
+  mask-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 1) 20%,
+    rgba(0, 0, 0, 1) 80%,
+    rgba(0, 0, 0, 0)
+  );
+}
+/* body {
+  margin: 0;
+  display: flex;
+  min-width: 320px;
+  min-height: 100vh;
+  max-width: 1200px;
+  overflow: auto;
+} */
 .hide-scrollbar {
   scrollbar-width: none;
 }
@@ -136,21 +154,13 @@ a:hover {
   color: #535bf2;
 } */
 
-body {
-  margin: 0;
-  display: flex;
-  min-width: 320px;
-  min-height: 100vh;
-  max-width: 1200px;
-  overflow: auto;
-}
-@media (min-width: 1600px) {
+/* @media (min-width: 1600px) {
   .container {
-    max-width: 1400px; /* Restrict the width of the content */
+    max-width: 1400px;
     margin-left: auto;
-    margin-right: auto; /* Center the content */
+    margin-right: auto; 
   }
-}
+} */
 /* @media (min-width: 1600px) {
   body {
     max-width: 1400px; /* Restrict width for very large screens */

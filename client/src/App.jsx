@@ -40,6 +40,16 @@ const App = () => {
   const [isFetching, setIsFetching] = useState(false);
   const [loading, setLoading] = useState(true);
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "system");
+  const location = useLocation();
+  const isSideMenuRoute = [
+    "/dashboard",
+    "/feeds",
+    "/profile",
+    "/profile/:id",
+    "/saved-meals",
+    "/settings",
+    "/pantry-items",
+  ].includes(location.pathname);
 
   const authenticateUser = async () => {
     if (isFetching) return;
@@ -193,102 +203,90 @@ const App = () => {
     authenticateUser();
   }, []);
 
-  useEffect(() => {
-    if (userData) {
-      window.location = "/dashboard";
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (userData) {
+  //     window.location = "/dashboard";
+  //   }
+  // }, []);
 
   const isAuthenticated = Boolean(userData);
   return (
     <div
       style={{ paddingTop: "env(safe-area-inset-top)" }}
-      className="flex flex-col h-full w-screen dark:bg-[#0c0c0c] dark:text-white bg-[#F7F7F8] text-black"
+      className={`flex flex-col ${
+        isSideMenuRoute ? "" : "  2xl:container mx-auto"
+      } h-full  dark:bg-[#0c0c0c] dark:text-white bg-[#F7F7F8] text-black`}
     >
-      <Router>
-        <ScrollToTop />
-        <MaybeShowComponent>
-          <Navbar userData={userData} updateTheme={updateTheme} />
-        </MaybeShowComponent>
+      <ScrollToTop />
+      <MaybeShowComponent>
+        <Navbar userData={userData} updateTheme={updateTheme} />
+      </MaybeShowComponent>
 
-        <Routes>
-          {/* Public routes */}
-          <Route
-            path="/"
-            element={<Home userData={userData} theme={theme} />}
-          />
-          <Route path="/sign-up" element={<SignUp />} />
-          <Route
-            path="/login"
-            element={<Login authenticateUser={authenticateUser} />}
-          />
-          <Route path="/reset-password/:token" element={<ResetPassword />} />
-          <Route
-            path="/verify-email/:token"
-            element={<VerifyEmail userData={userData} />}
-          />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route
-            path="/ingredients-based"
-            element={<IngredientsBased userData={userData} />}
-          />
-          <Route
-            path="/metrics-based"
-            element={<MetricsBased userData={userData} />}
-          />
-          <Route
-            path="/recipe-details/:id"
-            element={<RecipeDetails userData={userData} />}
-          />
-          {/* Protected routes */}
-          {/* Dashboard layout with nested routes */}
-          <Route
-            path="/*"
-            element={
-              <ProtectedRoute
-                loading={loading}
-                isAuthenticated={isAuthenticated}
-              >
-                <DashboardLayout
-                  userData={userData}
-                  fetchUserData={authenticateUser}
-                  theme={theme}
-                  updateTheme={updateTheme}
-                />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/preferences"
-            element={
-              <ProtectedRoute
-                loading={loading}
-                isAuthenticated={isAuthenticated}
-              >
-                <Preferences />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/pantry"
-            element={
-              <ProtectedRoute
-                loading={loading}
-                isAuthenticated={isAuthenticated}
-              >
-                <PantryItems theme={theme} />
-              </ProtectedRoute>
-            }
-          />
+      <Routes>
+        {/* Public routes */}
+        <Route path="/" element={<Home userData={userData} theme={theme} />} />
+        <Route path="/sign-up" element={<SignUp />} />
+        <Route
+          path="/login"
+          element={<Login authenticateUser={authenticateUser} />}
+        />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
+        <Route
+          path="/verify-email/:token"
+          element={<VerifyEmail userData={userData} />}
+        />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route
+          path="/ingredients-based"
+          element={<IngredientsBased userData={userData} theme={theme} />}
+        />
+        <Route
+          path="/metrics-based"
+          element={<MetricsBased userData={userData} />}
+        />
+        <Route
+          path="/recipe-details/:id"
+          element={<RecipeDetails userData={userData} />}
+        />
+        {/* Protected routes */}
+        {/* Dashboard layout with nested routes */}
+        <Route
+          path="/*"
+          element={
+            <ProtectedRoute loading={loading} isAuthenticated={isAuthenticated}>
+              <DashboardLayout
+                userData={userData}
+                fetchUserData={authenticateUser}
+                theme={theme}
+                updateTheme={updateTheme}
+              />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/preferences"
+          element={
+            <ProtectedRoute loading={loading} isAuthenticated={isAuthenticated}>
+              <Preferences />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/pantry"
+          element={
+            <ProtectedRoute loading={loading} isAuthenticated={isAuthenticated}>
+              <PantryItems theme={theme} />
+            </ProtectedRoute>
+          }
+        />
 
-          {/* Fallback route or 404 */}
-          <Route path="*" element={<div>Page not found</div>} />
-        </Routes>
+        {/* Fallback route or 404 */}
+        <Route path="*" element={<div>Page not found</div>} />
+      </Routes>
 
-        <MaybeShowComponent>
-          <Footer />
-        </MaybeShowComponent>
-      </Router>
+      <MaybeShowComponent>
+        <Footer />
+      </MaybeShowComponent>
     </div>
   );
 };
