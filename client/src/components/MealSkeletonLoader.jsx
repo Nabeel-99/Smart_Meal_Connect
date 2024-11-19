@@ -9,7 +9,7 @@ const MealSkeletonLoader = ({
   return (
     <>
       <div>
-        <div className="grid grid-col-1  md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2  md:grid-cols-3  xl:grid-cols-4 2xl:grid-cols-4 gap-10">
           {Array.from({ length: count }).map(
             (_, index) =>
               isGridView && (
@@ -18,7 +18,7 @@ const MealSkeletonLoader = ({
                   className="flex flex-col  animate-pulse  gap-1 cursor-pointer "
                 >
                   <div
-                    className={` bg-[#595959] h-[250px] border border-[#7d7d7d]  duration-1000 ease-in-out rounded-2xl ${className}`}
+                    className={` bg-[#595959] w-full  xl:h-[200px] h-[250px] lg:h-[200px] 2xl:w-[550px] 2xl:h-[300px] border border-[#7d7d7d]  duration-1000 ease-in-out rounded-2xl ${className}`}
                   />
                   <div className="bg-[#595959] mt-2 w-3/4 border border-[#7d7d7d] h-4 rounded  " />
                 </div>

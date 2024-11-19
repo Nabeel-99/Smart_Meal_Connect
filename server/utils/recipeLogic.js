@@ -329,7 +329,7 @@ export const categorizeRecipes = async (recipes) => {
     }
   }
 
-  const limit = 18;
+  const limit = 20;
   const topRecipes = {
     breakfast: categories.breakfast.slice(0, limit),
     lunch: categories.lunch.slice(0, limit),
