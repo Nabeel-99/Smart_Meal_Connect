@@ -263,7 +263,7 @@ const Feeds = ({
           For you
         </div>
         <div className="block fixed z-50 top-6 right-10  xl:hidden">
-          <button className="" ref={anchorRef} onClick={showNotifications}>
+          <button className="" onClick={showNotifications}>
             <FaRegHeart className="text-2xl w-6" />
           </button>
         </div>

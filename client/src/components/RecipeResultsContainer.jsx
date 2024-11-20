@@ -25,7 +25,7 @@ const RecipeResultsContainer = ({
         <ErrorText error={resultError} />
       </div>
 
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between w-full">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between md:justify-center w-full">
         {fetchedRecipes.length > 0 && (
           <button
             onClick={handlePreviousPage}

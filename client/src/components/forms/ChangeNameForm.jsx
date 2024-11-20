@@ -19,21 +19,21 @@ const ChangeNameForm = ({
   return (
     <div className="flex flex-col items-start gap-4">
       <div className="text-lg">Name</div>
+      {showNameError && (
+        <div
+          className={`text-red-500 text-sm mt-1 transition-opacity ease-in-out  duration-1000 ${
+            showNameError ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          {nameError}
+        </div>
+      )}
       {isChangingName ? (
         <div className="">
           <form
             onSubmit={updateAccount}
             className="flex flex-col  items-start lg:flex-row lg:items-center gap-3 lg:gap-8"
           >
-            {showNameError && (
-              <div
-                className={`text-red-500 text-sm mt-1 transition-opacity ease-in-out  duration-1000 ${
-                  showNameError ? "opacity-100" : "opacity-0"
-                }`}
-              >
-                {nameError}
-              </div>
-            )}
             <TextInput
               label={"First name"}
               className="w-64"

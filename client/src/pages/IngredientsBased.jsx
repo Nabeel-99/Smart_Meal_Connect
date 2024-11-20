@@ -122,6 +122,7 @@ const IngredientsBased = ({ userData, theme }) => {
           "ingredientsBased",
           JSON.stringify(validRecipes)
         );
+        sessionStorage.setItem("ingredientsInput", JSON.stringify(ingredients));
         // setIngredients([]);
         // setItem([]);
         localStorage.setItem("tryCountIngredients", tryCount + 1);
@@ -166,15 +167,19 @@ const IngredientsBased = ({ userData, theme }) => {
 
   useEffect(() => {
     const storedRecipes = sessionStorage.getItem("ingredientsBased");
+    const storedIngredientInput = sessionStorage.getItem("ingredientsInput");
     if (storedRecipes) {
       setFetchedRecipes(JSON.parse(storedRecipes));
       setTotalRecipes(JSON.parse(storedRecipes).length);
+    }
+    if (storedIngredientInput) {
+      setIngredients(JSON.parse(storedIngredientInput));
     }
   }, []);
   return (
     <div className="container mx-auto overflow-x-hidden flex flex-col gap-8 pt-16 justify-center items-center">
       <IngredientsHeader />
-      <div className="flex flex-col gap-6 items-center   w-full px-2 lg:px-44">
+      <div className="flex flex-col gap-6 items-center   w-full px-2 ">
         <IngredientsBasedToggle
           isConnected={isConnected}
           isLoggedIn={isLoggedIn}

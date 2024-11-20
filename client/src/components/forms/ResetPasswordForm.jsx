@@ -87,7 +87,7 @@ const ResetPasswordForm = ({
         <div className="pt-4">
           <button
             type="submit"
-            className="bg-[#B678F0] py-2 text-center w-full lg:w-96 rounded-lg"
+            className="bg-[#B678F0] transition-all duration-300 hover:bg-[#a977d9] py-2 text-center flex text-white items-center justify-center w-full lg:w-96 rounded-lg"
           >
             {loading ? (
               <AiOutlineLoading3Quarters className="spin text-2xl" />

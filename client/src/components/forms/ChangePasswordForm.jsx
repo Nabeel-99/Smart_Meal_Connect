@@ -40,18 +40,17 @@ const ChangePasswordForm = ({
           </div>
         )}
       </div>
-
+      {showPasswordError && (
+        <div
+          className={`text-red-500 text-sm mt-1 pb-2 transition-opacity ease-in-out  duration-1000 ${
+            showPasswordError ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          {passwordError}
+        </div>
+      )}
       {isChangingPassword && (
         <form onSubmit={updateAccount} className="mt-3">
-          {showPasswordError && (
-            <div
-              className={`text-red-500 text-sm mt-1 pb-2 transition-opacity ease-in-out  duration-1000 ${
-                showPasswordError ? "opacity-100" : "opacity-0"
-              }`}
-            >
-              {passwordError}
-            </div>
-          )}
           <div className="relative">
             <TextInput
               label={"New Password"}

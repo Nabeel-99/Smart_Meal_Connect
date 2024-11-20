@@ -10,7 +10,7 @@ const NotificationCard = ({ likers, commenters }) => {
         Notifications
         <IoIosNotifications className="text-2xl w-6" />
       </div>
-      <div className="overflow-y-scroll flex flex-col pt-4 pb-4 gap-6">
+      <div className="overflow-y-scroll hide-scrollbar flex flex-col pt-4 pb-4 gap-6">
         {notifications.length > 0 ? (
           notifications.map((notification, index) => (
             <div key={index} className="flex justify-between items-center pr-6">

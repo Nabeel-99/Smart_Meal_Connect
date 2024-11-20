@@ -7,6 +7,7 @@ import { Camera, CameraResultType } from "@capacitor/camera";
 import { Capacitor } from "@capacitor/core";
 import BASE_URL, { isNative } from "../../../apiConfig";
 import { FaXmark } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 
 const PostForm = ({
   setShowModal,
@@ -37,7 +38,7 @@ const PostForm = ({
   const [error, setError] = useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
-  console.log("selected post", selectedPost);
+  const navigate = useNavigate();
   useEffect(() => {
     if (selectedPost) {
       setImages(selectedPost.images || []);
@@ -216,6 +217,7 @@ const PostForm = ({
         setShowSuccessSnackbar(true);
         setSuccessMessage("Your post has been shared");
         setShowModal(false);
+        navigate("/feeds");
       }
     } catch (error) {
       console.log(error);

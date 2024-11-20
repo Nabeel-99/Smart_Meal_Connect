@@ -57,7 +57,7 @@ const ResetPassword = () => {
         setShowError(true);
         setTimeout(() => {
           setError("");
-        }, 5000);
+        }, 10000);
       }
     }
   };

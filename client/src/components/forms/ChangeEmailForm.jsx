@@ -19,21 +19,20 @@ const ChangeEmailForm = ({
   return (
     <div className="flex flex-col items-start gap-4">
       <div className="text-lg">Email</div>
-
+      {showEmailError && (
+        <div
+          className={`text-red-500 text-sm mt-1 transition-opacity ease-in-out  duration-1000 ${
+            showEmailError ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          {emailError}
+        </div>
+      )}
       {isChangingEmail ? (
         <form
           onSubmit={updateAccount}
           className="flex flex-col  items-start lg:flex-row lg:items-center gap-3 lg:gap-8"
         >
-          {showEmailError && (
-            <div
-              className={`text-red-500 text-sm mt-1 transition-opacity ease-in-out  duration-1000 ${
-                showEmailError ? "opacity-100" : "opacity-0"
-              }`}
-            >
-              {emailError}
-            </div>
-          )}
           <TextInput
             className="w-64"
             type="text"

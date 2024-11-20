@@ -105,7 +105,7 @@ const AccountSection = ({
         setPasswordError("Passwords do not match");
         setTimeout(() => {
           setPasswordError("");
-        }, 3000);
+        }, 10000);
         return;
       }
     }
@@ -145,7 +145,7 @@ const AccountSection = ({
           setShowEmailSuccess(false);
           setShowPasswordSuccess(false);
           setShowSuccess(false);
-        }, 3000);
+        }, 5000);
       }
     } catch (error) {
       setLoading(false);
