@@ -32,7 +32,7 @@ const TextInput = ({
 
       <input
         className={`${
-          bgColor ? bgColor : "dark:bg-[#171717] bg-[#e9e9e9]"
+          bgColor ? bgColor : "dark:bg-[#171717] bg-[#ffffff]"
         } border ${
           borderColor ? borderColor : "dark:border-[#1d1d1d] border-[#e0e0e0]"
         }  rounded-lg px-3 py-2 ${className}`}

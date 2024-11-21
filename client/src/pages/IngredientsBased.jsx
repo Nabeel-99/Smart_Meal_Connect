@@ -98,6 +98,7 @@ const IngredientsBased = ({ userData, theme }) => {
       setLoading(false);
       return;
     }
+    sessionStorage.setItem("ingredientsInput", JSON.stringify(ingredients));
     try {
       const response = await axios.post(
         `${BASE_URL}/api/recipes/get-ingredients-recipes`,
@@ -109,6 +110,7 @@ const IngredientsBased = ({ userData, theme }) => {
         { withCredentials: true }
       );
       console.log("response,", response.data);
+
       if (response.status === 200) {
         const recipes = response.data.recipes;
         const validRecipes = recipes.filter(
@@ -122,11 +124,14 @@ const IngredientsBased = ({ userData, theme }) => {
           "ingredientsBased",
           JSON.stringify(validRecipes)
         );
-        sessionStorage.setItem("ingredientsInput", JSON.stringify(ingredients));
+
         // setIngredients([]);
         // setItem([]);
-        localStorage.setItem("tryCountIngredients", tryCount + 1);
-        setTryCount((prevCount) => prevCount + 1);
+        if (!isLoggedIn) {
+          localStorage.setItem("tryCountIngredients", tryCount + 1);
+          setTryCount((prevCount) => prevCount + 1);
+        }
+
         setFetchedRecipes(validRecipes);
         setTotalRecipes(validRecipes.length);
       }
@@ -168,14 +173,17 @@ const IngredientsBased = ({ userData, theme }) => {
   useEffect(() => {
     const storedRecipes = sessionStorage.getItem("ingredientsBased");
     const storedIngredientInput = sessionStorage.getItem("ingredientsInput");
+
     if (storedRecipes) {
       setFetchedRecipes(JSON.parse(storedRecipes));
       setTotalRecipes(JSON.parse(storedRecipes).length);
     }
     if (storedIngredientInput) {
-      setIngredients(JSON.parse(storedIngredientInput));
+      const ingredientsInput = JSON.parse(storedIngredientInput);
+      setIngredients(ingredientsInput);
     }
   }, []);
+
   return (
     <div className="container mx-auto overflow-x-hidden flex flex-col gap-8 pt-16 justify-center items-center">
       <IngredientsHeader />

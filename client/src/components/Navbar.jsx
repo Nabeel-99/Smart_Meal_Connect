@@ -22,13 +22,17 @@ const Navbar = ({ userData, updateTheme }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
   const [viewModes, setViewModes] = useState(false);
-  const modeRef = useRef();
-  const toggleMenu = () => setIsBurgerMenu(!isBurgerMenu);
+  const modeRef = useRef(null);
+  const toggleMenu = () => {
+    setIsBurgerMenu(!isBurgerMenu);
+  };
   const closeMenu = () => {
     setIsBurgerMenu(false);
-    console.log("clicked");
   };
-  const showModes = () => setViewModes(true);
+  const showModes = (e) => {
+    e.stopPropagation();
+    setViewModes((prev) => !prev);
+  };
   useEffect(() => {
     if (userData) {
       setIsLoggedIn(true);
@@ -49,7 +53,7 @@ const Navbar = ({ userData, updateTheme }) => {
     }
   }, [isBurgerMenu, viewModes]);
   return (
-    <div className="flex items-center fixed w-full lg:px-10 xl:px-52 2xl:container  top-6   z-50 ">
+    <div className="flex items-center fixed left-0 right-0 lg:px-10 xl:px-52  2xl:container 2xl:mx-auto  top-6   z-50 ">
       <div className="hidden lg:flex items-center justify-between bg-[#FFFFFF80] dark:bg-transparent border-[#c5c5c5] dark:border-[#343333] backdrop-blur-lg gap-8 px-4 p-3 border rounded-2xl w-full">
         <div className="">
           <Link

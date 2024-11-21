@@ -41,15 +41,6 @@ const App = () => {
   const [loading, setLoading] = useState(true);
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "system");
   const location = useLocation();
-  const isSideMenuRoute = [
-    "/dashboard",
-    "/feeds",
-    "/profile",
-    "/profile/:id",
-    "/saved-meals",
-    "/settings",
-    "/pantry-items",
-  ].includes(location.pathname);
 
   const authenticateUser = async () => {
     if (isFetching) return;
@@ -213,9 +204,8 @@ const App = () => {
   return (
     <div
       style={{ paddingTop: "env(safe-area-inset-top)" }}
-      className={`flex flex-col ${
-        isSideMenuRoute ? "" : "  2xl:container mx-auto"
-      } h-full  dark:bg-[#0c0c0c] dark:text-white bg-[#F7F7F8] text-black`}
+      className={`flex flex-col 
+       h-full  dark:bg-[#0c0c0c] dark:text-white bg-[#F7F7F8] text-black`}
     >
       <ScrollToTop />
       <MaybeShowComponent>

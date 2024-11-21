@@ -130,8 +130,12 @@ const MetricsBased = ({ userData }) => {
       if (response.status === 200) {
         const recipes = response.data.recipes;
         sessionStorage.setItem("metricsBased", JSON.stringify(recipes));
-        localStorage.setItem("tryCountMetrics", tryCount + 1);
-        setTryCount((prevCount) => prevCount + 1);
+
+        if (!isLoggedIn) {
+          localStorage.setItem("tryCountMetrics", tryCount + 1);
+          setTryCount((prevCount) => prevCount + 1);
+        }
+
         setFetchedRecipes(recipes);
         setTotalRecipes(recipes.length);
       }
@@ -172,7 +176,7 @@ const MetricsBased = ({ userData }) => {
     <div className="overflow-hidden flex flex-col gap-8 pt-8 justify-center items-center">
       <MetricsHeader />
       <div className="flex flex-col gap-6 items-center  w-full px-2 lg:px-44">
-        <div className=" lg:relative border border-[#1d1d1d] w-96  md:w-auto   rounded-xl py-2 px-2 bg-[#0E0F10] min-h-[700px] h-full  ">
+        <div className=" lg:relative border bg-[#e0e0e0] dark:border-[#1d1d1d] w-96  md:w-auto mt-20  rounded-xl py-2 px-2 dark:bg-[#0E0F10] min-h-[700px] h-full  ">
           <MetricsForm
             onSubmit={onSubmit}
             gender={gender}

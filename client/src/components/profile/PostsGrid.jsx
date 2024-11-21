@@ -51,7 +51,7 @@ const PostsGrid = ({
               <Link to={`/recipe-details/${post.posts._id}`}>
                 <img
                   src={`${BASE_URL}/${post.posts?.images[currentImageIndex]}`}
-                  className="h-28 w-full md:h-52 lg:h-44 xl:h-80 2xl:h-96 xl:w-full rounded-sm object-cover"
+                  className="h-28 w-full md:h-52 lg:h-44 xl:h-80 2xl:h-96 xl:w-full border border-[#e0e0e0] dark:border-[#3c3c3c] rounded-sm object-cover"
                 />
                 {post.posts.images.length > 1 && (
                   <div className="absolute right-2 top-2 text-xl font-bold">

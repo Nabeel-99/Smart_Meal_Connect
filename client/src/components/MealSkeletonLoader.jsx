@@ -18,7 +18,7 @@ const MealSkeletonLoader = ({
                   className="flex flex-col  animate-pulse  gap-1 cursor-pointer "
                 >
                   <div
-                    className={` bg-[#595959] w-full  xl:h-[200px] h-[250px] lg:h-[200px] 2xl:w-[550px] 2xl:h-[300px] border border-[#7d7d7d]  duration-1000 ease-in-out rounded-2xl ${className}`}
+                    className={` bg-[#595959] w-full  xl:h-[200px] h-[250px] lg:h-[200px] 2xl:w-full 2xl:h-[300px] border border-[#7d7d7d]  duration-1000 ease-in-out rounded-2xl ${className}`}
                   />
                   <div className="bg-[#595959] mt-2 w-3/4 border border-[#7d7d7d] h-4 rounded  " />
                 </div>

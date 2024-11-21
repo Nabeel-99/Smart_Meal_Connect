@@ -11,6 +11,17 @@ const spoonacularAPIkeys = [
   process.env.SPOONACULAR_API_KEY2,
   process.env.SPOONACULAR_API_KEY3,
 ];
+const edamamAPIKeys = [
+  { appId: process.env.EDAMAM_APP_ID1, appKey: process.env.EDAMAM_APP_KEY1 },
+  { appId: process.env.EDAMAM_APP_ID2, appKey: process.env.EDAMAM_APP_KEY2 },
+  { appId: process.env.EDAMAM_APP_ID3, appKey: process.env.EDAMAM_APP_KEY3 },
+];
+
+const tastyAPIKeys = [
+  process.env.RAPID_APIKEY,
+  process.env.RAPID_APIKEY2,
+  process.env.RAPID_APIKEY3,
+];
 
 export const getSpoonacularRecipes = async (
   mealType = [],
@@ -138,56 +149,72 @@ export const getEdamamRecipes = async (
   goal = null,
   dietaryPreferences = []
 ) => {
-  try {
-    const calorieRanges = {
-      muscle_gain: "300-750",
-      weight_loss: "200-400",
-      maintenance: "200-500",
-    };
-    const calorieRange = goal ? calorieRanges[goal] : {};
-    const query = ingredients.length > 0 ? ingredients.join(",") : "recipe";
+  const calorieRanges = {
+    muscle_gain: "300-750",
+    weight_loss: "200-400",
+    maintenance: "200-500",
+  };
+  const calorieRange = goal ? calorieRanges[goal] : {};
+  const query = ingredients.length > 0 ? ingredients.join(",") : "recipe";
+  const healthLabel =
+    dietaryPreferences.length > 0 ? dietaryPreferences[0] : undefined;
 
-    const healthLabel =
-      dietaryPreferences.length > 0 ? dietaryPreferences[0] : undefined;
-    const response = await axios.get(`${edamamAPI}`, {
-      params: {
-        q: query,
-        app_id: process.env.EDAMAM_APP_ID1,
-        app_key: process.env.EDAMAM_APP_KEY1,
-        from: 0,
-        to: 20,
-        ...(type && { mealType: type }),
-        ...(goal && { calories: calorieRange }),
-        ...(healthLabel && { health: healthLabel }),
-      },
-    });
-    return response.data.hits.map((recipe) => extractRecipeData(recipe));
-  } catch (error) {
-    console.log("error fetching from edamam", error);
-    throw error;
+  for (const { appId, appKey } of edamamAPIKeys) {
+    try {
+      const response = await axios.get(`${edamamAPI}`, {
+        params: {
+          q: query,
+          app_id: appId,
+          app_key: appKey,
+          from: 0,
+          to: 20,
+          ...(type && { mealType: type }),
+          ...(goal && { calories: calorieRange }),
+          ...(healthLabel && { health: healthLabel }),
+        },
+      });
+      return response.data.hits.map((recipe) => extractRecipeData(recipe));
+    } catch (error) {
+      if (error.response && error.response.status === 402) {
+        console.log(
+          `Edamam API key (App ID: ${appId}) limit reached. Trying next key...`
+        );
+        continue;
+      }
+      console.log("Error fetching from Edamam", error);
+      throw error;
+    }
   }
+  throw new Error("All Edamam API keys reached their limit.");
 };
 
 // get tastyAPI recipes
 export const getTastyAPIRecipes = async (ingredients = []) => {
   const query = ingredients.length > 0 ? ingredients.join(",") : null;
-  try {
-    const response = await axios.get(`${tastyAPI}`, {
-      params: {
-        from: 0,
-        size: 20,
-        tags: "under_30_minutes",
-        q: query,
-      },
-      headers: {
-        "x-rapidapi-key": process.env.RAPID_APIKEY,
-        "x-rapidapi-host": "tasty.p.rapidapi.com",
-      },
-    });
 
-    return response.data.results.map((recipe) => extractRecipeData(recipe));
-  } catch (error) {
-    console.error("Error occurred", error);
-    throw error;
+  for (const key of tastyAPIKeys) {
+    try {
+      const response = await axios.get(`${tastyAPI}`, {
+        params: {
+          from: 0,
+          size: 20,
+          tags: "under_30_minutes",
+          q: query,
+        },
+        headers: {
+          "x-rapidapi-key": key,
+          "x-rapidapi-host": "tasty.p.rapidapi.com",
+        },
+      });
+      return response.data.results.map((recipe) => extractRecipeData(recipe));
+    } catch (error) {
+      if (error.response && error.response.status === 402) {
+        console.log(`Tasty API key ${key} limit reached. Trying next key...`);
+        continue;
+      }
+      console.error("Error occurred with Tasty API", error);
+      throw error;
+    }
   }
+  throw new Error("All Tasty API keys reached their limit.");
 };

@@ -249,7 +249,7 @@ const Feeds = ({
       console.log("error", error);
     }
   };
-
+  const isNotEmpty = [...commenters, ...likers];
   useEffect(() => {
     fetchLikeNotifications();
   }, []);
@@ -263,7 +263,13 @@ const Feeds = ({
           For you
         </div>
         <div className="block fixed z-50 top-6 right-10  xl:hidden">
-          <button className="" onClick={showNotifications}>
+          <button
+            ref={anchorRef}
+            onClick={(e) => {
+              e.stopPropagation();
+              setViewNotifications((prev) => !prev);
+            }}
+          >
             <FaRegHeart className="text-2xl w-6" />
           </button>
         </div>
@@ -287,6 +293,7 @@ const Feeds = ({
             viewPopper={viewNotifications}
             anchorRef={anchorRef}
             setViewPopper={setViewNotifications}
+            isNotification={true}
           >
             <MobileNotificationCard commenters={commenters} likers={likers} />
           </PopperComponent>

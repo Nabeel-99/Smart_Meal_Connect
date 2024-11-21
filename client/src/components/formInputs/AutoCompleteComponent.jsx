@@ -63,6 +63,7 @@ const AutoCompleteComponent = ({
   return (
     <Autocomplete
       id={id}
+      clearOnBlur={false}
       disablePortal
       options={ingredientsData}
       getOptionLabel={(option) => option.name}

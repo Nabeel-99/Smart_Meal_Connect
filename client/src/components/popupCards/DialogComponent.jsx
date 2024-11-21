@@ -9,6 +9,9 @@ const DialogComponent = ({
   loading,
   theme,
 }) => {
+  const backdropStyle = {
+    backgroundColor: "rgba(0, 0, 0, 0.2)",
+  };
   const handleClose = () => setShowDialog(false);
   return (
     <div>
@@ -20,6 +23,11 @@ const DialogComponent = ({
           style: {
             backgroundColor: "#444444",
             color: "white",
+          },
+        }}
+        slotProps={{
+          backdrop: {
+            style: backdropStyle,
           },
         }}
       >

@@ -17,28 +17,79 @@ const PostForm = ({
   setShowSuccessSnackbar,
   setSuccessMessage,
 }) => {
-  const [title, setTitle] = useState(selectedPost?.title || "");
+  console.log("selected post", selectedPost);
+  const loadSavedData = () => {
+    const savedData = JSON.parse(localStorage.getItem("postFormData"));
+    return savedData || {};
+  };
+  const [title, setTitle] = useState(
+    selectedPost ? selectedPost?.title : loadSavedData()?.title || ""
+  );
   const [instructions, setInstructions] = useState(
-    selectedPost?.instructions || []
+    selectedPost
+      ? selectedPost?.instructions
+      : loadSavedData()?.instructions || []
   );
-  const [images, setImages] = useState(selectedPost?.images || []);
+  const [images, setImages] = useState(
+    selectedPost ? selectedPost?.images : loadSavedData()?.images || []
+  );
   const [imagePreviews, setImagePreviews] = useState(
-    selectedPost?.images || []
+    selectedPost ? selectedPost?.images : loadSavedData()?.imagePreviews || []
   );
-  const [prepTime, setPrepTime] = useState(selectedPost?.prepTime || 0);
+  const [prepTime, setPrepTime] = useState(
+    selectedPost ? selectedPost?.prepTime : loadSavedData()?.prepTime || 0
+  );
   const [autocompleteValue, setAutocompleteValue] = useState(null);
   const [item, setItem] = useState("");
   const [ingredients, setIngredients] = useState(
-    selectedPost?.ingredients || []
+    selectedPost
+      ? selectedPost?.ingredients
+      : loadSavedData()?.ingredients || []
   );
   const [category, setCategory] = useState(
-    selectedPost?.category || "breakfast"
+    selectedPost
+      ? selectedPost?.category
+      : loadSavedData()?.category || "breakfast"
   );
   const [deletedImages, setDeletedImages] = useState([]);
   const [error, setError] = useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!selectedPost) {
+      const formData = {
+        title,
+        instructions,
+        images: images.map((image) =>
+          image instanceof Blob ? URL.createObjectURL(image) : image
+        ),
+        imagePreviews,
+        prepTime,
+        item,
+        ingredients,
+        category,
+      };
+      localStorage.setItem("postFormData", JSON.stringify(formData));
+    }
+  }, [
+    title,
+    instructions,
+    images,
+    imagePreviews,
+    prepTime,
+    item,
+    ingredients,
+    category,
+  ]);
+
+  useEffect(() => {
+    if (selectedPost) {
+      localStorage.removeItem("postFormData");
+    }
+  }, [selectedPost]);
+
   useEffect(() => {
     if (selectedPost) {
       setImages(selectedPost.images || []);
@@ -125,55 +176,6 @@ const PostForm = ({
     };
   }, [images]);
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   const formData = new FormData();
-  //   formData.append("title", title);
-  //   formData.append("instructions", instructions);
-  //   formData.append("category", category);
-  //   formData.append("prepTime", prepTime);
-  //   console.log("ingrede", ingredients);
-  //   images.forEach((image) => {
-  //     if (image instanceof File) {
-  //       formData.append("images", image);
-  //     }
-  //   });
-
-  //   ingredients.forEach((ingredient, index) => {
-  //     formData.append(`ingredients[${index}]`, ingredient);
-  //   });
-
-  //   // removed images
-  //   deletedImages.forEach((image) => {
-  //     formData.append("deletedImages[]", image);
-  //   });
-
-  //   try {
-  //     let response;
-  //     if (selectedPost) {
-  //       response = await editRecipePost(selectedPost._id, formData);
-  //     } else {
-  //       response = await createRecipePost(formData);
-  //     }
-  //     console.log(response.data);
-  //     if (response.status === 201 || response.status === 200) {
-  //       await fetchUserPosts();
-  //       setShowSuccessSnackbar(true);
-  //       setSuccessMessage("Your post has been shared");
-  //       setShowModal(false);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //     if (
-  //       error.response &&
-  //       error.response.status >= 400 &&
-  //       error.response.status <= 500
-  //     ) {
-  //       setError(error.response.data.message);
-  //     }
-  //   }
-  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (
@@ -314,3 +316,52 @@ const PostForm = ({
 };
 
 export default PostForm;
+// const handleSubmit = async (e) => {
+//   e.preventDefault();
+
+//   const formData = new FormData();
+//   formData.append("title", title);
+//   formData.append("instructions", instructions);
+//   formData.append("category", category);
+//   formData.append("prepTime", prepTime);
+//   console.log("ingrede", ingredients);
+//   images.forEach((image) => {
+//     if (image instanceof File) {
+//       formData.append("images", image);
+//     }
+//   });
+
+//   ingredients.forEach((ingredient, index) => {
+//     formData.append(`ingredients[${index}]`, ingredient);
+//   });
+
+//   // removed images
+//   deletedImages.forEach((image) => {
+//     formData.append("deletedImages[]", image);
+//   });
+
+//   try {
+//     let response;
+//     if (selectedPost) {
+//       response = await editRecipePost(selectedPost._id, formData);
+//     } else {
+//       response = await createRecipePost(formData);
+//     }
+//     console.log(response.data);
+//     if (response.status === 201 || response.status === 200) {
+//       await fetchUserPosts();
+//       setShowSuccessSnackbar(true);
+//       setSuccessMessage("Your post has been shared");
+//       setShowModal(false);
+//     }
+//   } catch (error) {
+//     console.log(error);
+//     if (
+//       error.response &&
+//       error.response.status >= 400 &&
+//       error.response.status <= 500
+//     ) {
+//       setError(error.response.data.message);
+//     }
+//   }
+// };

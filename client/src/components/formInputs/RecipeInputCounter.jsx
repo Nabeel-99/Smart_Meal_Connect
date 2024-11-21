@@ -23,8 +23,6 @@ const RecipeInputCounter = ({
         value={ingredientCount}
         onChange={(e) => setIngredientCount(e.target.value)}
         className={`md:w-44 px-3 ${isLoggedIn ? "" : "cursor-not-allowed"}`}
-        bgColor="bg-[#171717]"
-        borderColor="border-[#343333]"
       />
       <button onClick={incrementCount} type="button" className="md:hidden">
         <BiSolidRightArrow className="text-2xl" />

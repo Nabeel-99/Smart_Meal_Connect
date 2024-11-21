@@ -155,7 +155,7 @@ export const postRecipe = async (req, res) => {
       req.body;
     const images = req.files;
     if (!title || !instructions || !prepTime || !ingredients || !category) {
-      return res.status(400).json({ message: "Fields are required" });
+      return res.status(400).json({ message: "Please fill in all the fields" });
     }
     if (!images || images.length === 0) {
       return res

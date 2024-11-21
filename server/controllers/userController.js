@@ -221,10 +221,22 @@ export const deleteUser = async (req, res) => {
       await Recipe.findByIdAndDelete(post.recipeId);
     }
     await UserPost.deleteMany({ userId: userId });
-
     await SavedRecipe.findOneAndDelete({ userId: userId });
     await Metrics.findOneAndDelete({ userId: userId });
     await Pantry.findOneAndDelete({ userId: userId });
+    await UserPost.updateMany(
+      { "comments.userId": userId },
+      { $pull: { comments: { userId: userId } } }
+    );
+    await UserPost.updateMany(
+      { [`likes.${userId}`]: true },
+      {
+        $unset: {
+          [`likes.${userId}`]: "",
+          [`likesTimestamp.${userId}`]: "",
+        },
+      }
+    );
     if (deletedUser) {
       res.clearCookie("token");
     }

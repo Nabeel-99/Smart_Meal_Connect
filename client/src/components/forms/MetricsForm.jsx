@@ -53,8 +53,6 @@ const MetricsForm = ({
           onChange={(e) => setGender(e.target.value)}
           className="w-72 cursor-pointer"
           applyDarkMode={true}
-          bgColor="bg-[#171717]"
-          borderColor="border-[#343333]"
         />
         <TextInput
           label={"Age"}
@@ -64,8 +62,6 @@ const MetricsForm = ({
           value={age}
           onChange={(e) => setAge(e.target.value)}
           className="w-72 cursor-pointer"
-          bgColor="bg-[#171717]"
-          borderColor="border-[#343333]"
         />
       </div>
       <div className="text-sm border-b pb-2 border-b-[#343333] w-full">
@@ -81,8 +77,6 @@ const MetricsForm = ({
           onChange={(e) => setHeight(e.target.value)}
           type={"number"}
           className="w-72 cursor-pointer"
-          bgColor="bg-[#171717]"
-          borderColor="border-[#343333]"
         />
         <TextInput
           label={"Weight(kg)"}
@@ -93,8 +87,6 @@ const MetricsForm = ({
           onChange={(e) => setWeight(e.target.value)}
           type={"number"}
           className="w-72 cursor-pointer"
-          bgColor="bg-[#171717]"
-          borderColor="border-[#343333]"
         />
         <SelectInput
           label={"Goal"}
@@ -104,8 +96,6 @@ const MetricsForm = ({
           onChange={(e) => setGoal(e.target.value)}
           className="w-72 cursor-pointer"
           applyDarkMode={true}
-          bgColor="bg-[#171717]"
-          borderColor="border-[#343333]"
         />
         <SelectInput
           label={"Exercise Level"}
@@ -115,8 +105,6 @@ const MetricsForm = ({
           onChange={(e) => setExerciseLevel(e.target.value)}
           className="w-72 cursor-pointer"
           applyDarkMode={true}
-          bgColor="bg-[#171717]"
-          borderColor="border-[#343333]"
         />
       </div>
       <DietaryPreferences
