@@ -24,7 +24,7 @@ const MealViewOptions = ({
   dinner,
 }) => {
   return (
-    <div className="flex flex-col w-full sticky top-[60px] lg:top-[40px] z-10 dark:bg-[#0c0c0c] bg-[#F7F7F8] pb-3 lg:pb-5  h-full gap-4">
+    <div className="flex flex-col w-full sticky top-[60px] lg:top-[40px] z-10 dark:bg-[#0c0c0c] bg-[#F7F7F8] pb-3 lg:pb-5   gap-4">
       <div className="text-xl lg:text-3xl font-bold pt-6 lg:pt-10">
         Personalized Meal Suggestions for You
       </div>

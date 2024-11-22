@@ -15,7 +15,7 @@ const MealCard = ({
   selectedRecipes,
 }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  console.log("meals", meals);
+
   return (
     <>
       {/* Grid view */}

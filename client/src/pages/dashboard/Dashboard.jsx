@@ -26,7 +26,9 @@ const Dashboard = ({
   let breakfastMeals = dashboardRecipes.recipes?.breakfast || [];
   let lunchMeals = dashboardRecipes.recipes?.lunch || [];
   let dinnerMeals = dashboardRecipes.recipes?.dinner || [];
-  let calorieTargetTotal = Number(dashboardRecipes?.calorieTarget) || 0;
+  let calorieTargetTotal = dashboardRecipes?.calorieTarget
+    ? Number(dashboardRecipes.calorieTarget)
+    : null;
 
   const [breakfast, setBreakfast] = useState(true);
   const [lunch, setLunch] = useState(false);

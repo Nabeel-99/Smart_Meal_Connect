@@ -36,13 +36,17 @@ const IngredientsBased = ({ userData, theme }) => {
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage((prev) => prev + 1);
-      cardRef.current.scrollIntoView({ behavior: "smooth" });
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        cardRef.current.scrollIntoView({ behavior: "smooth" });
+      }
     }
   };
   const handlePreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage((prev) => prev - 1);
-      cardRef.current.scrollIntoView({ behavior: "smooth" });
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        cardRef.current.scrollIntoView({ behavior: "smooth" });
+      }
     }
   };
   const paginatedRecipes = fetchedRecipes.slice(
@@ -116,8 +120,8 @@ const IngredientsBased = ({ userData, theme }) => {
         const validRecipes = recipes.filter(
           (recipe) =>
             recipe &&
-            Array.isArray(recipe.userUsedIngredients) &&
-            recipe.userUsedIngredients.length > 0
+            Array.isArray(recipe.ingredients) &&
+            recipe.ingredients.length > 0
         );
 
         sessionStorage.setItem(
@@ -134,14 +138,11 @@ const IngredientsBased = ({ userData, theme }) => {
 
         setFetchedRecipes(validRecipes);
         setTotalRecipes(validRecipes.length);
+        setCurrentPage(1);
       }
     } catch (error) {
       console.error(error);
-      if (
-        error.response &&
-        error.response.status >= 429 &&
-        error.response.status <= 500
-      ) {
+      if (error.response && error.response.status === 429) {
         setResultError(
           "Oops! It looks like we’re getting a lot of requests right now. Please try again in a few moments."
         );
@@ -174,59 +175,63 @@ const IngredientsBased = ({ userData, theme }) => {
     const storedRecipes = sessionStorage.getItem("ingredientsBased");
     const storedIngredientInput = sessionStorage.getItem("ingredientsInput");
 
-    if (storedRecipes) {
-      setFetchedRecipes(JSON.parse(storedRecipes));
-      setTotalRecipes(JSON.parse(storedRecipes).length);
+    if (storedRecipes && fetchedRecipes.length === 0) {
+      const parsedRecipes = JSON.parse(storedRecipes);
+      setFetchedRecipes(parsedRecipes);
+      setTotalRecipes(parsedRecipes.length);
     }
-    if (storedIngredientInput) {
+
+    if (storedIngredientInput && ingredients.length === 0) {
       const ingredientsInput = JSON.parse(storedIngredientInput);
       setIngredients(ingredientsInput);
     }
   }, []);
 
   return (
-    <div className="container mx-auto overflow-x-hidden flex flex-col gap-8 pt-16 justify-center items-center">
-      <IngredientsHeader />
-      <div className="flex flex-col gap-6 items-center   w-full px-2 ">
-        <IngredientsBasedToggle
-          isConnected={isConnected}
-          isLoggedIn={isLoggedIn}
-          handleToggle={handleToggle}
-        />
-        <div className=" border bg-[#e0e0e0] dark:border-[#1d1d1d] w-96  md:w-2/3 rounded-xl py-2 px-2 dark:bg-[#0E0F10] min-h-[700px] h-full  ">
-          <IngredientsForm
-            theme={theme}
-            onSubmit={onSubmit}
-            setAutocompleteValue={setAutocompleteValue}
-            setItem={setItem}
-            autocompleteValue={autocompleteValue}
-            addIngredient={addIngredient}
-            ingredients={ingredients}
-            removeIngredient={removeIngredient}
-            handleChecboxChange={handleChecboxChange}
+    <>
+      <div className="container mx-auto overflow-x-hidden flex flex-col gap-8 pt-16 justify-center items-center">
+        <IngredientsHeader />
+        <div className="flex flex-col gap-6 items-center   w-full px-2 ">
+          <IngredientsBasedToggle
+            isConnected={isConnected}
+            isLoggedIn={isLoggedIn}
+            handleToggle={handleToggle}
+          />
+          <div className=" border bg-[#e0e0e0] dark:border-[#1d1d1d] w-96  md:w-2/3 rounded-xl py-2 px-2 dark:bg-[#0E0F10] min-h-[700px] h-full  ">
+            <IngredientsForm
+              theme={theme}
+              onSubmit={onSubmit}
+              setAutocompleteValue={setAutocompleteValue}
+              setItem={setItem}
+              autocompleteValue={autocompleteValue}
+              addIngredient={addIngredient}
+              ingredients={ingredients}
+              removeIngredient={removeIngredient}
+              handleChecboxChange={handleChecboxChange}
+              loading={loading}
+              error={error}
+              selectedDietaryPreferences={selectedDietaryPreferences}
+            />
+          </div>
+          {/* showing results */}
+          <RecipeResultsContainer
+            fetchedRecipes={fetchedRecipes}
+            resultError={resultError}
+            handlePreviousPage={handlePreviousPage}
+            currentPage={currentPage}
+            cardRef={cardRef}
             loading={loading}
-            error={error}
-            selectedDietaryPreferences={selectedDietaryPreferences}
+            paginatedRecipes={paginatedRecipes}
+            gridView={gridView}
+            sourceType={"ingredientsBased"}
+            totalRecipes={totalRecipes}
+            totalPages={totalPages}
+            handleNextPage={handleNextPage}
           />
         </div>
-        {/* showing results */}
-        <RecipeResultsContainer
-          fetchedRecipes={fetchedRecipes}
-          resultError={resultError}
-          handlePreviousPage={handlePreviousPage}
-          currentPage={currentPage}
-          cardRef={cardRef}
-          loading={loading}
-          paginatedRecipes={paginatedRecipes}
-          gridView={gridView}
-          sourceType={"ingredientsBased"}
-          totalRecipes={totalRecipes}
-          totalPages={totalPages}
-          handleNextPage={handleNextPage}
-        />
       </div>
       {!isLoggedIn && <GetStartedSection />}
-    </div>
+    </>
   );
 };
 

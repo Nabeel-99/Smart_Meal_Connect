@@ -47,7 +47,7 @@ const RecipeImageCarousel = ({ recipeDetails }) => {
             : "default"
         }
         alt=""
-        className="w-full h-[280px] md:w-[600px] md:h-[400px] lg:w-[500px] lg:h-[400px] xl:w-[700px] xl:h-[500px] object-cover border border-[#1d1d1d] rounded-2xl"
+        className="w-full h-[280px] md:w-[600px] md:h-[400px] lg:w-[500px] lg:h-[400px] xl:w-[700px] xl:h-[500px] object-cover border border-[#e0e0e0] dark:border-[#1d1d1d] rounded-2xl"
       />
       <span>
         <Tooltip title="next">

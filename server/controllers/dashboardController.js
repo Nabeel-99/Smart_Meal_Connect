@@ -3,6 +3,7 @@ import Metrics from "../models/metricsModel.js";
 import Recipe from "../models/recipeModel.js";
 import UserDashboard from "../models/userDashboardModel.js";
 import User from "../models/userModel.js";
+import fallbackMeals from "../utils/fallbackmeals.json" assert { type: "json" };
 import {
   calculateBMR,
   calculateTDEE,
@@ -36,7 +37,7 @@ const prepareRecipesForInsertion = (recipes) => {
     prepTime: recipe.prepTime || 0,
   }));
 };
-// get dashboard recipes
+
 const generateDashboardRecipes = async (req) => {
   try {
     const userId = req.userId;
@@ -70,20 +71,42 @@ const generateDashboardRecipes = async (req) => {
       calorieTarget = getCalorieIntake(goal, TDEE);
     }
 
-    const allRecipes = await fetchDashboardRecipes(goal, dietaryPreferences);
-    const filteredAndRankedRecipes = await categorizeRecipes(allRecipes);
+    try {
+      const allRecipes = await fetchDashboardRecipes(goal, dietaryPreferences);
+      const filteredAndRankedRecipes = await categorizeRecipes(allRecipes);
 
-    return {
-      error: false,
-      message: "Dashboard recipes fetched successfully",
-      calorieTarget: calorieTarget || null,
-      recipes: filteredAndRankedRecipes,
-    };
+      return {
+        error: false,
+        message: "Dashboard recipes fetched successfully",
+        calorieTarget: calorieTarget || null,
+        recipes: filteredAndRankedRecipes,
+      };
+    } catch (apiError) {
+      if (
+        apiError.response &&
+        (apiError.response.status >= 400 || apiError.response.status <= 500)
+      ) {
+        // Fallback to local fallbackMeals.json in case of quota limits
+        return {
+          error: false,
+          message: "API quota reached, using fallback meals",
+          calorieTarget: calorieTarget || null,
+          recipes: fallbackMeals,
+        };
+      }
+
+      console.error(apiError);
+      return {
+        error: true,
+        message: "Error fetching dashboard recipes",
+        statusCode: 500,
+      };
+    }
   } catch (error) {
     console.error(error);
     return {
       error: true,
-      message: "Error fetching dashboard recipes",
+      message: "Error processing dashboard data",
       statusCode: 500,
     };
   }

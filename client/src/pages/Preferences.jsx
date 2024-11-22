@@ -80,11 +80,11 @@ const Preferences = () => {
   }, []);
 
   return (
-    <div className="flex flex-col gap-20  w-full  px-8 lg:px-24">
+    <div className="flex flex-col gap-20  w-full 2xl:container 2xl:mx-auto  px-8 lg:px-24">
       {getStarted ? (
         <AnimationComponent />
       ) : (
-        <div className="flex flex-col gap-8 pt-32 md:pt-28  lg:gap-0 lg:flex-row items-center justify-evenly  ">
+        <div className="flex flex-col gap-8 pt-32 md:pt-28  lg:gap-0 lg:flex-row items-center justify-evenly 2xl:justify-center 2xl:gap-40 ">
           <div className="flex flex-col items-center w-full md:w-1/2 lg:w-auto   h-full lg:justify-center gap-2">
             <div className="flex flex-col  w-full gap-4">
               <h1 className="text-4xl lg:text-6xl font-bold tracking-tight">
@@ -122,7 +122,7 @@ const Preferences = () => {
               <button
                 type="button"
                 onClick={skipToDashboard}
-                className="text-[#A3A3A3] flex justify-end"
+                className="text-[#A3A3A3] flex justify-end pb-6"
               >
                 Skip
               </button>

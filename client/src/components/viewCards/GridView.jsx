@@ -41,7 +41,7 @@ const GridView = ({
         </div>
       </Link>
 
-      <div className="flex items-center 2xl:w-[550px] justify-between">
+      <div className="flex items-center 3xl:w-[550px]  justify-between">
         <div className="flex items-center gap-2 text-sm">
           <div className="flex flex-col gap-2 text-sm">
             {meal.title.length > 15

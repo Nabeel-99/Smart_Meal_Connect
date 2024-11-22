@@ -37,8 +37,8 @@ const DialogComponent = ({
             disabled={loading}
             onClick={handleAction}
             className={` ${
-              loading ? "cursor-not-allowed" : ""
-            }rounded-md py-2 px-3 bg-[#2c2c2c] text-white hover:bg-[#646464] transition-all duration-150`}
+              loading ? "cursor-not-allowed" : "hover:bg-[#646464]"
+            }rounded-md py-2 px-3 bg-[#2c2c2c] text-white  transition-all duration-150`}
           >
             Yes
           </button>
@@ -46,8 +46,8 @@ const DialogComponent = ({
             disabled={loading}
             onClick={handleClose}
             className={` ${
-              loading ? "cursor-not-allowed" : ""
-            }rounded-md py-2 px-3 bg-[#2c2c2c] text-white hover:bg-[#646464] transition-all duration-150`}
+              loading ? "cursor-not-allowed" : "hover:bg-[#646464"
+            }rounded-md py-2 px-3 bg-[#2c2c2c] text-white  transition-all duration-150`}
           >
             No
           </button>

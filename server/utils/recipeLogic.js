@@ -9,7 +9,6 @@ import defaultPantry from "./pantry.json" assert { type: "json" };
 import {
   filterRecipeCalories,
   generateInstructionsForEdamam,
-  generateInstructionsNotInEnglish,
 } from "./helper.js";
 
 // fetch dashboard specific recipes
@@ -19,13 +18,7 @@ export const fetchDashboardRecipes = async (goal, dietaryPreferences) => {
     const lunchQueries = ["side dish", "snack"];
     const dinnerQueries = ["dessert", "main course", "soup"];
     // fetching recipes
-    const [
-      spoonacularBreakfast,
-      spoonacularLunch,
-      spoonacularDinner,
-      edamamRecipes,
-      tastyRecipes,
-    ] = await Promise.all([
+    const apiResults = await Promise.allSettled([
       getSpoonacularRecipes(["breakfast"], calories, dietaryPreferences),
       getSpoonacularRecipes(lunchQueries, calories, dietaryPreferences),
       getSpoonacularRecipes(dinnerQueries, calories, dietaryPreferences),
@@ -33,19 +26,14 @@ export const fetchDashboardRecipes = async (goal, dietaryPreferences) => {
       getTastyAPIRecipes([]),
     ]);
 
-    const breakfastRecipes = [...spoonacularBreakfast];
-    const lunchRecipes = [...spoonacularLunch];
-    const dinnerRecipes = [...spoonacularDinner];
-    const edamam = [...edamamRecipes];
-    const tasty = [...tastyRecipes];
+    const successfulResults = apiResults
+      .filter(
+        (result) => result.status === "fulfilled" && result.value.length > 0
+      )
+      .map((result) => result.value);
 
-    const allRecipes = [
-      ...breakfastRecipes,
-      ...lunchRecipes,
-      ...dinnerRecipes,
-      ...edamam,
-      ...tasty,
-    ];
+    const allRecipes = successfulResults.flat();
+
     const shuffleRecipes = allRecipes.sort(() => Math.random() - 0.5);
     return shuffleRecipes;
   } catch (error) {
@@ -58,15 +46,26 @@ export const fetchDashboardRecipes = async (goal, dietaryPreferences) => {
 export const fetchAPIRecipes = async (query = [], goal, dietaryPreferences) => {
   try {
     const calories = goal || null;
-    const spoonacularMeals = await findRecipesByIngredients(query);
 
-    // Fetching recipes from both sources
-    const [edamamMeals, tastyMeals] = await Promise.all([
+    // Fetching recipes from all sources
+    const apiResults = await Promise.allSettled([
+      findRecipesByIngredients(query), // Spoonacular
       getEdamamRecipes(query, null, calories, dietaryPreferences),
       getTastyAPIRecipes(query),
     ]);
 
-    const allRecipes = [...spoonacularMeals, ...edamamMeals, ...tastyMeals];
+    const successfulResults = apiResults
+      .filter(
+        (result) => result.status === "fulfilled" && result.value.length > 0
+      )
+      .map((result) => result.value);
+
+    if (successfulResults.length === 0) {
+      console.log("No valid results from any API.");
+      return [];
+    }
+
+    const allRecipes = successfulResults.flat();
 
     const shuffleRecipes = allRecipes.sort(() => Math.random() - 0.5);
 
@@ -105,19 +104,22 @@ export const fetchBasedOnIngredients = async (
 export const fetchBasedOnMetrics = async (goal, dietaryPreferences) => {
   try {
     const calories = goal || null;
-    const [spoonacularRecipes, edamamRecipes, tastyRecipes] = await Promise.all(
-      [
-        getSpoonacularRecipes([], calories, dietaryPreferences),
-        getEdamamRecipes([], null, calories, dietaryPreferences),
-        getTastyAPIRecipes([]),
-      ]
-    );
+    const apiResults = await Promise.allSettled([
+      getSpoonacularRecipes([], calories, dietaryPreferences),
+      getEdamamRecipes([], null, calories, dietaryPreferences),
+      getTastyAPIRecipes([]),
+    ]);
+    const successfulResults = apiResults
+      .filter(
+        (result) => result.status === "fulfilled" && result.value.length > 0
+      )
+      .map((result) => result.value);
 
-    const allRecipes = [
-      ...spoonacularRecipes,
-      ...edamamRecipes,
-      ...tastyRecipes,
-    ];
+    if (successfulResults.length === 0) {
+      console.log("No valid results from any API.");
+      return [];
+    }
+    const allRecipes = successfulResults.flat();
     const shuffledRecipes = allRecipes.sort(() => Math.random() - 0.5);
 
     const filteredRecipes = filterRecipeCalories(shuffledRecipes, calories);
@@ -189,6 +191,7 @@ export const filteredAndRankedRecipes = async (
     });
 
     let finalInstructions = instructions;
+    console.log(instructions);
     if (missingIngredients.length <= 3) {
       if (
         Array.isArray(instructions) &&

@@ -66,34 +66,6 @@ export const generateInstructionsForEdamam = async (title, ingredients) => {
     return ["Instructions could not be generated."];
   }
 };
-export const generateInstructionsNotInEnglish = async (instructions = []) => {
-  if (!Array.isArray(instructions)) {
-    instructions = [instructions];
-  }
-
-  const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY2);
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
-
-  const prompt = `Are the following recipe instructions in English? Reply with "yes" if they are, or "no" if they are not: 
-  ${instructions.join("\n")}`;
-
-  try {
-    const response = await model.generateContent(prompt);
-    const aiResponse = response.response.text().trim();
-
-    if (aiResponse.toLowerCase() === "yes") {
-      return instructions;
-    } else {
-      const translationPrompt = `Translate the following set of recipe instructions to English: 
-      ${instructions.join("\n")}`;
-      const translationResult = await model.generateContent(translationPrompt);
-      return [translationResult.response.text()];
-    }
-  } catch (error) {
-    console.log("error generating instruction", error);
-    return ["no instruction"];
-  }
-};
 
 // BMR Mifflin formulas
 export const calculateBMR = (gender, weight, height, age) => {
@@ -174,7 +146,7 @@ export const extractRecipeData = (recipe) => {
         ? recipe.analyzedInstructions.flatMap((instruction) =>
             instruction.steps.map((step) => step.step)
           )
-        : ["no instructions"];
+        : [];
     mealType = recipe.dishTypes || [];
     dietaryPreferences = [
       recipe.vegetarian ? "Vegetarian" : "",
@@ -184,7 +156,7 @@ export const extractRecipeData = (recipe) => {
     ].filter(Boolean);
     sourceUrl = recipe.spoonacularSourceUrl || "Unknown Source";
     images = recipe.image ? [recipe.image] : ["no image"];
-    videoLink = "will come back to this";
+    videoLink = "";
   } else if (isEdamam) {
     if (recipe.recipe) {
       id = `${Date.now()}_${Math.floor(Math.random() * 1000)}`;
@@ -194,12 +166,12 @@ export const extractRecipeData = (recipe) => {
         ? recipe.recipe.ingredients.map((ingredient) => ingredient.food)
         : [];
       prepTime = recipe.recipe.totalTime || 0;
-      instructions = ["no instructions for edamam"];
+      instructions = []; //no instructions for edamam
       mealType = recipe.recipe.mealType || [];
       dietaryPreferences = recipe.recipe.healthLabels || [];
-      images = recipe.recipe.image ? [recipe.recipe.image] : ["no image"];
+      images = recipe.recipe.image ? [recipe.recipe.image] : [];
       sourceUrl = recipe.recipe.shareAs || "Unknown Source";
-      videoLink = "will come back to this";
+      videoLink = "";
       nutrients =
         Object.values(recipe.recipe.totalNutrients)
           .filter((nutrient) => nutrient.quantity > 0)
@@ -226,9 +198,9 @@ export const extractRecipeData = (recipe) => {
       : [];
     instructions = recipe.instructions
       ? recipe.instructions.map((instruction) => instruction.display_text)
-      : ["no instructions"];
-    videoLink = recipe.original_video_url || "No Video";
-    images = recipe.thumbnail_url ? [recipe.thumbnail_url] : ["no image"];
+      : [];
+    videoLink = recipe.original_video_url || "";
+    images = recipe.thumbnail_url ? [recipe.thumbnail_url] : [];
     prepTime = recipe.prep_time_minutes || 0;
     nutrients = filteredNutrition;
     sourceUrl = "https://rapidapi.com/apidojo/api/tasty/";

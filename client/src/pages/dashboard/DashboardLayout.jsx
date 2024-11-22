@@ -45,15 +45,27 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
   const openDialog = () => {
     setShowDialog(true);
   };
+  useEffect(() => {
+    const preferredView = localStorage.getItem("preferredView");
+    if (preferredView === "list") {
+      setListView(true);
+      setGridView(false);
+    } else if (preferredView === "grid") {
+      setGridView(true);
+      setListView(false);
+    }
+  }, []);
   const showListView = () => {
     setListView(true);
     setGridView(false);
     setViewOptions(false);
+    localStorage.setItem("preferredView", "list");
   };
   const showGridView = () => {
     setGridView(true);
     setListView(false);
     setViewOptions(false);
+    localStorage.setItem("preferredView", "grid");
   };
   const showOptions = () => setViewOptions(!viewOptions);
   const showSideMenu = () => setSideMenu(!sideMenu);
@@ -334,6 +346,7 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
         showDialog={showDialog}
         setShowDialog={setShowDialog}
         handleAction={handleLogout}
+        loading={loading}
         title={"Are you sure you want to log out?"}
       />
     </>

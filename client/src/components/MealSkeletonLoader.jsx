@@ -29,8 +29,8 @@ const MealSkeletonLoader = ({
           {Array.from({ length: count }).map(
             (_, index) =>
               isListView && (
-                <div className="flex flex-col gap-6 w-full">
-                  <div key={index} className="flex gap-10 items-center w-full">
+                <div key={index} className="flex flex-col gap-6 w-full">
+                  <div className="flex gap-10 items-center w-full">
                     <div className="flex w-full gap-4 animate-pulse">
                       <div
                         className={`h-44  w-full md:w-96  lg:w-72 rounded-md bg-[#595959] border border-[#7d7d7d]`}

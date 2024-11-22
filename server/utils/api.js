@@ -75,7 +75,7 @@ export const getSpoonacularRecipes = async (
       throw error;
     }
   }
-  throw new Error("All API keys reached their limit.");
+  throw new Error("All  spoonacular API keys reached their limit.");
 };
 
 // spoonacular findByIngredietns
@@ -100,7 +100,7 @@ export const findByIngredients = async (ingredients = []) => {
       throw error;
     }
   }
-  throw new Error("All API keys reached their limit.");
+  throw new Error("All spoonacular API keys reached their limit.");
 };
 
 // spoonacular find by id
@@ -123,7 +123,7 @@ export const findById = async (id) => {
       throw error;
     }
   }
-  throw new Error("All API keys reached their limit.");
+  throw new Error("All spoonacular API keys reached their limit.");
 };
 
 // spooncaular findRecipesByIngredients

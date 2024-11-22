@@ -35,7 +35,7 @@ const RecipeDetails = ({ userData }) => {
 
       if (foundRecipe) {
         setRecipeDetails(foundRecipe);
-
+        console.log("found Recipe", foundRecipe);
         return;
       } else {
         console.log("Recipe not found in local storage");
@@ -107,7 +107,28 @@ const RecipeDetails = ({ userData }) => {
         postOwner={postOwner}
         // currentUserId={currentUserId}
       />
-      <div className="flex flex-col w-full justify-center md:w-[600px] lg:w-auto lg:flex-row gap-10">
+      <div className="flex flex-col lg:flex-row  gap-10 xl:gap-20">
+        <div className="flex flex-col gap-10 xl:gap-20 justify-center w-full">
+          <RecipeImageCarousel recipeDetails={recipeDetails} />
+          <RecipeInstructionsCard recipeDetails={recipeDetails} />
+        </div>
+        <div className="flex flex-col gap-10 xl:gap-20 justify-start">
+          <div className="flex flex-col w-full gap-6">
+            <RecipeIngredientsCard recipeDetails={recipeDetails} />
+            {recipeDetails.missingIngredients &&
+              recipeDetails.missingIngredients?.length > 0 && (
+                <MissingIngredientsCard recipeDetails={recipeDetails} />
+              )}
+          </div>
+          <div className="w-full">
+            {recipeDetails.nutrients && (
+              <NutrientsCard recipeDetails={recipeDetails} />
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* <div className="flex flex-col w-full justify-center md:w-[600px] border lg:w-auto lg:flex-row gap-10">
         <RecipeImageCarousel recipeDetails={recipeDetails} />
         <div className="flex flex-col gap-4">
           <RecipeIngredientsCard recipeDetails={recipeDetails} />
@@ -118,12 +139,12 @@ const RecipeDetails = ({ userData }) => {
             )}
         </div>
       </div>
-      <div className="flex flex-col w-full md:w-[600px] lg:w-auto items-start justify-start lg:flex-row gap-10">
+      <div className="flex flex-col w-full justify-center md:w-[600px] border lg:w-auto lg:flex-row gap-10">
         <RecipeInstructionsCard recipeDetails={recipeDetails} />
         {recipeDetails.nutrients && (
           <NutrientsCard recipeDetails={recipeDetails} />
         )}
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -20,6 +20,7 @@ const Navbar = ({ userData, updateTheme }) => {
   const pathNames = ["/ingredients-based", "/metrics-based"];
   const [isBurgerMenu, setIsBurgerMenu] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showFeatures, setShowFeatures] = useState(false);
   const navigate = useNavigate();
   const [viewModes, setViewModes] = useState(false);
   const modeRef = useRef(null);
@@ -53,8 +54,10 @@ const Navbar = ({ userData, updateTheme }) => {
     }
   }, [isBurgerMenu, viewModes]);
   return (
-    <div className="flex items-center fixed left-0 right-0 lg:px-10 xl:px-52  2xl:container 2xl:mx-auto  top-6   z-50 ">
-      <div className="hidden lg:flex items-center justify-between bg-[#FFFFFF80] dark:bg-transparent border-[#c5c5c5] dark:border-[#343333] backdrop-blur-lg gap-8 px-4 p-3 border rounded-2xl w-full">
+    <div className="flex items-center fixed  left-0 right-0 lg:px-10 xl:px-52  2xl:container 2xl:mx-auto  top-6   z-50 ">
+      <div
+        className={`hidden  relative lg:flex items-center z-50 justify-between bg-[#FFFFFF80] dark:bg-transparent border-[#c5c5c5] dark:border-[#343333] backdrop-blur-lg gap-8 px-4 p-3 border rounded-2xl w-full `}
+      >
         <div className="">
           <Link
             to={"/"}
@@ -80,14 +83,16 @@ const Navbar = ({ userData, updateTheme }) => {
                 (path) => !location.pathname.startsWith(path)
               ) && (
                 <>
-                  <ScrollToLink
-                    className="hover:text-[#2f44a1] dark:hover:text-[#a1afee]  cursor-pointer"
-                    to="features"
-                    duration={500}
-                    smooth="true"
-                  >
-                    Features
-                  </ScrollToLink>
+                  <div className="">
+                    <Link
+                      className="hover:text-[#2f44a1]  dark:hover:text-[#a1afee]  cursor-pointer"
+                      to="features"
+                      duration={500}
+                      smooth="true"
+                    >
+                      Features
+                    </Link>
+                  </div>
                   <ScrollToLink
                     className="hover:text-[#2f44a1] dark:hover:text-[#a1afee]  cursor-pointer"
                     to={"about"}
@@ -99,7 +104,13 @@ const Navbar = ({ userData, updateTheme }) => {
                 </>
               )}
             </div>
-
+            <div
+              className={` hidden py-6 left-0  ${
+                showFeatures ? "absolute lg:flex h-96" : "lg:hidden"
+              }  top-full   items-center justify-between bg-[#FFFFFF80] dark:bg-blue-900 border-[#c5c5c5] dark:border-[#343333] backdrop-blur-lg gap-8 px-4 p-3 border rounded-2xl w-full `}
+            >
+              <Link to={"/ingredients-based"}>click me</Link>
+            </div>
             {isLoggedIn ? (
               <div className="hidden lg:flex items-center gap-6">
                 <div>
@@ -156,7 +167,7 @@ const Navbar = ({ userData, updateTheme }) => {
                     viewPopper={viewModes}
                     setViewPopper={setViewModes}
                   >
-                    <MenuList className="absolute right-0 top-10 p-4 w-40 dark:bg-[#08090a] bg-[#F7F7F8] text-black dark:text-white border dark:border-[#1d1d1d] border-[#e0e0e0] flex flex-col z-40 gap-4 rounded-md">
+                    <MenuList className="absolute right-0 top-10 p-4 w-40 dark:bg-[#08090a] bg-[#F7F7F8] text-black z-50 dark:text-white border dark:border-[#1d1d1d] border-[#e0e0e0] flex flex-col  gap-4 rounded-md">
                       <MenuItem
                         onClick={() => {
                           setMode("dark");

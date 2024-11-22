@@ -73,8 +73,8 @@ const PantryItems = ({ theme }) => {
   };
 
   return (
-    <div className="flex flex-col gap-20  w-full h-full  px-8 lg:px-24">
-      <div className="flex flex-col  pt-32 md:pt-28  lg:gap-10 lg:flex-row justify-between h-full  ">
+    <div className="flex flex-col gap-20  w-full h-full 2xl:container 2xl:mx-auto  px-8 lg:px-24">
+      <div className="flex flex-col  pt-32 md:pt-28  lg:gap-10 lg:flex-row justify-between 2xl:justify-center 2xl:gap-40 h-full  ">
         <div className="flex flex-col items-center w-full lg:w-auto  pb-24  xl:h-full lg:justify-center gap-2">
           <PantryHeader />
           <PantrySelection
@@ -97,14 +97,14 @@ const PantryItems = ({ theme }) => {
           />
         </div>
 
-        <div className="hidden xl:block w-[0.08px] h-full bg-[#343333]"></div>
-        <div className=" rounded-md bg-[#222121] h-[600px] max-h-[650px] p-8 w-full xl:w-[650px] xl:max-w-[650px] overflow-auto  ">
+        <div className="hidden xl:block w-[0.08px] h-full dark:bg-[#343333]"></div>
+        <div className=" rounded-md dark:bg-[#222121] bg-[#dadada] h-[600px] max-h-[650px] p-8 w-full xl:w-[650px] xl:max-w-[650px] overflow-auto  ">
           {" "}
           <div className="grid md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-2">
             {selectedItems.length > 0 &&
               selectedItems.map((item, index) => (
                 <div
-                  className="bg-[#2d2d2d] border border-[#444544] px-3 py-2 rounded-xl text-white flex items-center w-full justify-between"
+                  className="dark:bg-[#2d2d2d] bg-[#c4c4c4] border-[#dadada] border dark:border-[#444544] px-3 py-2 rounded-xl dark:text-white flex items-center w-full justify-between"
                   key={index}
                 >
                   <p className="pr-4">{item}</p>

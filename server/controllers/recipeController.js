@@ -81,18 +81,29 @@ export const generateMetricsBasedRecipes = async (req, res) => {
     const slicedRecipes = allRecipes.slice(0, numberOfRecipes);
     const finalRecipes = await Promise.all(
       slicedRecipes.map(async (recipe) => {
-        if (recipe.instructions === "no instructions for edamam") {
-          return {
-            ...recipe,
-            instructions: await generateInstructionsForEdamam(
+        let finalInstructions = recipe.instructions;
+        if (
+          Array.isArray(finalInstructions) &&
+          finalInstructions.length === 0
+        ) {
+          try {
+            finalInstructions = await generateInstructionsForEdamam(
               recipe.title,
               recipe.ingredients
-            ),
-          };
+            );
+          } catch (error) {
+            console.log("Error generating instructions:", error);
+            finalInstructions = ["Instructions could not be generated"];
+          }
         }
-        return recipe;
+
+        return {
+          ...recipe,
+          instructions: finalInstructions,
+        };
       })
     );
+
     return res.status(200).json({
       recipes: finalRecipes,
       message: "recipes fetched successfully",

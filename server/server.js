@@ -10,6 +10,8 @@ import recipeRoutes from "./routes/recipeRoutes.js";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import { deleteFakeData, seedDatabase } from "./utils/faker.js";
+import fs from "fs";
+import Recipe from "./models/recipeModel.js";
 
 dotenv.config();
 
@@ -52,6 +54,7 @@ connectDB();
 
 // // deletefaker
 // deleteFakeData();
+
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);

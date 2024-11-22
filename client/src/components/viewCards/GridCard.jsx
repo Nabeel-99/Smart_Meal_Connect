@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const GridCard = ({ header, image, description, to }) => {
   return (
-    <div className="flex dark:bg-[#19242f3f]  transition-all duration-300 flex-col text-sm backdrop-blur-lg border-[#e0e0e0]  shadow-md md:text-lg gap-2 z-20 max-w-[351px] md:max-w-[440px] md:max-h-[511px] max-h-[448px] border rounded-[20px] p-6 dark:border-[#1f1f1f9d]">
+    <div className="flex dark:bg-[#19242f3f]  transition-all duration-300 flex-col text-sm backdrop-blur-lg border-[#e0e0e0]  shadow-md md:text-lg gap-2  max-w-[351px] md:max-w-[440px] md:max-h-[511px] max-h-[448px] border rounded-[20px] p-6 dark:border-[#1f1f1f9d]">
       <p className="">{header}</p>
       <img
         src={image}
