@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Lottie from "lottie-react";
-import animationData from "../assets/animation.json";
+
 const AnimationComponent = () => {
   const [bar, setBar] = useState("Authenticating");
   useEffect(() => {

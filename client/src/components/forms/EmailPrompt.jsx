@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import BASE_URL from "../../apiConfig";
+import BASE_URL from "../../../apiConfig";
 import { useNavigate, useParams } from "react-router-dom";
 
 const EmailPrompt = ({ showVerifyEmail, userData, setShowVerifyEmail }) => {

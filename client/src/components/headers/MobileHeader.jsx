@@ -13,7 +13,7 @@ import { isNative } from "../../../apiConfig";
 import { IoIosLogOut, IoIosMenu } from "react-icons/io";
 import { MenuItem, MenuList } from "@mui/material";
 import { TbFridge } from "react-icons/tb";
-import NativeDialog from "../NativeDialog";
+import NativeDialog from "../stateManagement/NativeDialog";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { BsSliders } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";

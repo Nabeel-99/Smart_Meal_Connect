@@ -1,7 +1,7 @@
 import React from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
-import RecipeResults from "./viewCards/RecipeResults";
-import ErrorText from "./ErrorText";
+import RecipeResults from "../viewCards/RecipeResults";
+import ErrorText from "../stateManagement/ErrorText";
 
 const RecipeResultsContainer = ({
   fetchedRecipes,

@@ -1,5 +1,5 @@
 import { Navigate } from "react-router-dom";
-import LoadingAnimation from "../components/LoadingAnimation";
+import LoadingAnimation from "../components/animation/LoadingAnimation";
 import { useEffect, useState } from "react";
 
 const ProtectedRoute = ({ isAuthenticated, loading, children }) => {

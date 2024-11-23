@@ -1,20 +1,9 @@
 import React from "react";
-import PostComment from "./PostComment";
 import ModalComponent from "../popupCards/ModalComponent";
-import ImageCard from "./ImageCard";
-import PostHeader from "./PostHeader";
-import CommentsCard from "./CommentsCard";
 import { isNative } from "../../../apiConfig";
-import {
-  Button,
-  TextField,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from "@mui/material";
-import NativeDialog from "../NativeDialog";
-import PostDetails from "../PostDetails";
+import NativeDialog from "../stateManagement/NativeDialog";
+import PostDetails from "../feeds/PostDetails";
+
 const PostDetailsModal = ({
   showModal,
   theme,

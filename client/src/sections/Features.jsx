@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { FaDiceD6, FaKeyboard } from "react-icons/fa6";
 import formImg from "../assets/form-lg.png";
 import formImgLight from "../assets/form-lg-light.png";
@@ -15,9 +15,13 @@ import formMetricsMobileLight from "../assets/form-metrics-mobile-light.png";
 import personLG from "../assets/person-lg.png";
 import personMobile from "../assets/person-small.png";
 import { Link, useLocation } from "react-router-dom";
-import useTheme from "../components/UseTheme";
+import useTheme from "../components/stateManagement/UseTheme";
+import { motion, useInView } from "framer-motion";
+
 const Features = ({ theme }) => {
   const appTheme = useTheme(theme);
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true });
   return (
     <div
       id="features"
@@ -26,7 +30,13 @@ const Features = ({ theme }) => {
       <h1 className="text-[16px] lg:text-xl tracking-[5px] font-medium">
         FEATURES
       </h1>
-      <div className="flex flex-col gap-12 lg:gap-0 lg:flex-row items-start px-8 lg:px-0  pt-10">
+      <motion.div
+        ref={ref}
+        initial={{ opacity: 0, y: 100 }}
+        animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : 100 }}
+        transition={{ duration: 1 }}
+        className="flex flex-col gap-12 lg:gap-0 lg:flex-row items-start px-8 lg:px-0  pt-10"
+      >
         <div className="flex flex-col gap-6">
           <p className="font-bold text-2xl lg:text-4xl tracking-tight">
             Ingredient-Based
@@ -100,7 +110,7 @@ const Features = ({ theme }) => {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
       {/* bigger screen */}
       <div className="hidden md:flex relative  items-start  gap-10 pt-44 px-10 xl:px-64 pb-44">
         <div className="flex flex-col gap-4 w-full">

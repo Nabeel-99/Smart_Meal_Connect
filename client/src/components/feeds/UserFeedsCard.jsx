@@ -4,7 +4,7 @@ import NotificationCard from "../notificationCards/NotificationCard";
 import EmptyPosts from "./EmptyPosts";
 import PostCard from "./PostCard";
 import AutoHideSnackbar from "../popupCards/AutoHideSnackbar";
-import PostCardSkeleton from "../PostCardSkeleton";
+import PostCardSkeleton from "../skeletons/PostCardSkeleton";
 import MobileNotificationCard from "../notificationCards/MobileNotificationCard";
 import PopperComponent from "../popupCards/PopperComponent";
 

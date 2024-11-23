@@ -6,9 +6,9 @@ import {
   genderOptions,
   goalOptions,
 } from "../../../../server/utils/helper";
-import DietaryPreferences from "../DietaryPreferences";
+import DietaryPreferences from "../forms/DietaryPreferences";
 import SubmitButton from "../buttons/SubmitButton";
-import ErrorText from "../ErrorText";
+import ErrorText from "../stateManagement/ErrorText";
 import RecipeInputCounter from "../formInputs/RecipeInputCounter";
 
 const MetricsForm = ({

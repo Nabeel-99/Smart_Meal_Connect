@@ -127,24 +127,6 @@ const RecipeDetails = ({ userData }) => {
           </div>
         </div>
       </div>
-
-      {/* <div className="flex flex-col w-full justify-center md:w-[600px] border lg:w-auto lg:flex-row gap-10">
-        <RecipeImageCarousel recipeDetails={recipeDetails} />
-        <div className="flex flex-col gap-4">
-          <RecipeIngredientsCard recipeDetails={recipeDetails} />
-
-          {recipeDetails.missingIngredients &&
-            recipeDetails.missingIngredients?.length > 0 && (
-              <MissingIngredientsCard recipeDetails={recipeDetails} />
-            )}
-        </div>
-      </div>
-      <div className="flex flex-col w-full justify-center md:w-[600px] border lg:w-auto lg:flex-row gap-10">
-        <RecipeInstructionsCard recipeDetails={recipeDetails} />
-        {recipeDetails.nutrients && (
-          <NutrientsCard recipeDetails={recipeDetails} />
-        )}
-      </div> */}
     </div>
   );
 };

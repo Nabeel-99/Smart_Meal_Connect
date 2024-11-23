@@ -3,9 +3,9 @@ import MealCard from "../../components/viewCards/MealCard";
 import IngredientsMetricsButtons from "../../components/buttons/IngredientsMetricsButtons";
 import CaloriesBar from "../../components/headers/CaloriesBar";
 import MealViewOptions from "../../components/viewCards/MealViewOptions";
-import PreferencePrompt from "../../components/PreferencePrompt";
-import EmailPrompt from "../../components/EmailPrompt";
-import MealSkeletonLoader from "../../components/MealSkeletonLoader";
+import PreferencePrompt from "../../components/forms/PreferencePrompt";
+import EmailPrompt from "../../components/forms/EmailPrompt";
+import MealSkeletonLoader from "../../components/skeletons/MealSkeletonLoader";
 
 const Dashboard = ({
   showOptions,

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import pantryItems from "../../../server/utils/pantry.json";
-import ingredientsData from "../../../server/utils/ingredientsHelper.json";
+import pantryItems from "../../../../server/utils/pantry.json";
+import ingredientsData from "../../../../server/utils/ingredientsHelper.json";
 import { FaXmark } from "react-icons/fa6";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import PantrySelection from "../components/pantry/PantrySelection";
-import PantryHeader from "../components/pantry/PantryHeader";
-import BASE_URL from "../../apiConfig";
+import PantrySelection from "../../components/pantry/PantrySelection";
+import PantryHeader from "../../components/pantry/PantryHeader";
+import BASE_URL from "../../../apiConfig";
 const PantryItems = ({ theme }) => {
   const [loading, setLoading] = useState(false);
   const [item, setItem] = useState("");

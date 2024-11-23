@@ -1,9 +1,9 @@
 import React from "react";
-import ImageCard from "./feeds/ImageCard";
-import PostHeader from "./feeds/PostHeader";
-import CommentsCard from "./feeds/CommentsCard";
-import PostComment from "./feeds/PostComment";
-import { isNative } from "../../apiConfig";
+import ImageCard from "../feeds/ImageCard";
+import PostHeader from "../feeds/PostHeader";
+import CommentsCard from "../feeds/CommentsCard";
+import PostComment from "../feeds/PostComment";
+import { isNative } from "../../../apiConfig";
 import { FaXmark } from "react-icons/fa6";
 
 const PostDetails = ({

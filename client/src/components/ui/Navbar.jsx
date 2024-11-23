@@ -1,19 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Link as ScrollToLink } from "react-scroll";
 import { SiGreasyfork } from "react-icons/si";
 import { FaBarsStaggered, FaMoon, FaXmark } from "react-icons/fa6";
-import BurgerMenu from "./menuCards/BurgerMenu";
+import BurgerMenu from "../menuCards/BurgerMenu";
 import {
   BsFillBrightnessHighFill,
   BsMoonStarsFill,
   BsSunFill,
   BsSunset,
 } from "react-icons/bs";
-import PopperComponent from "./popupCards/PopperComponent";
+import { AnimatePresence, motion } from "framer-motion";
+import PopperComponent from "../popupCards/PopperComponent";
 import { MenuItem, MenuList } from "@mui/material";
 import { CiBrightnessUp } from "react-icons/ci";
 import { HiComputerDesktop } from "react-icons/hi2";
+import ThemePopper from "./ThemePopper";
+import FeaturesFlyout from "../ui/FeaturesFlyout";
 
 const Navbar = ({ userData, updateTheme }) => {
   const location = useLocation();
@@ -23,7 +25,9 @@ const Navbar = ({ userData, updateTheme }) => {
   const [showFeatures, setShowFeatures] = useState(false);
   const navigate = useNavigate();
   const [viewModes, setViewModes] = useState(false);
+  const [viewMobileModes, setViewMobileModes] = useState(false);
   const modeRef = useRef(null);
+  const mobileRef = useRef(null);
   const toggleMenu = () => {
     setIsBurgerMenu(!isBurgerMenu);
   };
@@ -33,6 +37,9 @@ const Navbar = ({ userData, updateTheme }) => {
   const showModes = (e) => {
     e.stopPropagation();
     setViewModes((prev) => !prev);
+  };
+  const showMobileModes = () => {
+    setViewMobileModes((prev) => !prev);
   };
   useEffect(() => {
     if (userData) {
@@ -44,6 +51,7 @@ const Navbar = ({ userData, updateTheme }) => {
   const setMode = (theme) => {
     updateTheme(theme);
     setViewModes(false);
+    setViewMobileModes(false);
   };
   useEffect(() => {
     // handle background scrolling when burger menu is open
@@ -53,10 +61,19 @@ const Navbar = ({ userData, updateTheme }) => {
       document.body.style.overflow = "";
     }
   }, [isBurgerMenu, viewModes]);
+
+  useEffect(() => {
+    setShowFeatures(false);
+  }, [location.pathname]);
   return (
     <div className="flex items-center fixed  left-0 right-0 lg:px-10 xl:px-52  2xl:container 2xl:mx-auto  top-6   z-50 ">
+      {showFeatures && <div className="inset-0 fixed backdrop-blur-md"></div>}
       <div
-        className={`hidden  relative lg:flex items-center z-50 justify-between bg-[#FFFFFF80] dark:bg-transparent border-[#c5c5c5] dark:border-[#343333] backdrop-blur-lg gap-8 px-4 p-3 border rounded-2xl w-full `}
+        className={`hidden  ${
+          showFeatures
+            ? "rounded-t-2xl border-t border-r border-l dark:border-t-[#343333] dark:border-r-[#343333] border-b-0 dark:border-l-[#343333]"
+            : "rounded-2xl border-[#c5c5c5] dark:border-[#242424] backdrop-blur-lg"
+        } relative lg:flex items-center z-50 justify-between bg-[#ffffffb7] dark:bg-[#0e0f1081]    gap-8 px-4 p-3 border  w-full `}
       >
         <div className="">
           <Link
@@ -70,7 +87,7 @@ const Navbar = ({ userData, updateTheme }) => {
         </div>
         <div className="hidden lg:flex items-center gap-6 text-base transition-all duration-300">
           <div className="flex items-center gap-6 text-base  ">
-            <div className="flex items-center gap-6 border-r-2 border-r-[#949494] dark:border-r-[#343333] pr-6">
+            <div className="flex items-center gap-10 border-r-2 border-r-[#949494] dark:border-r-[#343333] pr-6">
               <Link
                 to="/"
                 duration={500}
@@ -79,38 +96,51 @@ const Navbar = ({ userData, updateTheme }) => {
               >
                 Home
               </Link>
-              {pathNames.every(
-                (path) => !location.pathname.startsWith(path)
-              ) && (
-                <>
-                  <div className="">
-                    <Link
-                      className="hover:text-[#2f44a1]  dark:hover:text-[#a1afee]  cursor-pointer"
-                      to="features"
-                      duration={500}
-                      smooth="true"
+
+              <div
+                onMouseEnter={() => setShowFeatures(true)}
+                onMouseLeave={() => setShowFeatures(false)}
+                className=""
+              >
+                <Link className="hover:text-[#2f44a1]  dark:hover:text-[#a1afee]  cursor-pointer">
+                  Features
+                </Link>
+                <AnimatePresence>
+                  {showFeatures && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{
+                        height: showFeatures ? "24rem" : 0,
+                        opacity: showFeatures ? 1 : 0,
+                      }}
+                      exit={{
+                        height: 0,
+                        opacity: 0,
+                      }}
+                      transition={{
+                        duration: 0.3,
+                        ease: "easeInOut",
+                      }}
+                      className={` py-6  ${
+                        showFeatures
+                          ? "absolute lg:flex left-0 right-0 border border-t-0  h-96 w-full   dark:border-b-[#343333] dark:border-r-[#343333] dark:border-l-[#343333]"
+                          : "lg:hidden"
+                      }  top-full bg-[#ffffffb7] dark:bg-[#0e0f1081]  justify-between  left-0 right-0   gap-8 px-4 p-3  rounded-b-2xl w-full `}
                     >
-                      Features
-                    </Link>
-                  </div>
-                  <ScrollToLink
-                    className="hover:text-[#2f44a1] dark:hover:text-[#a1afee]  cursor-pointer"
-                    to={"about"}
-                    duration={500}
-                    smooth="true"
-                  >
-                    About
-                  </ScrollToLink>
-                </>
-              )}
+                      <div className="absolute -top-4 w-full left-0 p-3 right-0 bg-transparent h-4"></div>
+                      <FeaturesFlyout />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+              <Link
+                className="hover:text-[#2f44a1] dark:hover:text-[#a1afee]  cursor-pointer"
+                to={"/about"}
+              >
+                About
+              </Link>
             </div>
-            <div
-              className={` hidden py-6 left-0  ${
-                showFeatures ? "absolute lg:flex h-96" : "lg:hidden"
-              }  top-full   items-center justify-between bg-[#FFFFFF80] dark:bg-blue-900 border-[#c5c5c5] dark:border-[#343333] backdrop-blur-lg gap-8 px-4 p-3 border rounded-2xl w-full `}
-            >
-              <Link to={"/ingredients-based"}>click me</Link>
-            </div>
+
             {isLoggedIn ? (
               <div className="hidden lg:flex items-center gap-6">
                 <div>
@@ -162,37 +192,12 @@ const Navbar = ({ userData, updateTheme }) => {
                   <button ref={modeRef} onClick={showModes}>
                     <BsMoonStarsFill />
                   </button>
-                  <PopperComponent
-                    anchorRef={modeRef}
-                    viewPopper={viewModes}
-                    setViewPopper={setViewModes}
-                  >
-                    <MenuList className="absolute right-0 top-10 p-4 w-40 dark:bg-[#08090a] bg-[#F7F7F8] text-black z-50 dark:text-white border dark:border-[#1d1d1d] border-[#e0e0e0] flex flex-col  gap-4 rounded-md">
-                      <MenuItem
-                        onClick={() => {
-                          setMode("dark");
-                        }}
-                        className="flex items-center text-sm gap-4 hover:dark:bg-[#171717] "
-                      >
-                        <BsMoonStarsFill />
-                        Dark
-                      </MenuItem>
-                      <MenuItem
-                        onClick={() => setMode("light")}
-                        className="flex items-center text-sm gap-4 hover:dark:bg-[#171717] "
-                      >
-                        <BsFillBrightnessHighFill />
-                        Light
-                      </MenuItem>
-                      <MenuItem
-                        onClick={() => setMode("system")}
-                        className="flex items-center text-sm gap-4 hover:dark:bg-[#171717] "
-                      >
-                        <HiComputerDesktop />
-                        System
-                      </MenuItem>
-                    </MenuList>
-                  </PopperComponent>
+                  <ThemePopper
+                    modeRef={modeRef}
+                    viewModes={viewModes}
+                    setViewModes={setViewModes}
+                    setMode={setMode}
+                  />
                 </div>
                 <Link
                   to={"/login"}
@@ -234,10 +239,40 @@ const Navbar = ({ userData, updateTheme }) => {
               Dashboard
             </Link>
           ) : (
-            <div className="flex items-center gap-2">
+            <div className="relative flex items-center gap-2">
+              <button className="" onClick={showMobileModes}>
+                <BsMoonStarsFill />
+              </button>
+              {viewMobileModes && (
+                <div className="absolute left-0 top-10 p-4 w-40 dark:bg-[#08090a] bg-[#F7F7F8] text-black z-50 dark:text-white border dark:border-[#1d1d1d] border-[#e0e0e0] flex flex-col  gap-4 rounded-md">
+                  <button
+                    onClick={() => {
+                      setMode("dark");
+                    }}
+                    className="flex items-center text-sm gap-4 hover:dark:bg-[#171717] "
+                  >
+                    <BsMoonStarsFill />
+                    Dark
+                  </button>
+                  <button
+                    onClick={() => setMode("light")}
+                    className="flex items-center text-sm gap-4 hover:dark:bg-[#171717] "
+                  >
+                    <BsFillBrightnessHighFill />
+                    Light
+                  </button>
+                  <button
+                    onClick={() => setMode("system")}
+                    className="flex items-center text-sm gap-4 hover:dark:bg-[#171717] "
+                  >
+                    <HiComputerDesktop />
+                    System
+                  </button>
+                </div>
+              )}
               <Link
                 to={"/login"}
-                className="border flex items-center justify-center rounded-lg border-[#1d1d1d] bg-[#29292a] w-20 h-8 "
+                className="border flex items-center justify-center text-white rounded-lg border-[#1d1d1d] bg-[#29292a] w-20 h-8 "
               >
                 Log in
               </Link>

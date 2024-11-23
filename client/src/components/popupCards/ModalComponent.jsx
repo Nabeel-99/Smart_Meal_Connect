@@ -1,7 +1,7 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
-import useTheme from "../UseTheme";
+import useTheme from "../stateManagement/UseTheme";
 
 const ModalComponent = ({ showModal, setShowModal, children, theme }) => {
   const modalTheme = useTheme(theme);

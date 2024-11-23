@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import React from "react";
 import {
   FaAppleAlt,
@@ -32,7 +31,6 @@ import {
   GiWatermelon,
 } from "react-icons/gi";
 import MarqueeItems from "./MarqueeItems";
-// Create an array of ingredients with icons and color
 
 const IconsMarquee = () => {
   const firstMarquee = [

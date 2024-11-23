@@ -3,7 +3,7 @@ import axios from "axios";
 import MealCard from "../../components/viewCards/MealCard";
 import DialogComponent from "../../components/popupCards/DialogComponent";
 import SavedMealsHeader from "../../components/headers/SavedMealsHeader";
-import MealSkeletonLoader from "../../components/MealSkeletonLoader";
+import MealSkeletonLoader from "../../components/skeletons/MealSkeletonLoader";
 import BASE_URL from "../../../apiConfig";
 
 const SavedMeals = ({ showGridView, showListView, gridView, listView }) => {

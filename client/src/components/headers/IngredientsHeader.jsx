@@ -1,7 +1,7 @@
 import React from "react";
 import IngredientsImg from "../../assets/ingredients-slanted.png";
 import IngredientsImgMobile from "../../assets/ingredients-slanted-mobile.png";
-import IconsMarquee from "../IconsMarquee";
+import IconsMarquee from "../ui/IconsMarquee";
 const IngredientsHeader = () => {
   return (
     <>
@@ -10,7 +10,7 @@ const IngredientsHeader = () => {
           <div className="h-4 w-6 rounded-xl bg-[#361BFF]"></div>
           <p>Ingredients-based</p>
         </div>
-        <div className="relative  w-full h-[400px]  flex flex-col items-center">
+        <div className="relative  w-full h-[350px]  flex flex-col items-center">
           <h1 className="text-center text-4xl lg:text-6xl tracking-tighter z-10 font-semibold">
             Prepare a Meal with
             <span className="block">What You Have</span>

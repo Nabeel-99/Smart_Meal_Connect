@@ -5,7 +5,7 @@ import ProfileCard from "../../components/profile/ProfileCard";
 import PostsGrid from "../../components/profile/PostsGrid";
 import { useParams } from "react-router-dom";
 import BASE_URL from "../../../apiConfig";
-import ProfileSkeleton from "../../components/ProfileSkeleton";
+import ProfileSkeleton from "../../components/skeletons/ProfileSkeleton";
 
 const Profile = ({
   currentUserId,

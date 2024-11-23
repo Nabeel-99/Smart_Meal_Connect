@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import axios from "axios";
 import DialogComponent from "../../components/popupCards/DialogComponent";
 import ModalComponent from "../../components/popupCards/ModalComponent";
@@ -9,12 +8,10 @@ import AutoHideSnackbar from "../../components/popupCards/AutoHideSnackbar";
 import Content from "../../components/viewCards/Content";
 import ContentViews from "../../components/viewCards/ContentViews";
 import MainMenu from "../../components/menuCards/MainMenu";
-import LayoutSkeleton from "../../components/LayoutSkeleton";
 import BASE_URL, { isNative } from "../../../apiConfig";
-import NativeDialog from "../../components/NativeDialog";
-import IconTabs from "../../components/IconTabs";
-import { SiGreasyfork } from "react-icons/si";
-import LoadingAnimation from "../../components/LoadingAnimation";
+import NativeDialog from "../../components/stateManagement/NativeDialog";
+import IconTabs from "../../components/ui/IconTabs";
+import LoadingAnimation from "../../components/animation/LoadingAnimation";
 
 const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
   const [loading, setLoading] = useState(true);

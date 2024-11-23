@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import GetStartedSection from "../components/GetStartedSection";
-import RecipeResults from "../components/viewCards/RecipeResults";
-import MetricsForm from "../components/forms/MetricsForm";
-import MetricsHeader from "../components/headers/MetricsHeader";
-import ShowMoreButton from "../components/buttons/ShowMoreButton";
-import BASE_URL from "../../apiConfig";
-import RecipeResultsContainer from "../components/RecipeResultsContainer";
+import GetStartedSection from "../../components/ui/GetStartedSection";
+import RecipeResults from "../../components/viewCards/RecipeResults";
+import MetricsForm from "../../components/forms/MetricsForm";
+import MetricsHeader from "../../components/headers/MetricsHeader";
+import ShowMoreButton from "../../components/buttons/ShowMoreButton";
+import BASE_URL from "../../../apiConfig";
+import RecipeResultsContainer from "../../components/recipeDetailsCards/RecipeResultsContainer";
 
 const MetricsBased = ({ userData }) => {
   let gridView = true;

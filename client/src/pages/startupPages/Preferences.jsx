@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { SiGreasyfork } from "react-icons/si";
 import { Link, useNavigate } from "react-router-dom";
-import AnimationComponent from "../components/AnimationComponent";
 import axios from "axios";
-import PreferenceForm from "../components/forms/PreferenceForm";
-import BASE_URL from "../../apiConfig";
+import PreferenceForm from "../../components/forms/PreferenceForm";
+import BASE_URL from "../../../apiConfig";
+import AnimationComponent from "../../components/animation/AnimationComponent";
 
 const Preferences = () => {
   const [getStarted, setGetStarted] = useState(true);

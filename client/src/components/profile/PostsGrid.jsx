@@ -20,7 +20,7 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import NativeDialog from "../NativeDialog";
+import NativeDialog from "../stateManagement/NativeDialog";
 
 const PostsGrid = ({
   userPosts,
@@ -39,6 +39,7 @@ const PostsGrid = ({
   handleDelete,
   currentUserId,
 }) => {
+  console.log("userPosts", userPosts);
   return (
     <div className="flex flex-col gap-8 w-full  h-full">
       <div className="flex  text-sm xl:text-base items-center gap-2 justify-center ">
@@ -48,7 +49,7 @@ const PostsGrid = ({
         <div className="grid grid-cols-3 2xl:grid-cols-4 w-full gap-2">
           {userPosts.map((post, index) => (
             <div key={index} className="relative">
-              <Link to={`/recipe-details/${post.posts._id}`}>
+              <Link to={`/recipe-details/${post.posts?._id}`}>
                 <img
                   src={`${BASE_URL}/${post.posts?.images[currentImageIndex]}`}
                   className="h-28 w-full md:h-52 lg:h-44 xl:h-80 2xl:h-96 xl:w-full border border-[#e0e0e0] dark:border-[#3c3c3c] rounded-sm object-cover"

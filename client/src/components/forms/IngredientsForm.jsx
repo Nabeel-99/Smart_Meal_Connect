@@ -2,11 +2,11 @@ import React from "react";
 import AutoCompleteComponent from "../formInputs/AutoCompleteComponent";
 import { dietPreferences } from "../../../../server/utils/helper";
 import AddIngredientButton from "../buttons/AddIngredientButton";
-import DietaryPreferences from "../DietaryPreferences";
+import DietaryPreferences from "../forms/DietaryPreferences";
 import SubmitButton from "../buttons/SubmitButton";
 import { FaXmark } from "react-icons/fa6";
 import IngredientsList from "../viewCards/IngredientsList";
-import ErrorText from "../ErrorText";
+import ErrorText from "../stateManagement/ErrorText";
 
 const IngredientsForm = ({
   onSubmit,
@@ -25,13 +25,23 @@ const IngredientsForm = ({
   return (
     <form
       onSubmit={onSubmit}
-      className="flex flex-col gap-8 p-8 items-center justify-center "
+      className="flex flex-col gap- p-8 items-center justify-center "
     >
-      <div className="text-center text-xl">Enter the ingredients you have</div>
-      <div className="flex flex-col lg:flex-row items-center justify-evenly w-full ">
-        <div className="flex flex-col lg:flex-row order-1 lg:order-none items-center gap-6 w-full">
+      <div className="flex flex-col  lg:flex-row items-center  w-full ">
+        <div className="flex  flex-col lg:flex-row order-1 lg:order-none items-center gap-6 w-full">
           <AutoCompleteComponent
             theme={theme}
+            customStyles={{
+              width: {
+                xs: "350px",
+                sm: "400px",
+                md: "450px",
+                lg: "700px",
+                xl: "700px",
+              },
+              borderRadius: "50px",
+            }}
+            label={"Enter your available ingredients"}
             setItem={setItem}
             setAutocompleteValue={setAutocompleteValue}
             autocompleteValue={autocompleteValue}
@@ -44,9 +54,9 @@ const IngredientsForm = ({
       </div>
       <ErrorText error={error} />
       <div
-        className={`grid md:grid-cols-2 xl:grid-cols-3 gap-4  hide-scrollbar ${
-          ingredients.length > 0 ? "border" : ""
-        }  p-3 rounded border-[#a0a0a0] dark:border-[#3d3d3d] w-full px-6 max-h-44 overflow-auto`}
+        className={`grid md:grid-cols-2   xl:grid-cols-3 2xl:grid-cols-4 gap-4  hide-scrollbar
+     ${ingredients.length > 0 ? "border" : ""}
+         pt-4 max-h-64 rounded border-[#a0a0a0] dark:border-[#1e1e1e] w-full   overflow-auto`}
       >
         {ingredients.length > 0 &&
           ingredients.map((ingredient, index) => (
@@ -59,7 +69,7 @@ const IngredientsForm = ({
           ))}
       </div>
       {ingredients.length === 0 && (
-        <div className="h-44 border  w-full xl:w-96 xl:p-4  text-center flex items-center justify-center rounded-xl border-[#3d3d3d]">
+        <div className=" border  w-full font-bold  xl:text-2xl p-4  text-center flex items-center justify-center rounded-xl border-[#1d1d1d]">
           Ingredients will appear here
         </div>
       )}

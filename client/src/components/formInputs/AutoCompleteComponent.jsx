@@ -1,6 +1,6 @@
 import { Autocomplete, TextField } from "@mui/material";
 import React from "react";
-import useTheme from "../UseTheme";
+import useTheme from "../stateManagement/UseTheme";
 import ingredientsData from "../../../../server/utils/ingredientsHelper.json";
 
 const AutoCompleteComponent = ({
@@ -22,7 +22,7 @@ const AutoCompleteComponent = ({
       md: "70%",
       lg: "60%",
     },
-    maxWidth: "400px",
+    maxWidth: "800px",
     "& .MuiInputBase-root": {
       backgroundColor: autoCompleteTheme === "dark" ? "#0c0c0c" : "#F7F7F8",
       border:
@@ -91,6 +91,7 @@ const AutoCompleteComponent = ({
                 ? "1px solid #1d1d1d"
                 : "1px solid #E0E0E0",
             color: autoCompleteTheme === "dark" ? "white" : "#333333",
+            borderRadius: customStyles?.borderRadius || "",
           }}
         />
       )}

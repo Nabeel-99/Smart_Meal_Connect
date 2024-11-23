@@ -14,8 +14,13 @@ const CaloriesBar = ({
           className="h-8 rounded-full bg-gradient-to-r from-red-500  via-orange-400 via-10%  to-green-600 to-90% flex items-center justify-center transition-all duration-500 ease-in-out"
         >
           <div className="text-sm font-bold w-full text-nowrap text-center">
-            {caloriesConsumed.toFixed(0)}/{calorieTargetTotal.toFixed(0)}{" "}
-            calories
+            {calorieTargetTotal !== null && (
+              <span>
+                {" "}
+                {caloriesConsumed.toFixed(0)}/{calorieTargetTotal.toFixed(0)}{" "}
+                calories
+              </span>
+            )}
           </div>
         </div>
       </div>

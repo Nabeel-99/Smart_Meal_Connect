@@ -1,5 +1,5 @@
 import React from "react";
-import { dietPreferences } from "../../../server/utils/helper";
+import { dietPreferences } from "../../../../server/utils/helper";
 
 const DietaryPreferences = ({
   handleChecboxChange,
@@ -7,7 +7,7 @@ const DietaryPreferences = ({
   className,
 }) => {
   return (
-    <div className="flex flex-col items-start  gap-2 ">
+    <div className="flex flex-col mt-4 items-start w-full gap-2 ">
       <p className="border-b pb-2 border-b-[#343333]  w-full">
         Dietary Preferences (optional)
       </p>

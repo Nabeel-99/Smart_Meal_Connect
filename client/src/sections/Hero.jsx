@@ -4,22 +4,39 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 import ingredients from "../assets/recipe-based.png";
 import metrics from "../assets/body-metrics.jpeg";
 import GridCard from "../components/viewCards/GridCard";
+import { motion } from "framer-motion";
 
 const Hero = () => {
   return (
     <div
       id="/"
-      className="bg-hero h-full pt-44 flex flex-col gap-2  justify-center items-center"
+      className="bg-hero h-full pt-44 flex flex-col gap-2 justify-center items-center"
     >
-      <div className="absolute animate-gradient-pulse  w-[1200px] h-full flex items-center justify-center bg-gradient-to-t from-[#57a8ff33]  to-[#57a8ff55] dark:from-[#0e222e66] dark:to-[#11263399] rounded-full blur-3xl opacity-30 z-0"></div>
-      <h1 className="text-4xl md:text-6xl font-bold text-center tracking-tighter">
-        Smart <span className="block">Meal Connect</span>{" "}
-      </h1>
-      <p className="text-center px-10 lg:px-0 text-sm lg:text-xl dark:text-[#A3A3A3]">
+      <motion.h1
+        className="text-4xl md:text-6xl font-bold text-center tracking-tighter"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+      >
+        Smart <span className="block">Meal Connect</span>
+      </motion.h1>
+
+      <motion.p
+        className="text-center px-10 lg:px-0 text-sm lg:text-xl dark:text-[#A3A3A3]"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5, duration: 1 }}
+      >
         Discover personalized recipes and connect with a community{" "}
         <span className="lg:block">to share your favorite dishes</span>
-      </p>
-      <div className="relative pt-10  bg-gradient-to-b   w-full pb-9">
+      </motion.p>
+
+      <motion.div
+        className="relative pt-10 bg-gradient-to-b w-full pb-9"
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1, duration: 1 }}
+      >
         <div className="flex flex-col md:flex-row items-center justify-center gap-10 px-8 lg:px-0">
           <GridCard
             header={"Get recipes based on Ingredients"}
@@ -37,7 +54,7 @@ const Hero = () => {
             to={"/metrics-based"}
           />
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

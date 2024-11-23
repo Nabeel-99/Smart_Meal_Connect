@@ -7,21 +7,14 @@ import {
   useLocation,
 } from "react-router-dom";
 import "@ionic/react/css/core.css";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
+
 import SignUp from "./pages/authPages/SignUp";
-import MaybeShowComponent from "./components/MaybeShowComponent";
 import Login from "./pages/authPages/Login";
 import ResetPassword from "./pages/authPages/ResetPassword";
 import ForgotPassword from "./pages/authPages/ForgotPassword";
-import IngredientsBased from "./pages/IngredientsBased";
 import Home from "./pages/Home";
-import MetricsBased from "./pages/MetricsBased";
-import ScrollToTop from "./components/ScrollToTop";
 import RecipeDetails from "./pages/RecipeDetails";
-import Preferences from "./pages/Preferences";
 import axios from "axios";
-import PantryItems from "./pages/PantryItems";
 import DashboardLayout from "./pages/dashboard/DashboardLayout";
 import VerifyEmail from "./pages/authPages/VerifyEmail";
 import { PushNotifications } from "@capacitor/push-notifications";
@@ -29,7 +22,15 @@ import { StatusBar } from "@capacitor/status-bar";
 import BASE_URL, { isNative } from "../apiConfig";
 import { Toast } from "@capacitor/toast";
 import ProtectedRoute from "./pages/ProtectedRoute";
-
+import AboutPage from "./pages/AboutPage";
+import IngredientsBased from "./pages/featuresPages/IngredientsBased";
+import MetricsBased from "./pages/featuresPages/MetricsBased";
+import Preferences from "./pages/startupPages/Preferences";
+import PantryItems from "./pages/startupPages/PantryItems";
+import Navbar from "./components/ui/Navbar";
+import Footer from "./components/ui/Footer";
+import MaybeShowComponent from "./components/stateManagement/MaybeShowComponent";
+import ScrollToTop from "./components/stateManagement/ScrollToTop";
 /**
  * @typedef {import('@capacitor/push-notifications').PushNotificationSchema} PushNotificationSchema
  * @typedef {import('@capacitor/push-notifications').Token} Token
@@ -215,6 +216,7 @@ const App = () => {
       <Routes>
         {/* Public routes */}
         <Route path="/" element={<Home userData={userData} theme={theme} />} />
+        <Route path="/about" element={<AboutPage theme={theme} />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route
           path="/login"
