@@ -4,10 +4,11 @@ import User from "../models/userModel.js";
 import admin from "firebase-admin";
 import UserPost from "../models/userPostModel.js";
 import { readFileSync } from "fs";
-
-const serviceAccount = JSON.parse(
-  readFileSync(new URL("./serviceAccount.json", import.meta.url))
-);
+const path =
+  process.env.NODE_ENV === "production"
+    ? "/etc/secrets/serviceAccount.json"
+    : "./config/serviceAccount.json";
+const serviceAccount = JSON.parse(readFileSync(path, "utf-8"));
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
