@@ -1,1 +1,1 @@
-# Smart_Meal_Finder
+# Smart_Meal_Connect
