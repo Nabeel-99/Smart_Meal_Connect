@@ -3,8 +3,11 @@ import dotenv from "dotenv";
 import User from "../models/userModel.js";
 import admin from "firebase-admin";
 import UserPost from "../models/userPostModel.js";
-import serviceAccount from "./serviceAccount.json" assert { type: "json" };
+import { readFileSync } from "fs";
 
+const serviceAccount = JSON.parse(
+  readFileSync(new URL("./serviceAccount.json", import.meta.url))
+);
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });

@@ -3,7 +3,6 @@ import Metrics from "../models/metricsModel.js";
 import Recipe from "../models/recipeModel.js";
 import UserDashboard from "../models/userDashboardModel.js";
 import User from "../models/userModel.js";
-import fallbackMeals from "../utils/fallbackmeals.json" assert { type: "json" };
 import {
   calculateBMR,
   calculateTDEE,
@@ -16,6 +15,10 @@ import {
 import { sendEmail } from "../config/notifications.js";
 import { fileURLToPath } from "url";
 import fs from "fs";
+import { readFileSync } from "fs";
+const fallbackMeals = JSON.parse(
+  readFileSync(new URL("../utils/fallbackmeals.json", import.meta.url))
+);
 //file helper
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -75,6 +78,24 @@ const generateDashboardRecipes = async (req) => {
       const allRecipes = await fetchDashboardRecipes(goal, dietaryPreferences);
       const filteredAndRankedRecipes = await categorizeRecipes(allRecipes);
 
+      //empty meals
+      const isEmpty =
+        !filteredAndRankedRecipes.breakfast.length &&
+        !filteredAndRankedRecipes.lunch.length &&
+        !filteredAndRankedRecipes.dinner.length;
+
+      if (isEmpty) {
+        console.warn(
+          "No recipes found from the API. Falling back to local meals."
+        );
+        return {
+          error: false,
+          message: "No recipes found, using fallback meals",
+          calorieTarget: calorieTarget || null,
+          recipes: fallbackMeals,
+        };
+      }
+
       return {
         error: false,
         message: "Dashboard recipes fetched successfully",
@@ -84,9 +105,10 @@ const generateDashboardRecipes = async (req) => {
     } catch (apiError) {
       if (
         apiError.response &&
-        (apiError.response.status >= 400 || apiError.response.status <= 500)
+        apiError.response.status >= 400 &&
+        apiError.response.status <= 500
       ) {
-        // Fallback to local fallbackMeals.json in case of quota limits
+        // Fallback to local fallbackMeals
         return {
           error: false,
           message: "API quota reached, using fallback meals",

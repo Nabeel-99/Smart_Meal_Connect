@@ -13,16 +13,7 @@ import NativeDialog from "../../components/stateManagement/NativeDialog";
 import IconTabs from "../../components/ui/IconTabs";
 import LoadingAnimation from "../../components/animation/LoadingAnimation";
 
-const DashboardLayout = ({
-  userData,
-  fetchUserData,
-  theme,
-  updateTheme,
-  openNotificationToast,
-  setNotificationToast,
-  notificationToast,
-  notificationMessage,
-}) => {
+const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
   const [loading, setLoading] = useState(true);
   const [preferences, setPreferences] = useState(false);
   const [sideMenu, setSideMenu] = useState(false);
@@ -173,6 +164,7 @@ const DashboardLayout = ({
           },
         });
       }
+      console.log("response", response);
     } catch (error) {
       console.log(error);
     } finally {

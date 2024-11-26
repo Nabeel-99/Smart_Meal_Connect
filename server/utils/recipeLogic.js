@@ -5,12 +5,15 @@ import {
   getSpoonacularRecipes,
   getTastyAPIRecipes,
 } from "./api.js";
-import defaultPantry from "./pantry.json" assert { type: "json" };
 import {
   filterRecipeCalories,
   generateInstructionsForEdamam,
 } from "./helper.js";
+import { readFileSync } from "fs";
 
+const defaultPantry = JSON.parse(
+  readFileSync(new URL("./pantry.json", import.meta.url))
+);
 // fetch dashboard specific recipes
 export const fetchDashboardRecipes = async (goal, dietaryPreferences) => {
   try {
