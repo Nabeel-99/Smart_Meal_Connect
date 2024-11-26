@@ -16,6 +16,7 @@ import { CiBrightnessUp } from "react-icons/ci";
 import { HiComputerDesktop } from "react-icons/hi2";
 import ThemePopper from "./ThemePopper";
 import FeaturesFlyout from "../ui/FeaturesFlyout";
+import { Toast } from "@capacitor/toast";
 
 const Navbar = ({ userData, updateTheme }) => {
   const location = useLocation();
@@ -221,7 +222,7 @@ const Navbar = ({ userData, updateTheme }) => {
       <div
         style={{ paddingTop: `calc(env(safe-area-inset-top) + 16px)` }}
         className={`lg:hidden fixed top-0 px-4  w-full z-50 flex items-center justify-between ${
-          isBurgerMenu ? "bg-[#08090a]" : ""
+          isBurgerMenu ? "bg-[#e0e0e0] dark:bg-[#08090a]" : ""
         }  backdrop-blur-lg pb-4`}
       >
         <div className="pl-4">

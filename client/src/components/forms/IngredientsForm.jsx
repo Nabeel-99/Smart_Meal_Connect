@@ -56,7 +56,7 @@ const IngredientsForm = ({
       <div
         className={`grid md:grid-cols-2   xl:grid-cols-3 2xl:grid-cols-4 gap-4  hide-scrollbar
      ${ingredients.length > 0 ? "border" : ""}
-         pt-4 max-h-64 rounded border-[#a0a0a0] dark:border-[#1e1e1e] w-full   overflow-auto`}
+         pt-4 max-h-64 rounded border-[#e0e0e0] dark:border-[#1e1e1e] w-full   overflow-auto`}
       >
         {ingredients.length > 0 &&
           ingredients.map((ingredient, index) => (
@@ -69,7 +69,7 @@ const IngredientsForm = ({
           ))}
       </div>
       {ingredients.length === 0 && (
-        <div className=" border  w-full font-bold  xl:text-2xl p-4  text-center flex items-center justify-center rounded-xl border-[#1d1d1d]">
+        <div className=" border  w-full font-bold  xl:text-2xl p-4  text-center flex items-center justify-center rounded-xl border-[#E0E0E0] dark:border-[#1d1d1d]">
           Ingredients will appear here
         </div>
       )}

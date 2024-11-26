@@ -15,7 +15,7 @@ const RecipeDetails = ({ userData }) => {
   const [recipeDetails, setRecipeDetails] = useState({});
   const [displayMsg, setDisplayMsg] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
-  const [postOwner, setPostOwner] = useState(null);
+
   const [message, setMessage] = useState("");
   const { id } = useParams();
   const location = useLocation();
@@ -49,7 +49,6 @@ const RecipeDetails = ({ userData }) => {
       if (response.status === 200) {
         console.log("response,", response.data.recipe);
         setRecipeDetails(response.data.recipe);
-        setPostOwner(response.data.post.userId._id);
       }
     } catch (error) {
       console.error("Error fetching recipe from API", error);
@@ -104,8 +103,6 @@ const RecipeDetails = ({ userData }) => {
         showVideo={showVideo}
         setShowVideo={setShowVideo}
         saveRecipe={saveRecipe}
-        postOwner={postOwner}
-        // currentUserId={currentUserId}
       />
       <div className="flex flex-col lg:flex-row  gap-10 xl:gap-20">
         <div className="flex flex-col gap-10 xl:gap-20 justify-center w-full">

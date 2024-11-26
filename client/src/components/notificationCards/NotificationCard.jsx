@@ -4,11 +4,22 @@ import BASE_URL from "../../../apiConfig";
 
 const NotificationCard = ({ likers, commenters }) => {
   const notifications = [...likers, ...commenters];
+
   return (
     <div className="hidden xl:sticky top-[60px] w-96 py-2 xl:flex flex-col  border dark:border-[#1d1d1d] border-[#e0e0e0] rounded-xl h-80 dark:bg-[#0f0f0f] bg-[#ededed]  ">
       <div className="flex items-center  justify-center border-b dark:border-b-[#2a2a2a] border-b-[#e0e0e0] px-4 py-2 text-lg gap-2">
         Notifications
-        <IoIosNotifications className="text-2xl w-6" />
+        <div className="relative">
+          <IoIosNotifications className="text-3xl w-6" />
+          {notifications.length > 0 && (
+            <div
+              className="absolute top-0 right-0 flex items-center justify-center bg-red-500 text-white text-sm
+            rounded-full p-1 w-4 h-4"
+            >
+              {notifications.length}
+            </div>
+          )}
+        </div>
       </div>
       <div className="overflow-y-scroll hide-scrollbar flex flex-col pt-4 pb-4 gap-6">
         {notifications.length > 0 ? (

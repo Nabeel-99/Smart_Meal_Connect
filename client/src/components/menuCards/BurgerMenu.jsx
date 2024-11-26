@@ -15,7 +15,7 @@ const BurgerMenu = ({ closeMenu, isLoggedIn }) => {
       style={{
         paddingTop: "env(safe-area-inset-top)",
       }}
-      className=" z-40 fixed inset-0 top-16 bg-[#08090a] xl:hidden"
+      className=" z-40 fixed inset-0 top-16 bg-[#e0e0e0] dark:bg-[#08090a] xl:hidden"
     >
       <div className="flex text-lg flex-col gap-4 items-start h-full justify-between px-8 pt-6">
         <div className="flex flex-col gap-4">

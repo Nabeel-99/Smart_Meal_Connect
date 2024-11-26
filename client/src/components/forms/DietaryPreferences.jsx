@@ -8,7 +8,7 @@ const DietaryPreferences = ({
 }) => {
   return (
     <div className="flex flex-col mt-4 items-start w-full gap-2 ">
-      <p className="border-b pb-2 border-b-[#343333]  w-full">
+      <p className="border-b pb-2 border-b-[#e0e0e0] dark:border-b-[#343333]  w-full">
         Dietary Preferences (optional)
       </p>
       {/* checkbox */}

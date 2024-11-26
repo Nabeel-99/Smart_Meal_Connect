@@ -5,13 +5,13 @@ import { MdEdit } from "react-icons/md";
 
 const ManagePostButtons = ({ post, editPost, deletePost }) => {
   return (
-    <div className="hidden absolute right-2 lg:flex items-center gap-2 bottom-0 text-xl font-bold">
+    <div className=" absolute z-10 right-2 flex items-center gap-2 bottom-0 text-xl font-bold">
       <Tooltip title="edit post">
         <button
           onClick={() => editPost(post)}
           className="border text-black hover:border-[#e0e0e0] text-[0.5rem] md:text-[0.8rem] lg:text-base hover:bg-[#dadada] bg-white rounded-full p-1 hover:text-black"
         >
-          <MdEdit className="" />
+          <MdEdit className="text-sm lg:text-base" />
         </button>
       </Tooltip>
       <Tooltip title="delete post">
@@ -19,7 +19,7 @@ const ManagePostButtons = ({ post, editPost, deletePost }) => {
           onClick={() => deletePost(post)}
           className=" border  hover:border-[#e0e0e0] text-[0.5rem] md:text-[0.8rem] lg:text-base hover:bg-[#dadada] bg-white text-black rounded-full p-1 hover:text-black"
         >
-          <FaTrash className="" />
+          <FaTrash className="text-sm lg:text-base" />
         </button>
       </Tooltip>
     </div>

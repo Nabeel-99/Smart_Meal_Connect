@@ -9,8 +9,6 @@ const RecipeHeaderInfo = ({
   showVideo,
   setShowVideo,
   saveRecipe,
-  currentUserId,
-  postOwner,
 }) => {
   return (
     <div className="flex flex-col items-center justify-center bg-[#e0e0e0] border-[#c6c6c6] dark:bg-[#0E0F10] w-full md:min-w-[200px] md:max-w-[400px] p-4 lg:min-w-[200px] lg:max-w-[500px] min-h-[100px] border dark:border-[#1d1d1d] rounded-xl gap-4">
@@ -24,7 +22,13 @@ const RecipeHeaderInfo = ({
             recipeDetails?.category.slice(1).toLowerCase()}
         </div>
       )}
-      {recipeDetails?.prepTime && (
+      {recipeDetails.mealType && (
+        <div>
+          <span className="pr-1 font-semibold">Meal type: </span>
+          {recipeDetails?.mealType[0] || "dinner"}
+        </div>
+      )}
+      {recipeDetails?.prepTime > 0 && (
         <div>
           <span className="pr-1 font-semibold">Cooking time: </span>
           {recipeDetails.prepTime} minutes

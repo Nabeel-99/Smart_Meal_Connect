@@ -25,7 +25,7 @@ import ProtectedRoute from "./pages/ProtectedRoute";
 import AboutPage from "./pages/AboutPage";
 import IngredientsBased from "./pages/featuresPages/IngredientsBased";
 import MetricsBased from "./pages/featuresPages/MetricsBased";
-import Preferences from "./pages/startupPages/Preferences";
+import PreferencesPage from "./pages/startupPages/PreferencesPage";
 import PantryItems from "./pages/startupPages/PantryItems";
 import Navbar from "./components/ui/Navbar";
 import Footer from "./components/ui/Footer";
@@ -96,12 +96,13 @@ const App = () => {
   const handlePushReceived = async (notification) => {
     console.log("Push notification received:", notification);
     const message = notification.body || "You have a new notification!";
-
-    await Toast.show({
-      text: message,
-      duration: "long",
-      position: "top",
-    });
+    if (isNative) {
+      await Toast.show({
+        text: message,
+        duration: "long",
+        position: "top",
+      });
+    }
   };
 
   useEffect(() => {
@@ -259,7 +260,7 @@ const App = () => {
           path="/preferences"
           element={
             <ProtectedRoute loading={loading} isAuthenticated={isAuthenticated}>
-              <Preferences />
+              <PreferencesPage />
             </ProtectedRoute>
           }
         />

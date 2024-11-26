@@ -18,7 +18,7 @@ const RecipeInputCounter = ({
         label={"Specify number of recipes"}
         type={"number"}
         min={0}
-        max={30}
+        max={60}
         disabled={!isLoggedIn}
         value={ingredientCount}
         onChange={(e) => setIngredientCount(e.target.value)}

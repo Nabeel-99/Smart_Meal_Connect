@@ -1,7 +1,13 @@
 import { Snackbar } from "@mui/material";
 import React, { useState } from "react";
 
-const AutoHideSnackbar = ({ message, openSnackbar, setSnackbar }) => {
+const AutoHideSnackbar = ({
+  message,
+  openSnackbar,
+  setSnackbar,
+  positionX = "bottom",
+  positionY = "left",
+}) => {
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -19,6 +25,7 @@ const AutoHideSnackbar = ({ message, openSnackbar, setSnackbar }) => {
             color: "black",
           },
         }}
+        anchorOrigin={{ vertical: `${positionX}`, horizontal: `${positionY}` }}
         open={openSnackbar}
         autoHideDuration={3000}
         onClose={handleClose}

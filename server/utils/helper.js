@@ -51,6 +51,8 @@ export const mapText = {
 
 //generate instructions
 export const generateInstructionsForEdamam = async (title, ingredients) => {
+  console.log("title", title);
+  console.log("ingredients", ingredients);
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY2);
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
@@ -60,6 +62,7 @@ export const generateInstructionsForEdamam = async (title, ingredients) => {
   `;
   try {
     const result = await model.generateContent(prompt);
+    console.log("result", result.response.text());
     return [result.response.text()];
   } catch (error) {
     console.error("Error generating instructions:", error);

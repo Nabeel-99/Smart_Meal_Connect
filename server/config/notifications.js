@@ -49,7 +49,6 @@ export const sendNotifications = async (userId, postId, eventType, comment) => {
       return;
     }
     const fcmToken = post.userId.fcmToken;
-    const imageUrl = post.recipeId.images?.[0];
     if (fcmToken) {
       let notificationMessage;
       if (eventType === "like") {
@@ -61,12 +60,6 @@ export const sendNotifications = async (userId, postId, eventType, comment) => {
         notification: {
           title: `${user.firstName}`,
           body: notificationMessage,
-        },
-        android: {
-          notification: {
-            imageUrl:
-              "https://images.unsplash.com/photo-1593642634367-d91a135587b5", // Image URL for Android
-          },
         },
         token: fcmToken,
       };

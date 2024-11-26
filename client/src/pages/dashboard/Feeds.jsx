@@ -8,6 +8,7 @@ import BASE_URL from "../../../apiConfig";
 import NotificationCard from "../../components/notificationCards/NotificationCard";
 import MobileNotificationCard from "../../components/notificationCards/MobileNotificationCard";
 import PopperComponent from "../../components/popupCards/PopperComponent";
+import { IoIosNotifications } from "react-icons/io";
 
 const Feeds = ({
   anchorRef,
@@ -249,7 +250,7 @@ const Feeds = ({
       console.log("error", error);
     }
   };
-  const isNotEmpty = [...commenters, ...likers];
+  const isNotification = [...commenters, ...likers];
   useEffect(() => {
     fetchLikeNotifications();
   }, []);
@@ -270,7 +271,18 @@ const Feeds = ({
               setViewNotifications((prev) => !prev);
             }}
           >
-            <FaRegHeart className="text-2xl w-6" />
+            <div className="relative">
+              <IoIosNotifications className="text-2xl w-6" />
+
+              {isNotification.length > 0 && (
+                <div
+                  className="absolute top-0 right-0 flex items-center justify-center bg-red-500 text-white text-sm
+            rounded-full p-1 w-4 h-4"
+                >
+                  {isNotification.length}
+                </div>
+              )}
+            </div>
           </button>
         </div>
         <div className="flex w-full">

@@ -1,4 +1,5 @@
 import { Capacitor } from "@capacitor/core";
+import { Preferences } from "@capacitor/preferences";
 
 const BASE_URL =
   Capacitor.getPlatform() === "android"
@@ -11,3 +12,13 @@ export default BASE_URL;
 
 export const isNative =
   Capacitor.getPlatform() === "android" || Capacitor.getPlatform() === "ios";
+
+// native
+const TOKEN_KEY = "auth_token";
+export const saveNativeAuthToken = async (token) => {
+  await Preferences.set({ key: TOKEN_KEY, value: token });
+};
+export const getNativeAuthToken = async () => {
+  const { value } = await Preferences.get({ key: TOKEN_KEY });
+  return value;
+};

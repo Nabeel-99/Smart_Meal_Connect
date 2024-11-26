@@ -13,7 +13,16 @@ import NativeDialog from "../../components/stateManagement/NativeDialog";
 import IconTabs from "../../components/ui/IconTabs";
 import LoadingAnimation from "../../components/animation/LoadingAnimation";
 
-const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
+const DashboardLayout = ({
+  userData,
+  fetchUserData,
+  theme,
+  updateTheme,
+  openNotificationToast,
+  setNotificationToast,
+  notificationToast,
+  notificationMessage,
+}) => {
   const [loading, setLoading] = useState(true);
   const [preferences, setPreferences] = useState(false);
   const [sideMenu, setSideMenu] = useState(false);
@@ -96,6 +105,9 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
       });
 
       if (response.status === 200) {
+        sessionStorage.removeItem("ingredientsBased");
+        sessionStorage.removeItem("metricsBased");
+        sessionStorage.removeItem("ingredientsInput");
         window.location = "/";
       }
     } catch (error) {

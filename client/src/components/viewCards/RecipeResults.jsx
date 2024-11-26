@@ -44,7 +44,9 @@ const RecipeResults = ({
             })}
             showInput={false}
             isGridView={gridView}
-            showMissingIngredients={true}
+            showMissingIngredients={
+              sourceType === "metricsBased" ? false : true
+            }
             sourceType={sourceType}
           />
           <div>

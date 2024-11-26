@@ -6,7 +6,7 @@ import PreferenceForm from "../../components/forms/PreferenceForm";
 import BASE_URL from "../../../apiConfig";
 import AnimationComponent from "../../components/animation/AnimationComponent";
 
-const Preferences = () => {
+const PreferencesPage = () => {
   const [getStarted, setGetStarted] = useState(true);
   const [loading, setLoading] = useState(false);
   const [gender, setGender] = useState("male");
@@ -134,4 +134,4 @@ const Preferences = () => {
   );
 };
 
-export default Preferences;
+export default PreferencesPage;

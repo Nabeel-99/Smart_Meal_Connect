@@ -26,7 +26,7 @@ const MealViewOptions = ({
   return (
     <div className="flex flex-col w-full sticky top-[60px] lg:top-[40px] z-10 dark:bg-[#0c0c0c] bg-[#F7F7F8] pb-3 lg:pb-5   gap-4">
       <div className="text-xl lg:text-3xl font-bold pt-6 lg:pt-10">
-        Personalized Meal Suggestions for You
+        Personalized Meal Suggestions Based on Your Metrics
       </div>
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center  lg:justify-between">
         <CategoryHeader
