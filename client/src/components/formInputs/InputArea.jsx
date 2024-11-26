@@ -4,8 +4,9 @@ import SelectInput from "./SelectInput";
 import AutoCompleteComponent from "./AutoCompleteComponent";
 import IngredientsList from "../viewCards/IngredientsList";
 import TextAreaInput from "./TextAreaInput";
-import { mealCategories } from "../../../../server/utils/helper";
+
 import { isNative } from "../../../apiConfig";
+import { mealCategories } from "../../variables";
 
 const InputArea = ({
   error,

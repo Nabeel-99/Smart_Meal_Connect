@@ -43,16 +43,13 @@ const ForgotPasswordForm = ({
           labelClassName="lg:text-lg"
           className="lg:w-96"
           value={email}
-          bgColor="bg-[#171717]"
-          borderColor="border-[#343333]"
           onChange={(e) => setEmail(e.target.value)}
-          applyDarkMode={true}
         />
         <div className="pt-4">
           <button
             type="submit"
             disabled={loading}
-            className="bg-[#B678F0] py-2 text-center w-full flex items-center justify-center lg:w-96 rounded-lg"
+            className="bg-[#B678F0] py-2 text-center w-full flex text-white items-center justify-center lg:w-96 rounded-lg"
           >
             {loading ? (
               <AiOutlineLoading3Quarters className="spin text-2xl" />

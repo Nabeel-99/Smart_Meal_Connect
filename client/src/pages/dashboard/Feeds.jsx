@@ -4,7 +4,7 @@ import axios from "axios";
 import AutoHideSnackbar from "../../components/popupCards/AutoHideSnackbar";
 import UserFeedsCard from "../../components/feeds/UserFeedsCard";
 import PostDetailsModal from "../../components/feeds/PostDetailsModal";
-import BASE_URL from "../../../apiConfig";
+import BASE_URL, { axiosInstance } from "../../../apiConfig";
 import NotificationCard from "../../components/notificationCards/NotificationCard";
 import MobileNotificationCard from "../../components/notificationCards/MobileNotificationCard";
 import PopperComponent from "../../components/popupCards/PopperComponent";
@@ -39,19 +39,17 @@ const Feeds = ({
     // if (!hasMore || loading) return;
     setLoading(true);
     try {
-      const savedRecipeResponse = await axios.get(
-        `${BASE_URL}/api/recipes/get-saved-recipes`,
-        { withCredentials: true }
+      const savedRecipeResponse = await axiosInstance.get(
+        `/api/recipes/get-saved-recipes`
       );
       const savedRecipeIds = savedRecipeResponse.data.map(
         (recipe) => recipe._id
       );
-      const response = await axios.get(`${BASE_URL}/api/users/posts`, {
+      const response = await axiosInstance.get(`/api/users/posts`, {
         params: {
           page: page,
           limit: 10,
         },
-        withCredentials: true,
       });
 
       const feedPosts = response.data.map((post) => ({
@@ -104,9 +102,7 @@ const Feeds = ({
   // }, [isIntersecting]);
   const fetchLikedPosts = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/api/users/liked-posts`, {
-        withCredentials: true,
-      });
+      const response = await axiosInstance.get(`/api/users/liked-posts`);
 
       const likedPostIds = response.data.likedPostIds;
       const likedPostsMap = {};
@@ -139,13 +135,9 @@ const Feeds = ({
         ...prev,
         [postId]: !prev[postId],
       }));
-      const response = await axios.post(
-        `${BASE_URL}/api/users/like`,
-        {
-          postId: postId,
-        },
-        { withCredentials: true }
-      );
+      const response = await axiosInstance.post(`/api/users/like`, {
+        postId: postId,
+      });
 
       const likesCount = response.data.likesCount;
 
@@ -166,16 +158,10 @@ const Feeds = ({
       return;
     }
     try {
-      const response = await axios.post(
-        `${BASE_URL}/api/users/post-comment`,
-        {
-          postId: postId,
-          comment: comment,
-        },
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await axiosInstance.post(`/api/users/post-comment`, {
+        postId: postId,
+        comment: comment,
+      });
 
       if (response.status === 200) {
         const newComment = response.data.comment.comments.slice(-1)[0];
@@ -194,14 +180,10 @@ const Feeds = ({
 
   const deleteComment = async (postId, commentId) => {
     try {
-      const response = await axios.post(
-        `${BASE_URL}/api/users/delete-comment`,
-        {
-          postId: postId,
-          commentId: commentId,
-        },
-        { withCredentials: true }
-      );
+      const response = await axiosInstance.post(`/api/users/delete-comment`, {
+        postId: postId,
+        commentId: commentId,
+      });
 
       setSelectedPost((prevPost) => {
         return {
@@ -230,9 +212,7 @@ const Feeds = ({
 
   const fetchLikeNotifications = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/api/users/likers`, {
-        withCredentials: true,
-      });
+      const response = await axiosInstance.get(`/api/users/likers`);
       console.log("response", response.data);
       setLikers(response.data.notificationsWithNames);
     } catch (error) {
@@ -241,9 +221,7 @@ const Feeds = ({
   };
   const fetchCommentNotifications = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/api/users/commenters`, {
-        withCredentials: true,
-      });
+      const response = await axiosInstance.get(`/api/users/commenters`);
       console.log("response", response.data);
       setCommenters(response.data.notificationsWithNames);
     } catch (error) {

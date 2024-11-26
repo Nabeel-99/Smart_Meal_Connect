@@ -122,6 +122,8 @@ const ContentViews = ({
             showListView={showListView}
             gridView={gridView}
             listView={listView}
+            setShowSuccessSnackbar={setShowSuccessSnackbar}
+            setSuccessMessage={setSuccessMessage}
           />
         }
       />

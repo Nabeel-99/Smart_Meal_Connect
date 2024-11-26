@@ -37,13 +37,13 @@ export const sendNotifications = async (userId, postId, eventType, comment) => {
     const post = await UserPost.findById(postId)
       .populate("userId", "fcmToken firstName")
       .populate("recipeId", "images");
-    console.log("post", post);
+
     if (!post || !post.userId) {
       console.log("Post or user not found");
       return;
     }
     const user = await User.findById(userId);
-    console.log("user", user);
+
     if (!user) {
       console.log("user not found");
       return;
@@ -67,7 +67,6 @@ export const sendNotifications = async (userId, postId, eventType, comment) => {
         },
         token: fcmToken,
       };
-      console.log("image", payload.notification.image);
       try {
         await admin.messaging().send(payload);
         console.log("notification sent successfully");

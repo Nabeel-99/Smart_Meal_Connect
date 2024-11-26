@@ -9,7 +9,7 @@ import NutrientsCard from "../components/recipeDetailsCards/NutrientsCard";
 import MissingIngredientsCard from "../components/recipeDetailsCards/MissingIngredientsCard";
 import RecipeInstructionsCard from "../components/recipeDetailsCards/RecipeInstructionsCard";
 import RecipeIngredientsCard from "../components/recipeDetailsCards/RecipeIngredientsCard";
-import BASE_URL from "../../apiConfig";
+import BASE_URL, { axiosInstance } from "../../apiConfig";
 
 const RecipeDetails = ({ userData }) => {
   const [recipeDetails, setRecipeDetails] = useState({});
@@ -57,15 +57,9 @@ const RecipeDetails = ({ userData }) => {
 
   const saveRecipe = async () => {
     try {
-      const response = await axios.post(
-        `${BASE_URL}/api/recipes/save-recipe`,
-        {
-          recipeDetails: recipeDetails,
-        },
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await axiosInstance.post(`/api/recipes/save-recipe`, {
+        recipeDetails: recipeDetails,
+      });
       if (response.status === 200) {
         setMessage("Recipe saved successfully");
         setDisplayMsg(true);

@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from "react";
-import SelectInput from "../formInputs/SelectInput";
-import { FaEye, FaEyeSlash } from "react-icons/fa6";
-import TextInput from "../formInputs/TextInput";
-import { themeOptions } from "../../../../server/utils/helper";
-import axios from "axios";
+
 import DialogComponent from "../popupCards/DialogComponent";
 import ChangeNameForm from "../forms/ChangeNameForm";
 import ChangeEmailForm from "../forms/ChangeEmailForm";
 import ChangePasswordForm from "../forms/ChangePasswordForm";
 import ThemeInput from "../formInputs/ThemeInput";
 import DeleteAccountButton from "../buttons/DeleteAccountButton";
-import BASE_URL from "../../../apiConfig";
+import BASE_URL, { axiosInstance } from "../../../apiConfig";
 
 const AccountSection = ({
   userData,
@@ -83,9 +79,7 @@ const AccountSection = ({
   const deleteAccount = async () => {
     setLoading(true);
     try {
-      const response = await axios.delete(`${BASE_URL}/api/auth/delete-user`, {
-        withCredentials: true,
-      });
+      const response = await axiosInstance.delete(`/api/auth/delete-user`);
       console.log(response.data);
       if (response.status === 200) {
         window.location = "/";
@@ -115,10 +109,9 @@ const AccountSection = ({
     if (email !== userData.email) updatedData.email = email;
     if (password) updatedData.password = password;
     try {
-      const response = await axios.patch(
-        `${BASE_URL}/api/auth/update`,
-        updatedData,
-        { withCredentials: true }
+      const response = await axiosInstance.patch(
+        `/api/auth/update`,
+        updatedData
       );
       console.log(response.data);
       if (response.status === 200) {

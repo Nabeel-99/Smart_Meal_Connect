@@ -4,9 +4,17 @@ import MealCard from "../../components/viewCards/MealCard";
 import DialogComponent from "../../components/popupCards/DialogComponent";
 import SavedMealsHeader from "../../components/headers/SavedMealsHeader";
 import MealSkeletonLoader from "../../components/skeletons/MealSkeletonLoader";
-import BASE_URL from "../../../apiConfig";
+import BASE_URL, { axiosInstance } from "../../../apiConfig";
+import AutoHideSnackbar from "../../components/popupCards/AutoHideSnackbar";
 
-const SavedMeals = ({ showGridView, showListView, gridView, listView }) => {
+const SavedMeals = ({
+  showGridView,
+  showListView,
+  gridView,
+  listView,
+  setSuccessMessage,
+  setShowSuccessSnackbar,
+}) => {
   const [viewOptions, setViewOptions] = useState(false);
   const [savedMeals, setSavedMeals] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -21,9 +29,8 @@ const SavedMeals = ({ showGridView, showListView, gridView, listView }) => {
   const fetchSavedRecipes = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(
-        `${BASE_URL}/api/recipes/get-saved-recipes`,
-        { withCredentials: true }
+      const response = await axiosInstance.get(
+        `/api/recipes/get-saved-recipes`
       );
       console.log(response.data);
       setSavedMeals(response.data);
@@ -36,18 +43,16 @@ const SavedMeals = ({ showGridView, showListView, gridView, listView }) => {
   };
   const deleteRecipe = async () => {
     try {
-      const response = await axios.post(
-        `${BASE_URL}/api/recipes/delete-recipe`,
-        {
-          id: selectedId,
-        },
-        { withCredentials: true }
-      );
+      const response = await axiosInstance.post(`/api/recipes/delete-recipe`, {
+        id: selectedId,
+      });
       console.log(response.data);
       if (response.status === 200) {
         setShowDialog(false);
         setSelectedId(null);
         fetchSavedRecipes();
+        setSuccessMessage("Meal deleted successfully");
+        setShowSuccessSnackbar(true);
       }
     } catch (error) {
       console.log(error);

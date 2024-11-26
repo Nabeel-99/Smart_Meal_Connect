@@ -8,12 +8,27 @@ import AutoHideSnackbar from "../../components/popupCards/AutoHideSnackbar";
 import Content from "../../components/viewCards/Content";
 import ContentViews from "../../components/viewCards/ContentViews";
 import MainMenu from "../../components/menuCards/MainMenu";
-import BASE_URL, { isNative } from "../../../apiConfig";
+import BASE_URL, {
+  axiosInstance,
+  clearNativeAuthToken,
+  getNativeAuthToken,
+  isNative,
+} from "../../../apiConfig";
 import NativeDialog from "../../components/stateManagement/NativeDialog";
 import IconTabs from "../../components/ui/IconTabs";
 import LoadingAnimation from "../../components/animation/LoadingAnimation";
+import NotificationBar from "../../components/notificationCards/NotificationBar";
+import { Toast } from "@capacitor/toast";
 
-const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
+const DashboardLayout = ({
+  userData,
+  fetchUserData,
+  theme,
+  updateTheme,
+  message,
+  showNotificationBar,
+  setShowNotificationBar,
+}) => {
   const [loading, setLoading] = useState(true);
   const [preferences, setPreferences] = useState(false);
   const [sideMenu, setSideMenu] = useState(false);
@@ -72,9 +87,8 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
   const fetchUserPosts = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(
-        `${BASE_URL}/api/users/profile/${userId || ""}`,
-        { withCredentials: true }
+      const response = await axiosInstance.get(
+        `/api/users/profile/${userId || ""}`
       );
 
       setUserProfile(response.data.userProfile);
@@ -91,14 +105,19 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
   const handleLogout = async () => {
     setLoading(true);
     try {
-      const response = await axios.post(`${BASE_URL}/api/auth/logout`, null, {
-        withCredentials: true,
-      });
-
+      let token = null;
+      const response = await axiosInstance.post(`/api/auth/logout`, null);
+      if (isNative) {
+        token = await getNativeAuthToken();
+        if (token) {
+          await clearNativeAuthToken();
+        }
+      }
       if (response.status === 200) {
         sessionStorage.removeItem("ingredientsBased");
         sessionStorage.removeItem("metricsBased");
         sessionStorage.removeItem("ingredientsInput");
+        localStorage.removeItem("postFormData");
         window.location = "/";
       }
     } catch (error) {
@@ -111,10 +130,7 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
   const getUserMetrics = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(
-        `${BASE_URL}/api/users/get-user-metrics`,
-        { withCredentials: true }
-      );
+      const response = await axiosInstance.get(`/api/users/get-user-metrics`);
       if (response.status === 200) {
         setUserMetrics(response.data.metrics);
 
@@ -140,9 +156,8 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
     if (fetchingInProgress) return;
     setFetchingInProgress(true);
     try {
-      const response = await axios.get(
-        `${BASE_URL}/api/recipes/dashboard-recipes`,
-        { withCredentials: true }
+      const response = await axiosInstance.get(
+        `/api/recipes/dashboard-recipes`
       );
       if (response.status === 200) {
         const filteredBreakfast = (
@@ -303,6 +318,16 @@ const DashboardLayout = ({ userData, fetchUserData, theme, updateTheme }) => {
         {isNative && (
           <div className="fixed dark:bg-[#0c0c0c] p-4 border-t z-50 dark:border-t-[#2a2a2a] border-t-[#08090a] bg-[#e0e0e0] bottom-0 left-0 right-0 w-full">
             <IconTabs showPostModal={showPostModal} />
+          </div>
+        )}
+
+        {isNative && showNotificationBar && (
+          <div className="fixed  p-4  z-50 top-10 left-0 right-0 w-full">
+            <NotificationBar
+              message={message}
+              showNotificationBar={showNotificationBar}
+              setShowNotificationBar={setShowNotificationBar}
+            />
           </div>
         )}
       </div>

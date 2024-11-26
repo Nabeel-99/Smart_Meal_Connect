@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import TextInput from "../formInputs/TextInput";
 import SelectInput from "../formInputs/SelectInput";
+import axios from "axios";
+import BASE_URL, { axiosInstance } from "../../../apiConfig";
 import {
   dietPreferences,
   exerciseOptions,
   genderOptions,
   goalOptions,
-} from "../../../../server/utils/helper";
-import axios from "axios";
-import BASE_URL from "../../../apiConfig";
+} from "../../variables";
 
 const PreferenceSection = ({
   userMetrics,
@@ -59,12 +59,9 @@ const PreferenceSection = ({
       updateData.dietaryPreferences = selectedDietaryPreferences;
     updateData.defaultMetrics = false;
     try {
-      const response = await axios.patch(
-        `${BASE_URL}/api/users/update-metrics`,
-        updateData,
-        {
-          withCredentials: true,
-        }
+      const response = await axiosInstance.patch(
+        `/api/users/update-metrics`,
+        updateData
       );
       console.log(response.data);
 

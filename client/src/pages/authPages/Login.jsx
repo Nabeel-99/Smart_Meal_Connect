@@ -4,7 +4,11 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import CloseButtonHeader from "../../components/buttons/CloseButtonHeader";
 import LoginForm from "../../components/forms/LoginForm";
-import BASE_URL from "../../../apiConfig";
+import BASE_URL, {
+  axiosInstance,
+  isNative,
+  saveNativeAuthToken,
+} from "../../../apiConfig";
 
 const Login = ({ authenticateUser }) => {
   const [email, setEmail] = useState("");
@@ -23,17 +27,20 @@ const Login = ({ authenticateUser }) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post(
-        `${BASE_URL}/api/auth/login`,
-        {
-          email: email,
-          password: password,
-        },
-        { withCredentials: true }
-      );
+      const response = await axiosInstance.post(`/api/auth/login`, {
+        email: email,
+        password: password,
+      });
+
       if (response.status === 200) {
+        const { token, isNewUser } = response.data;
+
+        if (isNative) {
+          //save native Token
+          await saveNativeAuthToken(token);
+        }
         await authenticateUser();
-        const isNewUser = response.data.isNewUser;
+
         setLoading(true);
         setTimeout(() => {
           if (isNewUser) {
@@ -45,6 +52,7 @@ const Login = ({ authenticateUser }) => {
         }, 3000);
       }
     } catch (error) {
+      console.log("error", error);
       setLoading(false);
       if (
         error.response &&
@@ -59,6 +67,7 @@ const Login = ({ authenticateUser }) => {
       }
     }
   };
+
   console.log("base url", BASE_URL);
   return (
     <div className="flex flex-col gap-20 2xl:container 2xl:mx-auto   w-full pt-10 px-8 lg:px-24">

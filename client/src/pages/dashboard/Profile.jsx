@@ -4,7 +4,7 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import ProfileCard from "../../components/profile/ProfileCard";
 import PostsGrid from "../../components/profile/PostsGrid";
 import { useParams } from "react-router-dom";
-import BASE_URL from "../../../apiConfig";
+import BASE_URL, { axiosInstance } from "../../../apiConfig";
 import ProfileSkeleton from "../../components/skeletons/ProfileSkeleton";
 
 const Profile = ({
@@ -44,14 +44,10 @@ const Profile = ({
   const handleDelete = async (id) => {
     setLoading(true);
     try {
-      const response = await axios.post(
-        `${BASE_URL}/api/users/delete-post`,
-        {
-          postId: postToDelete.postId,
-          recipeId: postToDelete.posts._id,
-        },
-        { withCredentials: true }
-      );
+      const response = await axiosInstance.post(`/api/users/delete-post`, {
+        postId: postToDelete.postId,
+        recipeId: postToDelete.posts._id,
+      });
       console.log(response.data);
       if (response.status === 200) {
         setShowDialog(false);
@@ -70,9 +66,8 @@ const Profile = ({
   const fetchUserPosts = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(
-        `${BASE_URL}/api/users/profile/${userId || ""}`,
-        { withCredentials: true }
+      const response = await axiosInstance.get(
+        `/api/users/profile/${userId || ""}`
       );
 
       setUserProfile(response.data.userProfile);

@@ -5,7 +5,7 @@ import AutoHideSnackbar from "../../components/popupCards/AutoHideSnackbar";
 import SelectedPantryItems from "../../components/pantry/SelectedPantryItems";
 import PantrySelection from "../../components/pantry/PantrySelection";
 import ingredientsData from "../../../../server/utils/ingredientsHelper.json";
-import BASE_URL, { isNative } from "../../../apiConfig";
+import BASE_URL, { axiosInstance, isNative } from "../../../apiConfig";
 
 const PantryPage = ({ theme }) => {
   const [loading, setLoading] = useState(false);
@@ -20,10 +20,7 @@ const PantryPage = ({ theme }) => {
   const showEditPantry = () => setIsEditingPantry(!isEditingPantry);
   const fetchPantryItems = async () => {
     try {
-      const response = await axios.get(
-        `${BASE_URL}/api/users/get-user-pantry`,
-        { withCredentials: true }
-      );
+      const response = await axiosInstance.get(`/api/users/get-user-pantry`);
       console.log(response.data);
       setSelectedItems(response.data.userPantry.items);
     } catch (error) {
@@ -34,13 +31,9 @@ const PantryPage = ({ theme }) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.patch(
-        `${BASE_URL}/api/users/update-pantry`,
-        {
-          items: selectedItems,
-        },
-        { withCredentials: true }
-      );
+      const response = await axiosInstance.patch(`/api/users/update-pantry`, {
+        items: selectedItems,
+      });
       if (response.status === 200) {
         setIsEditingPantry(false);
         setShowSnackbar(true);

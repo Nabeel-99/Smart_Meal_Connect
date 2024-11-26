@@ -1,15 +1,11 @@
 import React from "react";
 import SelectInput from "../formInputs/SelectInput";
 import TextInput from "../formInputs/TextInput";
-import {
-  exerciseOptions,
-  genderOptions,
-  goalOptions,
-} from "../../../../server/utils/helper";
 import DietaryPreferences from "../forms/DietaryPreferences";
 import SubmitButton from "../buttons/SubmitButton";
 import ErrorText from "../stateManagement/ErrorText";
 import RecipeInputCounter from "../formInputs/RecipeInputCounter";
+import { exerciseOptions, genderOptions, goalOptions } from "../../variables";
 
 const MetricsForm = ({
   onSubmit,

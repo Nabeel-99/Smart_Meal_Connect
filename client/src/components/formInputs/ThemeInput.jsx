@@ -1,6 +1,6 @@
 import React from "react";
-import { themeOptions } from "../../../../server/utils/helper";
 import SelectInput from "./SelectInput";
+import { themeOptions } from "../../variables";
 
 const ThemeInput = ({ theme, updateTheme }) => {
   return (

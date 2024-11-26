@@ -68,7 +68,7 @@ const SignUp = () => {
               Sign Up
             </h1>
             <p className="">
-              Join Smart Meal Finder and{" "}
+              Join Smart Meal Connect and{" "}
               <span className="lg:block">
                 {" "}
                 Personalize Your Meal Experience.

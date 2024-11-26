@@ -1,5 +1,5 @@
 import React from "react";
-import { dietPreferences } from "../../../../server/utils/helper";
+import { dietPreferences } from "../../variables";
 
 const DietaryPreferences = ({
   handleChecboxChange,

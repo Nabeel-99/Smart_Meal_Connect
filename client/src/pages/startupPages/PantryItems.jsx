@@ -6,7 +6,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import PantrySelection from "../../components/pantry/PantrySelection";
 import PantryHeader from "../../components/pantry/PantryHeader";
-import BASE_URL from "../../../apiConfig";
+import BASE_URL, { axiosInstance } from "../../../apiConfig";
 const PantryItems = ({ theme }) => {
   const [loading, setLoading] = useState(false);
   const [item, setItem] = useState("");
@@ -53,13 +53,9 @@ const PantryItems = ({ theme }) => {
   const savePantryItems = async () => {
     setLoading(true);
     try {
-      const response = await axios.post(
-        `${BASE_URL}/api/users/create-pantry`,
-        {
-          items: selectedItems,
-        },
-        { withCredentials: true }
-      );
+      const response = await axiosInstance.post(`/api/users/create-pantry`, {
+        items: selectedItems,
+      });
       console.log(response.data);
       if (response.status === 200) {
         setTimeout(() => {

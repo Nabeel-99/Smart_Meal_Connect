@@ -3,10 +3,10 @@ import { CiBookmark, CiSettings } from "react-icons/ci";
 import { IoIosAddCircleOutline, IoIosLogOut } from "react-icons/io";
 import { MdDynamicFeed } from "react-icons/md";
 import { useLocation, useNavigate } from "react-router-dom";
-import { mapText } from "../../../../server/utils/helper";
 import { TbFridge } from "react-icons/tb";
 import { GoHome, GoHomeFill } from "react-icons/go";
 import { isNative } from "../../../apiConfig";
+import { mapText } from "../../variables";
 
 const MobileSideMenu = ({
   userMetrics,

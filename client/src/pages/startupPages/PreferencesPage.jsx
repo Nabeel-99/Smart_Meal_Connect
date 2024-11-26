@@ -3,7 +3,7 @@ import { SiGreasyfork } from "react-icons/si";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import PreferenceForm from "../../components/forms/PreferenceForm";
-import BASE_URL from "../../../apiConfig";
+import BASE_URL, { axiosInstance } from "../../../apiConfig";
 import AnimationComponent from "../../components/animation/AnimationComponent";
 
 const PreferencesPage = () => {
@@ -47,20 +47,16 @@ const PreferencesPage = () => {
       defaultMetrics: skipped,
     });
     try {
-      const response = await axios.post(
-        `${BASE_URL}/api/users/create-metrics`,
-        {
-          gender: gender || "male",
-          age: age || 18,
-          weight: weight || 70,
-          height: height || 170,
-          exerciseLevel: exerciseLevel || "moderately_active",
-          goal: goal || "weight_loss",
-          dietaryPreferences: selectedDietaryPreferences || [],
-          defaultMetrics: skipped,
-        },
-        { withCredentials: true }
-      );
+      const response = await axiosInstance.post(`/api/users/create-metrics`, {
+        gender: gender || "male",
+        age: age || 18,
+        weight: weight || 70,
+        height: height || 170,
+        exerciseLevel: exerciseLevel || "moderately_active",
+        goal: goal || "weight_loss",
+        dietaryPreferences: selectedDietaryPreferences || [],
+        defaultMetrics: skipped,
+      });
       if (response.status === 200) {
         setLoading(true);
         setTimeout(() => {

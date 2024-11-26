@@ -1,13 +1,13 @@
 import React from "react";
 import TextInput from "../formInputs/TextInput";
 import SelectInput from "../formInputs/SelectInput";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import {
   dietPreferences,
   exerciseOptions,
   genderOptions,
   goalOptions,
-} from "../../../../server/utils/helper";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
+} from "../../variables";
 
 const PreferenceForm = ({
   handleSubmit,

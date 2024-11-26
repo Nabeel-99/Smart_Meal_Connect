@@ -21,7 +21,7 @@ import CommentButton from "../buttons/CommentButton";
 import SaveButton from "../buttons/SaveButton";
 import PostBottomSection from "./PostBottomSection";
 import AutoHideSnackbar from "../popupCards/AutoHideSnackbar";
-import BASE_URL from "../../../apiConfig";
+import BASE_URL, { axiosInstance } from "../../../apiConfig";
 
 const PostCard = ({
   post,
@@ -37,18 +37,14 @@ const PostCard = ({
 
   const saveRecipe = async (post) => {
     try {
-      const response = await axios.post(
-        `${BASE_URL}/api/recipes/save-recipe`,
-        {
-          recipeDetails: post.posts,
-        },
-        { withCredentials: true }
-      );
+      const response = await axiosInstance.post(`/api/recipes/save-recipe`, {
+        recipeDetails: post.posts,
+      });
       setIsSaved(true);
       post.isSaved = true;
 
       if (response.status === 200) {
-        setSnackbarMessage(response.data.message);
+        setSnackbarMessage("Post saved Successfully");
         setShowSnackbar(true);
       } else {
         setSnackbarMessage("Failed to save recipe");
@@ -59,19 +55,18 @@ const PostCard = ({
       console.log(error);
       if (error.response && error.response.status === 400) {
         console.log("already saved");
-        const newResponse = await axios.post(
-          `${BASE_URL}/api/recipes/delete-recipe`,
+        const newResponse = await axiosInstance.post(
+          `/api/recipes/delete-recipe`,
           {
             id: post.posts._id,
-          },
-          { withCredentials: true }
+          }
         );
         console.log(newResponse.data);
         setIsSaved(false);
         post.isSaved = false;
 
         if (newResponse.status === 200) {
-          setSnackbarMessage(newResponse.data.message);
+          setSnackbarMessage("Post removed from saved collection");
           setShowSnackbar(true);
         } else {
           setSnackbarMessage("Failed to delete recipe");

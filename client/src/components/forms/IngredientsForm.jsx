@@ -1,6 +1,5 @@
 import React from "react";
 import AutoCompleteComponent from "../formInputs/AutoCompleteComponent";
-import { dietPreferences } from "../../../../server/utils/helper";
 import AddIngredientButton from "../buttons/AddIngredientButton";
 import DietaryPreferences from "../forms/DietaryPreferences";
 import SubmitButton from "../buttons/SubmitButton";

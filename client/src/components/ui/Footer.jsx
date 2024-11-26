@@ -9,7 +9,7 @@ const Footer = () => {
       <div className="flex flex-col gap-10 lg:gap-0 md:flex-row items-start justify-between">
         <div className="flex gap-2 items-center">
           <SiGreasyfork />
-          Smart Meal Finder
+          Smart Meal Connect
         </div>
         <div className="flex gap-20">
           <div className="flex flex-col gap-2">
@@ -30,7 +30,7 @@ const Footer = () => {
         </div>
         <div className="border-t border-t-[#343333]">
           <p className="pt-2 text-xs lg:text-sm">
-            &copy; 2024 Smart Meal Finder. All rights reserved.
+            &copy; 2024 . All rights reserved.
           </p>
         </div>
       </div>

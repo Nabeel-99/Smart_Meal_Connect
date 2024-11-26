@@ -5,7 +5,7 @@ import RecipeResults from "../../components/viewCards/RecipeResults";
 import MetricsForm from "../../components/forms/MetricsForm";
 import MetricsHeader from "../../components/headers/MetricsHeader";
 import ShowMoreButton from "../../components/buttons/ShowMoreButton";
-import BASE_URL from "../../../apiConfig";
+import BASE_URL, { axiosInstance } from "../../../apiConfig";
 import RecipeResultsContainer from "../../components/recipeDetailsCards/RecipeResultsContainer";
 import { motion } from "framer-motion";
 const MetricsBased = ({ userData }) => {
@@ -61,10 +61,7 @@ const MetricsBased = ({ userData }) => {
   const getUserMetrics = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(
-        `${BASE_URL}/api/users/get-user-metrics`,
-        { withCredentials: true }
-      );
+      const response = await axiosInstance.get(`/api/users/get-user-metrics`);
       if (response.status === 200) {
         console.log("user metrics", response.data);
         const metrics = response.data.metrics;
@@ -119,8 +116,8 @@ const MetricsBased = ({ userData }) => {
     }
     try {
       setLoading(true);
-      const response = await axios.post(
-        `${BASE_URL}/api/recipes/get-metrics-recipes`,
+      const response = await axiosInstance.post(
+        `/api/recipes/get-metrics-recipes`,
         {
           gender: gender,
           age: age,
@@ -130,8 +127,7 @@ const MetricsBased = ({ userData }) => {
           exerciseLevel: exerciseLevel,
           dietaryPreferences: selectedDietaryPreferences,
           numberOfRecipes: ingredientCount,
-        },
-        { withCredentials: true }
+        }
       );
       console.log(response.data);
       if (response.status === 200) {

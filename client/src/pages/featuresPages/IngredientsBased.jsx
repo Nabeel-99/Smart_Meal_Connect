@@ -6,7 +6,7 @@ import IngredientsHeader from "../../components/headers/IngredientsHeader";
 import RecipeResults from "../../components/viewCards/RecipeResults";
 import GetStartedSection from "../../components/ui/GetStartedSection";
 import ShowMoreButton from "../../components/buttons/ShowMoreButton";
-import BASE_URL from "../../../apiConfig";
+import BASE_URL, { axiosInstance } from "../../../apiConfig";
 import { FaAngleLeft, FaAngleRight, FaCaretLeft } from "react-icons/fa6";
 import RecipeResultsContainer from "../../components/recipeDetailsCards/RecipeResultsContainer";
 
@@ -104,14 +104,13 @@ const IngredientsBased = ({ userData, theme }) => {
     }
     sessionStorage.setItem("ingredientsInput", JSON.stringify(ingredients));
     try {
-      const response = await axios.post(
-        `${BASE_URL}/api/recipes/get-ingredients-recipes`,
+      const response = await axiosInstance.post(
+        `/api/recipes/get-ingredients-recipes`,
         {
           ingredients: ingredients,
           dietaryPreferences: selectedDietaryPreferences,
           isConnected: isConnected,
-        },
-        { withCredentials: true }
+        }
       );
       console.log("response,", response.data);
 

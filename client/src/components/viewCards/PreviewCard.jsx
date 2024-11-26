@@ -21,8 +21,6 @@ const PreviewCard = ({
   setImagePreviews,
   setDeletedImages,
 }) => {
-  console.log("preview card", imagePreviews);
-  console.log("images", images);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const handleNextImage = () => {
     if (currentImageIndex < imagePreviews.length - 1) {
@@ -56,11 +54,7 @@ const PreviewCard = ({
 
   const isLastImage = currentImageIndex === imagePreviews.length - 1;
   const isFirstImage = currentImageIndex === 0;
-  console.log(
-    "type of iamge preview and image",
-    typeof imagePreviews,
-    typeof images
-  );
+
   return (
     <div className="flex h-full ">
       <span>

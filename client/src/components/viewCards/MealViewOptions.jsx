@@ -1,11 +1,6 @@
 import React from "react";
-import { LuArrowDownWideNarrow } from "react-icons/lu";
-import PopperComponent from "../popupCards/PopperComponent";
-import { MenuItem, MenuList } from "@mui/material";
-import { CiGrid41 } from "react-icons/ci";
-import { HiBars3 } from "react-icons/hi2";
 import CategoryHeader from "../headers/CategoryHeader";
-import MobileViewOptions from "./MobileViewOptions";
+import ViewOptions from "./ViewOptions";
 
 const MealViewOptions = ({
   showLunch,
@@ -24,7 +19,7 @@ const MealViewOptions = ({
   dinner,
 }) => {
   return (
-    <div className="flex flex-col w-full sticky top-[60px] lg:top-[40px] z-10 dark:bg-[#0c0c0c] bg-[#F7F7F8] pb-3 lg:pb-5   gap-4">
+    <div className="flex flex-col w-full sticky top-[60px] lg:top-[40px]  dark:bg-[#0c0c0c] bg-[#F7F7F8] pb-3 lg:pb-5   gap-4">
       <div className="text-xl lg:text-3xl font-bold pt-6 lg:pt-10">
         Personalized Meal Suggestions Based on Your Metrics
       </div>
@@ -49,7 +44,7 @@ const MealViewOptions = ({
               <button onClick={uncheckAllRecipes}>Uncheck All</button>
             </div>
           )}
-          <MobileViewOptions
+          <ViewOptions
             showGridView={showGridView}
             showListView={showListView}
           />

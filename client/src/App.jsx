@@ -6,8 +6,6 @@ import {
   Route,
   useLocation,
 } from "react-router-dom";
-import "@ionic/react/css/core.css";
-
 import SignUp from "./pages/authPages/SignUp";
 import Login from "./pages/authPages/Login";
 import ResetPassword from "./pages/authPages/ResetPassword";
@@ -19,7 +17,11 @@ import DashboardLayout from "./pages/dashboard/DashboardLayout";
 import VerifyEmail from "./pages/authPages/VerifyEmail";
 import { PushNotifications } from "@capacitor/push-notifications";
 import { StatusBar } from "@capacitor/status-bar";
-import BASE_URL, { isNative } from "../apiConfig";
+import BASE_URL, {
+  axiosInstance,
+  getNativeAuthToken,
+  isNative,
+} from "../apiConfig";
 import { Toast } from "@capacitor/toast";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import AboutPage from "./pages/AboutPage";
@@ -42,14 +44,15 @@ const App = () => {
   const [loading, setLoading] = useState(true);
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "system");
   const location = useLocation();
+  const [message, setMessage] = useState("");
+  const [showNotificationBar, setShowNotificationBar] = useState(false);
+  let notificationTimeout;
 
   const authenticateUser = async () => {
     if (isFetching) return;
     setIsFetching(true);
     try {
-      const response = await axios.get(`${BASE_URL}/api/auth`, {
-        withCredentials: true,
-      });
+      const response = await axiosInstance.get(`${BASE_URL}/api/auth`);
       if (response.status === 200) {
         setUserData(response.data.user);
       }
@@ -95,13 +98,20 @@ const App = () => {
    */
   const handlePushReceived = async (notification) => {
     console.log("Push notification received:", notification);
-    const message = notification.body || "You have a new notification!";
+    const message = {
+      title: notification?.title || "Notification",
+      body: notification?.body || "You have a new notification!",
+    };
+    setMessage(message);
     if (isNative) {
-      await Toast.show({
-        text: message,
-        duration: "long",
-        position: "top",
-      });
+      setShowNotificationBar(true);
+      PushNotifications.removeAllDeliveredNotifications();
+      if (notificationTimeout) {
+        clearTimeout(notificationTimeout);
+      }
+      notificationTimeout = setTimeout(() => {
+        setShowNotificationBar(false);
+      }, 3500);
     }
   };
 
@@ -124,7 +134,7 @@ const App = () => {
       PushNotifications.addListener(
         "registration",
         /** @param {Token} token */ (token) => {
-          saveToken(token.value);
+          saveNotificationToken(token.value);
           console.log("push registration token", token.value);
         }
       );
@@ -134,7 +144,6 @@ const App = () => {
         alert("Error on registration: " + JSON.stringify(error));
       });
 
-      const message = firebase.messaging();
       // Show us the notification payload if the app is open on our device
       PushNotifications.addListener(
         "pushNotificationReceived",
@@ -145,22 +154,17 @@ const App = () => {
       PushNotifications.addListener(
         "pushNotificationActionPerformed",
         /** @param {ActionPerformed} notification */ (notification) => {
-          alert("Push action performed: " + JSON.stringify(notification));
+          // alert("Push action performed: " + JSON.stringify(notification));
           console.log("push action", JSON.stringify(notification));
         }
       );
     }
-  }, []);
-  const saveToken = async (token) => {
+  }, [isNative, userData]);
+  const saveNotificationToken = async (notifcationToken) => {
     try {
-      const response = await axios.post(
-        `${BASE_URL}/api/auth/save-notification-token`,
-        {
-          fcmToken: token,
-        },
-        { withCredentials: true }
-      );
-      console.log("response", response.data);
+      await axiosInstance.post(`/api/auth/save-notification-token`, {
+        fcmToken: notifcationToken,
+      });
     } catch (error) {
       console.log("error saving token", error);
     }
@@ -252,6 +256,9 @@ const App = () => {
                 fetchUserData={authenticateUser}
                 theme={theme}
                 updateTheme={updateTheme}
+                message={message}
+                showNotificationBar={showNotificationBar}
+                setShowNotificationBar={setShowNotificationBar}
               />
             </ProtectedRoute>
           }
