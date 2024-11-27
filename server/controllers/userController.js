@@ -70,6 +70,8 @@ export const loginUser = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "None",
     });
 
     const isNewUser = user.isNewUser;
@@ -79,14 +81,12 @@ export const loginUser = async (req, res) => {
       await user.save();
     }
 
-    return res
-      .status(200)
-      .json({
-        message: "log in successful",
-        token,
-        isNewUser: isNewUser,
-        user,
-      });
+    return res.status(200).json({
+      message: "log in successful",
+      token,
+      isNewUser: isNewUser,
+      user,
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal Server Error" });
