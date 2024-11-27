@@ -52,7 +52,7 @@ const App = () => {
     if (isFetching) return;
     setIsFetching(true);
     try {
-      const response = await axiosInstance.get(`${BASE_URL}/api/auth`);
+      const response = await axiosInstance.get(`/api/auth`);
       if (response.status === 200) {
         setUserData(response.data.user);
       }
