@@ -25,6 +25,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: [
+      process.env.PRODUCTION_URL,
       process.env.FRONTEND_URL,
       "capacitor://localhost",
       "http://10.0.2.2",
