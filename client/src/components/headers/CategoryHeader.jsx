@@ -54,14 +54,14 @@ const CategoryHeader = ({
           Dinner
         </button>
       </div>
-      <MobileViewOptions
+      {/* <MobileViewOptions
         anchorRef={anchorRef}
         showOptions={showOptions}
         viewOptions={viewOptions}
         setViewOptions={setViewOptions}
         showGridView={showGridView}
         showListView={showListView}
-      />
+      /> */}
     </div>
   );
 };

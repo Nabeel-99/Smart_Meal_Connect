@@ -24,7 +24,7 @@ const MobileViewOptions = ({
           anchorRef={anchorRef}
           setViewPopper={setViewOptions}
         >
-          <MenuList className="absolute right-2 top-8 p-4 dark:bg-[#08090a] bg-[#F7F7F8] text-black dark:text-white border dark:border-[#1d1d1d] border-[#e0e0e0] flex flex-col gap-4 rounded-md">
+          <MenuList className="absolute right-2 top-10 p-4 dark:bg-[#08090a] bg-[#F7F7F8] text-black dark:text-white border dark:border-[#1d1d1d] border-[#e0e0e0] flex flex-col gap-4 rounded-md">
             <MenuItem
               onClick={showGridView}
               className="flex items-center text-sm gap-4"

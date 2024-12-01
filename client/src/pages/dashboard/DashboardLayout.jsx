@@ -179,7 +179,6 @@ const DashboardLayout = ({
           },
         });
       }
-      console.log("response", response);
     } catch (error) {
       console.log(error);
     } finally {

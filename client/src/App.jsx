@@ -160,6 +160,7 @@ const App = () => {
       );
     }
   }, [isNative, userData]);
+
   const saveNotificationToken = async (notifcationToken) => {
     try {
       await axiosInstance.post(`/api/auth/save-notification-token`, {

@@ -65,3 +65,34 @@ axiosInstance.interceptors.request.use(
 );
 
 export { axiosInstance };
+
+export const base64ToFile = (base64, filename) => {
+  if (!base64) {
+    throw new Error("Invalid base64 string");
+  }
+
+  const splitBase64 = base64.split(",");
+  if (splitBase64.length < 2) {
+    throw new Error("Invalid base64 string format");
+  }
+
+  const [metadata, data] = splitBase64;
+  const mime = metadata.match(/:(.*?);/)[1];
+  const binaryString = atob(data);
+  const byteNumbers = new Array(binaryString.length);
+
+  for (let i = 0; i < binaryString.length; i++) {
+    byteNumbers[i] = binaryString.charCodeAt(i);
+  }
+  const byteArray = new Uint8Array(byteNumbers);
+  return new File([byteArray], filename, { type: mime });
+};
+
+export const fileToBase64 = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
+};

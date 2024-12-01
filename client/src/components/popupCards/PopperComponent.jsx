@@ -29,7 +29,7 @@ const PopperComponent = ({
         }}
       >
         <div
-          className={`dark:text-white text-black ${
+          className={`dark:text-white  z-50 text-black ${
             isNotification ? "w-96 xl:hidden" : ""
           }  `}
         >

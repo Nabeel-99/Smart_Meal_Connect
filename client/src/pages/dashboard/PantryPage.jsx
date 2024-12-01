@@ -16,13 +16,19 @@ const PantryPage = ({ theme }) => {
   const [isEditingPantry, setIsEditingPantry] = useState("");
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [originalPantry, setOriginalPantry] = useState([]);
 
-  const showEditPantry = () => setIsEditingPantry(!isEditingPantry);
+  const showEditPantry = () => {
+    setIsEditingPantry(!isEditingPantry);
+    setSelectedItems([...originalPantry]);
+  };
+
   const fetchPantryItems = async () => {
     try {
       const response = await axiosInstance.get(`/api/users/get-user-pantry`);
       console.log(response.data);
       setSelectedItems(response.data.userPantry.items);
+      setOriginalPantry(response.data.userPantry.items);
     } catch (error) {
       console.log(error);
     }

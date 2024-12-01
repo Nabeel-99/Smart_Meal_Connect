@@ -5,7 +5,12 @@ import UploadLimitSnackbar from "../popupCards/UploadLimitSnackbar";
 import InputArea from "../formInputs/InputArea";
 import { Camera, CameraResultType } from "@capacitor/camera";
 import { Capacitor } from "@capacitor/core";
-import BASE_URL, { axiosInstance, isNative } from "../../../apiConfig";
+import BASE_URL, {
+  axiosInstance,
+  base64ToFile,
+  fileToBase64,
+  isNative,
+} from "../../../apiConfig";
 import { FaXmark } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
@@ -22,49 +27,22 @@ const PostForm = ({
     const savedData = JSON.parse(localStorage.getItem("postFormData"));
     return savedData || {};
   };
-  const [title, setTitle] = useState(
-    selectedPost ? selectedPost?.title : loadSavedData()?.title || ""
-  );
-  const [instructions, setInstructions] = useState(
-    selectedPost
-      ? selectedPost?.instructions
-      : loadSavedData()?.instructions || []
-  );
-  const [images, setImages] = useState(
-    selectedPost ? selectedPost?.images : loadSavedData()?.images || []
-  );
-  const [imagePreviews, setImagePreviews] = useState(
-    selectedPost ? selectedPost?.images : loadSavedData()?.imagePreviews || []
-  );
-  const [prepTime, setPrepTime] = useState(
-    selectedPost ? selectedPost?.prepTime : loadSavedData()?.prepTime || 0
-  );
-  const [autocompleteValue, setAutocompleteValue] = useState(null);
+
+  const [title, setTitle] = useState("");
+  const [instructions, setInstructions] = useState([]);
+  const [images, setImages] = useState([]);
+  const [imagePreviews, setImagePreviews] = useState([]);
+  const [prepTime, setPrepTime] = useState(0);
+  const [ingredients, setIngredients] = useState([]);
+  const [category, setCategory] = useState("breakfast");
   const [item, setItem] = useState("");
-  const [ingredients, setIngredients] = useState(
-    selectedPost
-      ? selectedPost?.ingredients
-      : loadSavedData()?.ingredients || []
-  );
-  const [category, setCategory] = useState(
-    selectedPost
-      ? selectedPost?.category
-      : loadSavedData()?.category || "breakfast"
-  );
   const [deletedImages, setDeletedImages] = useState([]);
   const [error, setError] = useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [autocompleteValue, setAutocompleteValue] = useState(null);
   const navigate = useNavigate();
 
-  const fileToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
-  };
   useEffect(() => {
     const saveDraft = async () => {
       const formData = {
@@ -105,16 +83,23 @@ const PostForm = ({
   }, [selectedPost]);
 
   useEffect(() => {
-    const savedData = loadSavedData();
-
-    if (savedData) {
-      setTitle(savedData.title || "");
-      setInstructions(savedData.instructions || []);
-      setImages(savedData.images || []);
-      setImagePreviews(savedData.images || []);
-      setPrepTime(savedData.prepTime || 0);
-      setIngredients(savedData.ingredients || []);
-      setCategory(savedData.category || "breakfast");
+    if (selectedPost) {
+      setTitle(selectedPost.title || "");
+      setInstructions(selectedPost.instructions || []);
+      setImages(selectedPost.images || []);
+      setImagePreviews(selectedPost.images || []);
+      setPrepTime(selectedPost.prepTime || 0);
+      setIngredients(selectedPost.ingredients || []);
+      setCategory(selectedPost.category || "breakfast");
+    } else {
+      const savedData = loadSavedData();
+      setTitle(savedData?.title || "");
+      setInstructions(savedData?.instructions || []);
+      setImages(savedData?.images || []);
+      setImagePreviews(savedData?.images || []);
+      setPrepTime(savedData?.prepTime || 0);
+      setIngredients(savedData?.ingredients || []);
+      setCategory(savedData?.category || "breakfast");
     }
   }, [selectedPost]);
 
@@ -131,8 +116,6 @@ const PostForm = ({
   const handleCloseSnackbar = () => {
     setSnackbarOpen(false);
   };
-  console.log("images", images);
-  console.log("images previews", imagePreviews);
   const addIngredient = () => {
     if (item && !ingredients.includes(item)) {
       setIngredients([...ingredients, item]);
@@ -175,8 +158,6 @@ const PostForm = ({
         ...prevPreviews,
         URL.createObjectURL(file),
       ]);
-      console.log("image uri", imageUri);
-      console.log("image", image);
     } catch (error) {
       console.log("error", error);
     }
@@ -205,61 +186,53 @@ const PostForm = ({
     };
   }, [images]);
 
-  const base64ToFile = (base64, filename) => {
-    // Split the base64 string into two parts: metadata and data
-    const [metadata, data] = base64.split(",");
-
-    // Extract the MIME type from the metadata
-    const mime = metadata.match(/:(.*?);/)[1];
-
-    // Decode the base64 data into a binary string
-    const binaryString = atob(data);
-
-    // Create a Uint8Array to hold the binary data
-    const byteNumbers = new Array(binaryString.length);
-
-    // Convert the binary string into an array of bytes
-    for (let i = 0; i < binaryString.length; i++) {
-      byteNumbers[i] = binaryString.charCodeAt(i);
-    }
-
-    // Create a Uint8Array from the byte numbers
-    const byteArray = new Uint8Array(byteNumbers);
-
-    // Create a File object from the byte array and return it
-    return new File([byteArray], filename, { type: mime });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Log the data being submitted
+    console.log("Submitting the following data:");
+    console.log("Title:", title);
+    console.log("Instructions:", instructions);
+    console.log("Prep Time:", prepTime);
+    console.log("Ingredients:", ingredients);
+    console.log("Images:", images);
+    console.log("Category:", category);
+
     if (
       !title ||
       !instructions ||
       !prepTime ||
       !ingredients ||
-      !images ||
-      !imagePreviews ||
+      images.length === 0 ||
       !category
     ) {
       setError("Please fill in all the fields");
       return;
     }
+
     const formData = new FormData();
     formData.append("title", title);
     formData.append("instructions", instructions);
     formData.append("ingredients", ingredients);
     formData.append("category", category);
     formData.append("prepTime", prepTime);
-    // formData.append("videoLink", videoLink);
+
     images.forEach((image, index) => {
-      if (typeof image === "string") {
-        const file = base64ToFile(image, `image_${index}.png`);
-        formData.append("images", file);
+      if (image instanceof File) {
+        formData.append("images", image);
+      } else if (typeof image === "string") {
+        try {
+          const file = base64ToFile(image, `image_${index}.png`);
+          formData.append("images", file);
+        } catch (error) {
+          console.error("Error converting base64 to file:", error);
+        }
       }
     });
 
-    // removed images
+    // Removed images
     formData.append("deletedImages", JSON.stringify(deletedImages));
+
     try {
       let response;
       if (selectedPost) {
@@ -289,11 +262,19 @@ const PostForm = ({
   };
 
   const createRecipePost = async (formData) => {
-    return await axiosInstance.post(`/api/users/post`, formData);
+    return await axiosInstance.post(`/api/users/post`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
   };
 
   const editRecipePost = async (postId, formData) => {
-    return await axiosInstance.patch(`/api/users/update/${postId}`, formData);
+    return await axiosInstance.patch(`/api/users/update/${postId}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
   };
 
   return (

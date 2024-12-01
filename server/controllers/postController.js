@@ -154,6 +154,7 @@ export const postRecipe = async (req, res) => {
     const { title, ingredients, instructions, category, videoLink, prepTime } =
       req.body;
     const images = req.files;
+    console.log("Received files:", req.files);
     if (!title || !instructions || !prepTime || !ingredients || !category) {
       return res.status(400).json({ message: "Please fill in all the fields" });
     }
