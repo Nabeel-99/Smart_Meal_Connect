@@ -20,7 +20,7 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import NativeDialog from "../stateManagement/NativeDialog";
+import NativeDialog from "../popupCards/NativeDialog";
 
 const PostsGrid = ({
   userPosts,

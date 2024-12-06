@@ -11,7 +11,7 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
-import useTheme from "./UseTheme";
+import useTheme from "../stateManagement/UseTheme";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction={props.direction} ref={ref} {...props} />;

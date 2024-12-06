@@ -114,7 +114,7 @@ const Dashboard = ({
 
       {fetchingInProgress ? (
         <MealSkeletonLoader
-          count={18}
+          count={20}
           className="w-full"
           isGridView={gridView}
           isListView={listView}

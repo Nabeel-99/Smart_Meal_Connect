@@ -1,7 +1,7 @@
 import React from "react";
 import ModalComponent from "../popupCards/ModalComponent";
 import { isNative } from "../../../apiConfig";
-import NativeDialog from "../stateManagement/NativeDialog";
+import NativeDialog from "../popupCards/NativeDialog";
 import PostDetails from "../feeds/PostDetails";
 
 const PostDetailsModal = ({

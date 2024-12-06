@@ -14,7 +14,7 @@ import BASE_URL, {
   getNativeAuthToken,
   isNative,
 } from "../../../apiConfig";
-import NativeDialog from "../../components/stateManagement/NativeDialog";
+import NativeDialog from "../../components/popupCards/NativeDialog";
 import IconTabs from "../../components/ui/IconTabs";
 import LoadingAnimation from "../../components/animation/LoadingAnimation";
 import NotificationBar from "../../components/notificationCards/NotificationBar";

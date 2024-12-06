@@ -4,7 +4,7 @@ import { HiBars3 } from "react-icons/hi2";
 
 const SavedMealsHeader = ({ showGridView, showListView }) => {
   return (
-    <div className="flex gap-4 lg:items-center sticky top-[69px] z-10 pt-8 pb-4 dark:bg-[#0c0c0c] bg-[#F7F7F8] justify-between">
+    <div className="flex gap-4 lg:items-center sticky top-[60px] z-10 pt-8 pb-4 dark:bg-[#0c0c0c] bg-[#F7F7F8] justify-between">
       <div className="flex items-center justify-between   gap-4">
         <div className="relative text-sm">Saved</div>
       </div>

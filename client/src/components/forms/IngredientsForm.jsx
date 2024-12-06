@@ -45,7 +45,7 @@ const IngredientsForm = ({
             setAutocompleteValue={setAutocompleteValue}
             autocompleteValue={autocompleteValue}
             id="ingredients-autocomplete"
-            placeholder={"e.g chicken, rice, beans..."}
+            placeholder={"e.g pasta, chicken, cheese..."}
           />
 
           <AddIngredientButton addIngredient={addIngredient} />

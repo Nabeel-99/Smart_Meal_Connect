@@ -13,7 +13,7 @@ import { isNative } from "../../../apiConfig";
 import { IoIosLogOut, IoIosMenu } from "react-icons/io";
 import { MenuItem, MenuList } from "@mui/material";
 import { TbFridge } from "react-icons/tb";
-import NativeDialog from "../stateManagement/NativeDialog";
+import NativeDialog from "../popupCards/NativeDialog";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { BsSliders } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
@@ -50,7 +50,9 @@ const MobileHeader = ({
   const navigate = useNavigate();
   return (
     <div
-      className={`lg:hidden pt-6 pl-6 flex items-center 
+      className={`lg:hidden pt-6 ${
+        !isNative ? "pl-6" : "pl-2"
+      } flex items-center 
        text-sm gap-4 border-b pb-3 dark:border-b-[#343333] border-b-[#E0E0E0] fixed  dark:bg-[#0c0c0c] bg-white z-50 w-full`}
     >
       <div className="flex items-center">

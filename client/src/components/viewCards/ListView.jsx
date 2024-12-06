@@ -34,7 +34,7 @@ const ListView = ({
                   : "default"
               }
               alt=""
-              className={`h-full xl:h-44 object-cover  w-full md:w-96  lg:w-72 rounded-md  border `}
+              className={`h-32 w-44 xl:h-44 object-cover  xl:w-full md:w-96  lg:w-72 rounded-md  border `}
             />
             {meal.images.length > 1 && (
               <div className="absolute right-2 top-2 text-xl font-bold">
