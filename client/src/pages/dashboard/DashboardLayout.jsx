@@ -178,6 +178,10 @@ const DashboardLayout = ({
             dinner: filteredDinner,
           },
         });
+        if (response.data.deleteConsumedCalories) {
+          localStorage.removeItem("caloriesConsumed");
+          localStorage.removeItem("checkedMeals");
+        }
       }
     } catch (error) {
       console.log(error);
@@ -316,7 +320,10 @@ const DashboardLayout = ({
         {/* <IconTabs /> */}
         {isNative && (
           <div className="fixed dark:bg-[#0c0c0c] p-4 border-t z-50 dark:border-t-[#2a2a2a] border-t-[#08090a] bg-[#e0e0e0] bottom-0 left-0 right-0 w-full">
-            <IconTabs showPostModal={showPostModal} />
+            <IconTabs
+              showPostModal={showPostModal}
+              userData={userData?.firstName}
+            />
           </div>
         )}
 

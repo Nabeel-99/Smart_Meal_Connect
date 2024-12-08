@@ -147,7 +147,6 @@ export const manageDashboardRecipes = async (req, res) => {
     const currentTime = new Date();
     if (userDashboard) {
       if (userDashboard.expiresAt > currentTime) {
-        // Dashboard still valid
         const existingRecipes = {
           breakfast: userDashboard.generatedMeals.breakfast.map(
             (meal) => meal.recipeId
@@ -270,6 +269,7 @@ export const manageDashboardRecipes = async (req, res) => {
       message: "Dashboard prepared successfully",
       recipes: newRecipes,
       calorieTarget: calorieTarget || null,
+      deleteConsumedCalories: true,
     });
   } catch (error) {
     console.error(error);

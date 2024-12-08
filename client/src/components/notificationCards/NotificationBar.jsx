@@ -10,7 +10,7 @@ const NotificationBar = ({ message, showNotificationBar }) => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.2, ease: "easeInOut" }}
-          className="dark:bg-[#181818] bg-white p-4 rounded-xl flex flex-col gap-1"
+          className="dark:bg-[#181818] bg-white shadow-sm p-4 rounded-xl flex flex-col gap-1"
         >
           <div>{message?.title || ""}</div>
           {/* <div>liked your post</div> */}

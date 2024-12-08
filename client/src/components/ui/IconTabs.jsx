@@ -11,7 +11,7 @@ import { IoIosAddCircleOutline } from "react-icons/io";
 import { CiBookmark } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
 
-export default function IconTabs({ showPostModal }) {
+export default function IconTabs({ showPostModal, userData }) {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -19,7 +19,7 @@ export default function IconTabs({ showPostModal }) {
   };
 
   const navigate = useNavigate();
-
+  console.log("user data,", userData);
   return (
     <div className="flex items-center justify-center gap-14">
       <GoHomeFill
@@ -48,7 +48,7 @@ export default function IconTabs({ showPostModal }) {
         onClick={() => navigate("/profile")}
         className="w-6 h-6 rounded-full text-center flex items-center justify-center text-white text-sm bg-[#B678F0]"
       >
-        N
+        {userData[0].toUpperCase()}
       </div>
     </div>
   );

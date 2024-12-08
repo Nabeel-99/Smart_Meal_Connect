@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import AccountSection from "../settingsCards/AccountSection";
 import PreferenceSection from "../settingsCards/PreferenceSection";
 import PantryPage from "../../pages/dashboard/PantryPage";
+import NativeSettingsCard from "../settingsCards/NativeSettingsCard";
 
 const MobileHeader = ({
   showSideMenu,
@@ -74,117 +75,27 @@ const MobileHeader = ({
               <IoIosMenu className="text-3xl" />
             </button>
 
-            <NativeDialog
+            <NativeSettingsCard
               theme={theme}
               showModal={showModal}
               setShowModal={setShowModal}
-              direction={"left"}
-              title={"Settings"}
-            >
-              <div className="w-full h-full flex flex-col items-start justify-between gap-4 p-4">
-                <div className="flex flex-col h-full w-full gap-4 ">
-                  <button
-                    onClick={displayAccount}
-                    className="flex items-center justify-between text-base w-full"
-                  >
-                    <div className="flex items-center gap-3">
-                      <span>
-                        <FaGear />
-                      </span>
-                      Account{" "}
-                    </div>
-                    <span>
-                      <MdOutlineKeyboardArrowRight className="text-xl" />
-                    </span>
-                  </button>
-                  <NativeDialog
-                    theme={theme}
-                    showModal={showAccount}
-                    direction={"left"}
-                    setShowModal={setShowAccount}
-                    title={"Account Settings"}
-                  >
-                    <div className="p-8 pt-10 ">
-                      <AccountSection
-                        userData={userData}
-                        theme={theme}
-                        updateTheme={updateTheme}
-                        refreshUserData={fetchUserData}
-                      />
-                    </div>
-                  </NativeDialog>
-                  <button
-                    onClick={displayPreference}
-                    className="flex items-center justify-between text-base w-full"
-                  >
-                    {" "}
-                    <div className="flex items-center gap-3">
-                      <span>
-                        <BsSliders />
-                      </span>
-                      Preferences{" "}
-                    </div>
-                    <span>
-                      <MdOutlineKeyboardArrowRight className="text-xl" />
-                    </span>
-                  </button>
-                  <NativeDialog
-                    theme={theme}
-                    showModal={showPreference}
-                    direction={"left"}
-                    setShowModal={setShowPreference}
-                    title={"Preferences"}
-                  >
-                    <div className="p-8 pt-10 ">
-                      <PreferenceSection
-                        userMetrics={userMetrics}
-                        refreshSideMenu={getUserMetrics}
-                        fetchUserDashboardRecipes={fetchUserDashboardRecipes}
-                      />
-                    </div>
-                  </NativeDialog>
-                  <button
-                    onClick={displayPantry}
-                    className="flex items-center justify-between text-base w-full"
-                  >
-                    {" "}
-                    <div className="flex items-center gap-3">
-                      <span>
-                        <TbFridge />
-                      </span>
-                      Pantry{" "}
-                    </div>
-                    <span>
-                      <MdOutlineKeyboardArrowRight className="text-xl" />
-                    </span>
-                  </button>
-                  <NativeDialog
-                    theme={theme}
-                    showModal={showPantry}
-                    direction={"left"}
-                    setShowModal={setShowPantry}
-                    title={"Pantry"}
-                  >
-                    <div className="p-8 pt-10 ">
-                      <PantryPage theme={theme} />
-                    </div>
-                  </NativeDialog>
-                </div>
-
-                <button
-                  onClick={openDialog}
-                  className="mb-24 flex items-center justify-between text-base w-full"
-                >
-                  {" "}
-                  <div className="flex items-center gap-3">
-                    <span>
-                      <IoIosLogOut />
-                    </span>
-                    Logout{" "}
-                  </div>
-                </button>
-              </div>
-            </NativeDialog>
+              displayAccount={displayAccount}
+              showAccount={showAccount}
+              setShowAccount={setShowAccount}
+              userData={userData}
+              updateTheme={updateTheme}
+              fetchUserData={fetchUserData}
+              displayPreference={displayPreference}
+              showPreference={showPreference}
+              setShowPreference={setShowPreference}
+              userMetrics={userMetrics}
+              getUserMetrics={getUserMetrics}
+              fetchUserDashboardRecipes={fetchUserDashboardRecipes}
+              displayPantry={displayPantry}
+              showPantry={showPantry}
+              setShowPantry={setShowPantry}
+              openDialog={openDialog}
+            />
           </>
         )}
       </div>

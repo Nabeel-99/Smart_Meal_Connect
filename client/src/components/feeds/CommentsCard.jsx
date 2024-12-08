@@ -14,8 +14,8 @@ const CommentsCard = ({
   const toggleExpand = () => setIsExpanded(!isExpanded);
   return (
     <div className="relative w-full   flex items-center gap-4">
-      <div className="min-w-10 max-w-10 h-10 rounded-full font-bold text-sm text-center flex items-center justify-center bg-[#B678F0]">
-        N
+      <div className="min-w-10 max-w-10 h-10 rounded-full font-bold text-sm text-center flex text-white items-center justify-center bg-[#B678F0]">
+        {comment.userId.firstName[0].toUpperCase()}
       </div>
       <div className="flex flex-col gap-1 w-full text-sm">
         <div>
