@@ -38,16 +38,13 @@ export const generateIngredientsBasedRecipes = async (req, res) => {
         metrics = userMetricsData.metrics;
       }
     }
-    // console.log(isConnected);
-    // console.log(userPantry);
-    // console.log(metrics);
+
     const recipes = await fetchBasedOnIngredients(
       ingredients,
       metrics.goal || null,
       dietaryPreferences,
       userPantry
     );
-    // console.log("recipe length:", recipes.length);
     return res
       .status(200)
       .json({ message: "recipes fetched successfully", recipes });

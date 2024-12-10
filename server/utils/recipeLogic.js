@@ -91,7 +91,7 @@ export const fetchBasedOnIngredients = async (
       userGoal,
       dietaryPreferences
     );
-    const topRanked = await filteredAndRankedRecipes(
+    const topRanked = await filterAndRankRecipes(
       recipes,
       userIngredients,
       userPantry
@@ -134,7 +134,7 @@ export const fetchBasedOnMetrics = async (goal, dietaryPreferences) => {
   }
 };
 
-export const filteredAndRankedRecipes = async (
+export const filterAndRankRecipes = async (
   recipes,
   userIngredients,
   userPantry

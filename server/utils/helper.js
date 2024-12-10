@@ -188,7 +188,7 @@ export const filterRecipeCalories = (recipes = [], goal) => {
 
   if (!caloreRanges[goal]) {
     console.error(`Invalid goal: ${goal}`);
-    return recipes; // Return all recipes or handle as needed
+    return recipes;
   }
 
   const { min, max } = caloreRanges[goal];
