@@ -25,8 +25,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: [
-      process.env.PRODUCTION_URL ||
-        "https://smart-meal-connect-frontend.onrender.com",
+      process.env.PRODUCTION_URL || "https://smartmealconnect.onrender.com",
       process.env.FRONTEND_URL,
       "capacitor://localhost",
       "http://10.0.2.2",
