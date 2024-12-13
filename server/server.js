@@ -27,12 +27,6 @@ app.use(
     origin: [
       process.env.PRODUCTION_URL || "https://smartmealconnect.onrender.com",
       process.env.FRONTEND_URL,
-      "capacitor://localhost",
-      "http://10.0.2.2",
-      "http://localhost",
-      "http://10.0.2.2:5173",
-      "http://192.168.100.19",
-      "http://192.168.100.19:5173",
     ],
     credentials: true,
   })
