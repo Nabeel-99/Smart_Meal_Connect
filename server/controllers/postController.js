@@ -151,10 +151,8 @@ const __dirname = path.resolve();
 export const postRecipe = async (req, res) => {
   try {
     const { userId } = req;
-    const { title, ingredients, instructions, category, videoLink, prepTime } =
-      req.body;
+    const { title, ingredients, instructions, category, prepTime } = req.body;
     const images = req.files;
-    console.log("Received files:", req.files);
     if (!title || !instructions || !prepTime || !ingredients || !category) {
       return res.status(400).json({ message: "Please fill in all the fields" });
     }
@@ -182,7 +180,6 @@ export const postRecipe = async (req, res) => {
       instructions: formattedInstructions,
       images: imagePaths,
       category,
-      videoLink,
       prepTime,
     });
 
@@ -207,8 +204,7 @@ export const updateRecipePost = async (req, res) => {
   try {
     const { userId } = req;
     const { id } = req.params;
-    const { title, ingredients, instructions, category, videoLink, prepTime } =
-      req.body;
+    const { title, ingredients, instructions, category, prepTime } = req.body;
     const images = req.files || [];
     const deletedImages = JSON.parse(req.body.deletedImages || "[]");
     if (!userId) {
@@ -232,7 +228,6 @@ export const updateRecipePost = async (req, res) => {
       ...(ingredients && { ingredients: formattedIngredients }),
       ...(instructions && { instructions: formattedInstructions }),
       ...(category && { category }),
-      ...(videoLink && { videoLink }),
       ...(prepTime && { prepTime }),
     };
 

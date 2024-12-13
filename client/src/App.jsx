@@ -118,19 +118,15 @@ const App = () => {
   useEffect(() => {
     console.log("Initializing HomePage");
     if (isNative && userData) {
-      // Request permission to use push notifications
-      // iOS will prompt user and return if they granted permission or not
-      // Android will just grant without prompting
       PushNotifications.requestPermissions().then((result) => {
         if (result.receive === "granted") {
-          // Register with Apple / Google to receive push via APNS/FCM
           PushNotifications.register();
         } else {
-          // Show some error
+          console.log("not granted");
         }
       });
 
-      // On success, we should be able to receive notifications
+      // On success, notifications should be received
       PushNotifications.addListener(
         "registration",
         /** @param {Token} token */ (token) => {
@@ -139,12 +135,12 @@ const App = () => {
         }
       );
 
-      // Some issue with our setup and push will not work
+      // Some issue with the setup
       PushNotifications.addListener("registrationError", (error) => {
         alert("Error on registration: " + JSON.stringify(error));
       });
 
-      // Show us the notification payload if the app is open on our device
+      // Show the notification payload if the app is open on our device
       PushNotifications.addListener(
         "pushNotificationReceived",
         handlePushReceived
@@ -189,23 +185,9 @@ const App = () => {
     };
   }, [theme]);
 
-  // useEffect(() => {
-  //   const setStatusBar = async () => {
-  //     await StatusBar.setStyle({ style: Style.Dark });
-  //     await StatusBar.setBackgroundColor({ color: "#08090a" });
-  //   };
-  //   setStatusBar();
-  // }, []);
-
   useEffect(() => {
     authenticateUser();
   }, []);
-
-  // useEffect(() => {
-  //   if (userData) {
-  //     window.location = "/dashboard";
-  //   }
-  // }, []);
 
   const isAuthenticated = Boolean(userData);
   return (

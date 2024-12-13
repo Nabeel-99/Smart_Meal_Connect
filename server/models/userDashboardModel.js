@@ -15,10 +15,6 @@ const userDashboardSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "recipe",
           },
-          isSelected: {
-            type: Boolean,
-            default: false,
-          },
         },
       ],
       lunch: [
@@ -26,10 +22,6 @@ const userDashboardSchema = new mongoose.Schema(
           recipeId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "recipe",
-          },
-          isSelected: {
-            type: Boolean,
-            default: false,
           },
         },
       ],
@@ -39,14 +31,9 @@ const userDashboardSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "recipe",
           },
-          isSelected: {
-            type: Boolean,
-            default: false,
-          },
         },
       ],
     },
-
     calorieTarget: {
       type: Number,
       default: null,

@@ -26,10 +26,6 @@ const recipeSchema = new mongoose.Schema(
       type: [String],
       required: false,
     },
-    videoLink: {
-      type: String,
-      required: false,
-    },
     sourceUrl: {
       type: String,
       required: false,
