@@ -118,7 +118,7 @@ const DashboardLayout = ({
         sessionStorage.removeItem("metricsBased");
         sessionStorage.removeItem("ingredientsInput");
         localStorage.removeItem("postFormData");
-        window.location = "/";
+        window.location.replace("/");
       }
     } catch (error) {
       console.log(error);
