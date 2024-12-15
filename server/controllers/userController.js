@@ -72,7 +72,6 @@ export const loginUser = async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "None",
-      path: "/",
       domain: "smartmealconnect.onrender.com",
     });
 
@@ -131,7 +130,6 @@ export const logout = (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "None",
-      path: "/",
       domain: "smartmealconnect.onrender.com",
     });
     return res.status(200).json({ message: "log out successful" });

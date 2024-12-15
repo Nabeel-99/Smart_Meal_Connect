@@ -106,7 +106,7 @@ const DashboardLayout = ({
     setLoading(true);
     try {
       let token = null;
-      const response = await axiosInstance.post(`/api/auth/logout`, null);
+      const response = await axiosInstance.post(`/api/auth/logout`, {});
       if (isNative) {
         token = await getNativeAuthToken();
         if (token) {

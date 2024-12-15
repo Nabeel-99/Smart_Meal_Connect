@@ -25,8 +25,8 @@ app.use(express.json());
 app.use(
   cors({
     origin: [
-      process.env.PRODUCTION_URL || "https://smartmealconnect.onrender.com",
-      process.env.FRONTEND_URL,
+      process.env.PRODUCTION_URL || "https://smartmealconnect.onrender.com", // Frontend URL
+      process.env.FRONTEND_URL || "https://smart-meal-finder.onrender.com", // Backend URL (if needed)
     ],
     credentials: true,
   })
