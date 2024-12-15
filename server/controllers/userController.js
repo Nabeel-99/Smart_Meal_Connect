@@ -72,6 +72,8 @@ export const loginUser = async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "None",
+      path: "/",
+      domain: "smartmealconnect.onrender.com",
     });
 
     const isNewUser = user.isNewUser;
@@ -125,7 +127,13 @@ export const saveNotificationToken = async (req, res) => {
 // logout user
 export const logout = (req, res) => {
   try {
-    res.clearCookie("token");
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "None",
+      path: "/",
+      domain: "smartmealconnect.onrender.com",
+    });
     return res.status(200).json({ message: "log out successful" });
   } catch (error) {
     return res.status(500).json({ message: "Internal Server Error" });
