@@ -2,6 +2,7 @@ import React from "react";
 import metricsImgOne from "../../assets/metric.png";
 import metricsImgTwo from "../../assets/rate.png";
 import { motion } from "framer-motion";
+import FadeInSection from "../animation/FadeInSection";
 
 const MetricsHeader = () => {
   return (
@@ -47,13 +48,15 @@ const MetricsHeader = () => {
         <motion.div
           initial={{ translateY: "20%", opacity: 0 }}
           animate={{ translateY: 0, opacity: 1 }}
-          transition={{ duration: 1, delay: 1 }}
+          transition={{ duration: 1, delay: 1, ease: [0.25, 1, 0.5, 1] }}
           className="  w-full flex  flex-col items-center"
         >
-          <h1 className="text-center text-2xl lg:text-6xl  tracking-tighter z-10 font-semibold">
-            Plan from Body Metrics
-            <span className="block">to Meal Recommendations</span>
-          </h1>
+          <FadeInSection>
+            <h1 className="text-center text-2xl lg:text-6xl  tracking-tighter z-10 font-semibold">
+              Plan from Body Metrics
+              <span className="block">to Meal Recommendations</span>
+            </h1>
+          </FadeInSection>
         </motion.div>
       </div>
     </>
