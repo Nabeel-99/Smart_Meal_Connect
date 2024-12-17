@@ -70,8 +70,8 @@ export const loginUser = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      // secure: process.env.NODE_ENV === "production",
-      // sameSite: "None",
+      secure: true,
+      sameSite: "None",
       // domain: "51.20.120.120",
     });
 
@@ -128,9 +128,9 @@ export const logout = (req, res) => {
   try {
     res.clearCookie("token", {
       httpOnly: true,
-      secure: "false",
-      sameSite: "None",
-      // domain: "51.20.120.120",
+      // secure: "false",
+      // sameSite: "None",
+      // // domain: "51.20.120.120",
     });
     return res.status(200).json({ message: "log out successful" });
   } catch (error) {
