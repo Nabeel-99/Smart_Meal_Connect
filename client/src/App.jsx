@@ -64,6 +64,12 @@ const App = () => {
     }
   };
 
+  useEffect(() => {
+    authenticateUser();
+  }, []);
+
+  const isAuthenticated = Boolean(userData);
+
   // app theme
   const applyTheme = (theme) => {
     const root = document.documentElement;
@@ -185,11 +191,6 @@ const App = () => {
     };
   }, [theme]);
 
-  useEffect(() => {
-    authenticateUser();
-  }, []);
-
-  const isAuthenticated = Boolean(userData);
   return (
     <div
       style={{ paddingTop: "env(safe-area-inset-top)" }}
