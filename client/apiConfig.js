@@ -6,7 +6,7 @@ const BASE_URL =
   Capacitor.getPlatform() === "android"
     ? "http://10.0.2.2:8000" // Android Emulator
     : window.location.hostname === "localhost"
-    ? "https://51.20.120.120:8000" // For local development
+    ? "http://51.20.120.120:8000" // For local development
     : "https://smart-meal-finder.onrender.com"; // Production URL** not confirmed
 
 export default BASE_URL;
