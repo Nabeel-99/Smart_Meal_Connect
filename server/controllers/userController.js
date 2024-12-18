@@ -68,11 +68,12 @@ export const loginUser = async (req, res) => {
       expiresIn: "5d",
     });
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      // secure: false,
-      sameSite: "None",
-    });
+
+res.cookie("token", token, {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production', 
+  sameSite: "None",
+});
 
     const isNewUser = user.isNewUser;
 
