@@ -34,7 +34,6 @@ const Login = ({ authenticateUser }) => {
 
       if (response.status === 200) {
         const { token, isNewUser } = response.data;
-
         if (isNative) {
           //save native Token
           await saveNativeAuthToken(token);
