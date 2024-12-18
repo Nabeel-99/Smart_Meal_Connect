@@ -32,7 +32,6 @@ const SignUp = () => {
       });
       if (response.status === 200) {
         setLoading(true);
-        console.log(response);
         setTimeout(() => {
           navigate("/login");
           setLoading(false);

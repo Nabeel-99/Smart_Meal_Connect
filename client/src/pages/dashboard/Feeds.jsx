@@ -28,15 +28,10 @@ const Feeds = ({
   const [comment, setComment] = useState("");
   const [commenters, setCommenters] = useState([]);
   const [snackbarMsg, setSnackbarMsg] = useState("");
-  const mobileRef = useRef();
   const [displaySnackbar, setDisplaySnackbar] = useState(false);
-  const spinnerRef = useRef(null);
-  const [isIntersecting, setIsIntersecting] = useState(false);
   const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
-  console.log("posts", posts);
+
   const fetchAllPosts = async () => {
-    // if (!hasMore || loading) return;
     setLoading(true);
     try {
       const savedRecipeResponse = await axiosInstance.get(
@@ -56,17 +51,7 @@ const Feeds = ({
         ...post,
         isSaved: savedRecipeIds.includes(post.posts._id),
       }));
-
-      // setPosts((prevPosts) => {
-      //   const newData = [...prevPosts, ...feedPosts];
-      //   // Check if we received less than the limit, which means no more posts
-      //   if (feedPosts.length < 10) {
-      //     setHasMore(false);
-      //   }
-      //   return newData;
-      // });
       setPosts(feedPosts);
-      // setPage((prevPage) => prevPage + 1);
     } catch (error) {
       console.log(error);
     } finally {
@@ -74,32 +59,6 @@ const Feeds = ({
     }
   };
 
-  // infinite scrolling
-  // useEffect(() => {
-  //   const observer = new IntersectionObserver(
-  //     ([entry]) => {
-  //       if (entry.isIntersecting) {
-  //         setIsIntersecting(true);
-  //       }
-  //     },
-  //     {
-  //       root: null,
-  //       rootMargin: "0px",
-  //       threshold: 1.0,
-  //     }
-  //   );
-  //   if (spinnerRef.current) {
-  //     observer.observe(spinnerRef.current);
-  //   }
-  //   return () => observer.unobserve(spinnerRef.current);
-  // }, [spinnerRef]);
-
-  // useEffect(() => {
-  //   if (isIntersecting) {
-  //     fetchAllPosts();
-  //     setIsIntersecting(false);
-  //   }
-  // }, [isIntersecting]);
   const fetchLikedPosts = async () => {
     try {
       const response = await axiosInstance.get(`/api/users/liked-posts`);
@@ -146,8 +105,6 @@ const Feeds = ({
           post.postId === postId ? { ...post, likesCount } : post
         )
       );
-
-      console.log("response likes", response.data);
     } catch (error) {
       console.log(error);
     }
@@ -213,7 +170,7 @@ const Feeds = ({
   const fetchLikeNotifications = async () => {
     try {
       const response = await axiosInstance.get(`/api/users/likers`);
-      console.log("response", response.data);
+
       setLikers(response.data.notificationsWithNames);
     } catch (error) {
       console.log("error", error);
@@ -222,7 +179,6 @@ const Feeds = ({
   const fetchCommentNotifications = async () => {
     try {
       const response = await axiosInstance.get(`/api/users/commenters`);
-      console.log("response", response.data);
       setCommenters(response.data.notificationsWithNames);
     } catch (error) {
       console.log("error", error);

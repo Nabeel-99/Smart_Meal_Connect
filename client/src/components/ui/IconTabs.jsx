@@ -12,14 +12,8 @@ import { CiBookmark } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
 
 export default function IconTabs({ showPostModal, userData }) {
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
   const navigate = useNavigate();
-  console.log("user data,", userData);
+
   return (
     <div className="flex items-center justify-center gap-14">
       <GoHomeFill

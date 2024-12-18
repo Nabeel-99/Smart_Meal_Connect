@@ -48,7 +48,7 @@ const Profile = ({
         postId: postToDelete.postId,
         recipeId: postToDelete.posts._id,
       });
-      console.log(response.data);
+
       if (response.status === 200) {
         setShowDialog(false);
         setPostToDelete(null);

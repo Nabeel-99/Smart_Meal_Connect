@@ -35,7 +35,6 @@ const ResetPassword = () => {
         newPassword: password,
         confirmPassword: confirmPassword,
       });
-      console.log(response.data);
       if (response.status === 200) {
         setShowSuccess(true);
         setError(false);

@@ -27,7 +27,6 @@ app.use(
     origin: [
       process.env.PRODUCTION_URL || "https://smart-meal-frontend.onrender.com",
       process.env.FRONTEND_URL || "http://localhost:5173",
-    
     ],
     credentials: true,
   })
@@ -44,12 +43,6 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // connect to DB
 connectDB();
-
-// // faker
-// seedDatabase();
-
-// // deletefaker
-// deleteFakeData();
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {

@@ -50,18 +50,15 @@ const PostCard = ({
         setSnackbarMessage("Failed to save recipe");
         setShowSnackbar(true);
       }
-      console.log(response.data);
     } catch (error) {
       console.log(error);
       if (error.response && error.response.status === 400) {
-        console.log("already saved");
         const newResponse = await axiosInstance.post(
           `/api/recipes/delete-recipe`,
           {
             id: post.posts._id,
           }
         );
-        console.log(newResponse.data);
         setIsSaved(false);
         post.isSaved = false;
 

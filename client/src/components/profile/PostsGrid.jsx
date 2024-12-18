@@ -39,7 +39,6 @@ const PostsGrid = ({
   handleDelete,
   currentUserId,
 }) => {
-  console.log("userPosts", userPosts);
   return (
     <div className="flex flex-col gap-8 w-full  h-full">
       <div className="flex  text-sm xl:text-base items-center gap-2 justify-center ">

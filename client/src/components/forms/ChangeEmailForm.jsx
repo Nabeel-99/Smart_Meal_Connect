@@ -15,7 +15,6 @@ const ChangeEmailForm = ({
   showVerifyEmail,
   setIsChangingEmail,
 }) => {
-  console.log("show verify email:", showVerifyEmail);
   return (
     <div className="flex flex-col items-start gap-4">
       <div className="text-lg">Email</div>

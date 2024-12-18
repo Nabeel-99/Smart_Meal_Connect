@@ -63,7 +63,6 @@ const MetricsBased = ({ userData }) => {
     try {
       const response = await axiosInstance.get(`/api/users/get-user-metrics`);
       if (response.status === 200) {
-        console.log("user metrics", response.data);
         const metrics = response.data.metrics;
         setAge(metrics.age || "");
         setHeight(metrics.height || "");
@@ -104,7 +103,6 @@ const MetricsBased = ({ userData }) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    console.log("fields", gender, age, height, weight, goal, exerciseLevel);
     if (!isLoggedIn && tryCount >= TRY_LIMIT) {
       setError(
         "Please create an account or login to continue using this feature."
@@ -129,7 +127,7 @@ const MetricsBased = ({ userData }) => {
           numberOfRecipes: ingredientCount,
         }
       );
-      console.log(response.data);
+
       if (response.status === 200) {
         const recipes = response.data.recipes;
         sessionStorage.setItem("metricsBased", JSON.stringify(recipes));

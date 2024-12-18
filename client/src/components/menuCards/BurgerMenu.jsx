@@ -3,13 +3,11 @@ import { Link, useLocation } from "react-router-dom";
 import { RxCaretDown } from "react-icons/rx";
 import { AnimatePresence, motion } from "framer-motion";
 
-const BurgerMenu = ({ closeMenu, isLoggedIn }) => {
+const BurgerMenu = ({ closeMenu }) => {
   const [features, setFeatures] = useState(false);
   const showDropdown = () => {
     setFeatures(!features);
   };
-  console.log("user is Logged in", isLoggedIn);
-  const location = useLocation();
   return (
     <div
       style={{

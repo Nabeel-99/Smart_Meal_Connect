@@ -103,7 +103,6 @@ const App = () => {
    * @param {import('@capacitor/push-notifications').PushNotificationSchema} notification
    */
   const handlePushReceived = async (notification) => {
-    console.log("Push notification received:", notification);
     const message = {
       title: notification?.title || "Notification",
       body: notification?.body || "You have a new notification!",
@@ -122,7 +121,6 @@ const App = () => {
   };
 
   useEffect(() => {
-    console.log("Initializing HomePage");
     if (isNative && userData) {
       PushNotifications.requestPermissions().then((result) => {
         if (result.receive === "granted") {
@@ -137,7 +135,6 @@ const App = () => {
         "registration",
         /** @param {Token} token */ (token) => {
           saveNotificationToken(token.value);
-          console.log("push registration token", token.value);
         }
       );
 

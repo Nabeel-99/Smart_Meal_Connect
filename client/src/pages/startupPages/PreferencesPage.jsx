@@ -36,16 +36,6 @@ const PreferencesPage = () => {
   const handleSubmit = async (e, skipped = false) => {
     e.preventDefault();
     setLoading(true);
-    console.log({
-      gender,
-      age,
-      weight,
-      height,
-      exerciseLevel,
-      goal,
-      dietaryPreferences: selectedDietaryPreferences,
-      defaultMetrics: skipped,
-    });
     try {
       const response = await axiosInstance.post(`/api/users/create-metrics`, {
         gender: gender || "male",

@@ -14,7 +14,6 @@ const RecipeResults = ({
   totalPages,
 }) => {
   const recipesLength = fetchedRecipes.length;
-  console.log(cardRef.current);
   return (
     <div
       ref={cardRef}

@@ -27,7 +27,6 @@ const InputArea = ({
   setInstructions,
   selectedPost,
 }) => {
-  console.log("selected post", selectedPost);
   return (
     <div className="flex flex-col  pt-8 gap-3  w-full lg:px-4 l lg:w-[200rem] xl:w-[230rem] h-full lg:overflow-scroll hide-scrollbar">
       {error && <div className="text-red-500 text-sm">{error}</div>}

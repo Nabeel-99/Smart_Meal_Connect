@@ -56,7 +56,7 @@ const PantryItems = ({ theme }) => {
       const response = await axiosInstance.post(`/api/users/create-pantry`, {
         items: selectedItems,
       });
-      console.log(response.data);
+
       if (response.status === 200) {
         setTimeout(() => {
           navigate("/dashboard");

@@ -63,7 +63,6 @@ const PreferenceSection = ({
         `/api/users/update-metrics`,
         updateData
       );
-      console.log(response.data);
 
       if (response.status === 200) {
         // await fetchUserDashboardRecipes();

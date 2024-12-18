@@ -112,7 +112,6 @@ const IngredientsBased = ({ userData, theme }) => {
           isConnected: isConnected,
         }
       );
-      console.log("response,", response.data);
 
       if (response.status === 200) {
         const recipes = response.data.recipes;

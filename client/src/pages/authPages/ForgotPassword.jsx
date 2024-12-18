@@ -20,7 +20,6 @@ const ForgotPassword = () => {
         `${BASE_URL}/api/auth/request-reset-password`,
         { email }
       );
-      console.log(response.data);
       if (response.status === 200) {
         setShowError(false);
         setShowSuccess(true);

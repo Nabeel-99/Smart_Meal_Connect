@@ -22,7 +22,6 @@ const PostForm = ({
   setShowSuccessSnackbar,
   setSuccessMessage,
 }) => {
-  console.log("selected post", selectedPost);
   const loadSavedData = () => {
     const savedData = JSON.parse(localStorage.getItem("postFormData"));
     return savedData || {};
@@ -189,15 +188,6 @@ const PostForm = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Log the data being submitted
-    console.log("Submitting the following data:");
-    console.log("Title:", title);
-    console.log("Instructions:", instructions);
-    console.log("Prep Time:", prepTime);
-    console.log("Ingredients:", ingredients);
-    console.log("Images:", images);
-    console.log("Category:", category);
-
     if (
       !title ||
       !instructions ||
@@ -240,7 +230,6 @@ const PostForm = ({
       } else {
         response = await createRecipePost(formData);
       }
-      console.log(response.data);
       if (response.status === 201 || response.status === 200) {
         await fetchUserPosts();
         setShowSuccessSnackbar(true);
@@ -345,52 +334,3 @@ const PostForm = ({
 };
 
 export default PostForm;
-// const handleSubmit = async (e) => {
-//   e.preventDefault();
-
-//   const formData = new FormData();
-//   formData.append("title", title);
-//   formData.append("instructions", instructions);
-//   formData.append("category", category);
-//   formData.append("prepTime", prepTime);
-//   console.log("ingrede", ingredients);
-//   images.forEach((image) => {
-//     if (image instanceof File) {
-//       formData.append("images", image);
-//     }
-//   });
-
-//   ingredients.forEach((ingredient, index) => {
-//     formData.append(`ingredients[${index}]`, ingredient);
-//   });
-
-//   // removed images
-//   deletedImages.forEach((image) => {
-//     formData.append("deletedImages[]", image);
-//   });
-
-//   try {
-//     let response;
-//     if (selectedPost) {
-//       response = await editRecipePost(selectedPost._id, formData);
-//     } else {
-//       response = await createRecipePost(formData);
-//     }
-//     console.log(response.data);
-//     if (response.status === 201 || response.status === 200) {
-//       await fetchUserPosts();
-//       setShowSuccessSnackbar(true);
-//       setSuccessMessage("Your post has been shared");
-//       setShowModal(false);
-//     }
-//   } catch (error) {
-//     console.log(error);
-//     if (
-//       error.response &&
-//       error.response.status >= 400 &&
-//       error.response.status <= 500
-//     ) {
-//       setError(error.response.data.message);
-//     }
-//   }
-// };

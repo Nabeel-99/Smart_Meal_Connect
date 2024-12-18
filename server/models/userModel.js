@@ -40,10 +40,6 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
-    isFake: {
-      type: Boolean,
-      default: false,
-    },
   },
   { timestamps: true }
 );

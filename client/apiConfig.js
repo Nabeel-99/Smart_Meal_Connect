@@ -23,7 +23,6 @@ export const saveNativeAuthToken = async (token) => {
       key: TOKEN_KEY,
       value: token,
     });
-    console.log("Token saved:", token);
   } else {
     console.warn("Non-native platforms should use browser cookies instead.");
   }

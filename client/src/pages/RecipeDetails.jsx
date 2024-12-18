@@ -35,7 +35,6 @@ const RecipeDetails = ({ userData }) => {
 
       if (foundRecipe) {
         setRecipeDetails(foundRecipe);
-        console.log("found Recipe", foundRecipe);
         return;
       } else {
         console.log("Recipe not found in local storage");
@@ -45,9 +44,8 @@ const RecipeDetails = ({ userData }) => {
       const response = await axios.get(
         `${BASE_URL}/api/recipes/get-recipe-details/${id}`
       );
-      console.log("response,", response.data);
+
       if (response.status === 200) {
-        console.log("response,", response.data.recipe);
         setRecipeDetails(response.data.recipe);
       }
     } catch (error) {

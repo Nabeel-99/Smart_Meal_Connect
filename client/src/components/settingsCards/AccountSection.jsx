@@ -80,7 +80,6 @@ const AccountSection = ({
     setLoading(true);
     try {
       const response = await axiosInstance.delete(`/api/auth/delete-user`);
-      console.log(response.data);
       if (response.status === 200) {
         window.location = "/";
       }
@@ -113,7 +112,6 @@ const AccountSection = ({
         `/api/auth/update`,
         updatedData
       );
-      console.log(response.data);
       if (response.status === 200) {
         setIsChangingName(false);
         setIsChangingEmail(false);

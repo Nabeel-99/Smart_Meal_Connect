@@ -67,7 +67,6 @@ const Login = ({ authenticateUser }) => {
       }
     }
   };
-
   console.log("base url", BASE_URL);
   return (
     <div className="flex flex-col gap-20 2xl:container 2xl:mx-auto   w-full pt-10 px-8 lg:px-24">

@@ -26,7 +26,7 @@ const PantryPage = ({ theme }) => {
   const fetchPantryItems = async () => {
     try {
       const response = await axiosInstance.get(`/api/users/get-user-pantry`);
-      console.log(response.data);
+
       setSelectedItems(response.data.userPantry.items);
       setOriginalPantry(response.data.userPantry.items);
     } catch (error) {

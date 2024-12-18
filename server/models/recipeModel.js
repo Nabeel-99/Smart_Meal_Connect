@@ -58,10 +58,6 @@ const recipeSchema = new mongoose.Schema(
       type: Number,
       required: false,
     },
-    isFake: {
-      type: Boolean,
-      default: false,
-    },
   },
   { timestamps: true }
 );

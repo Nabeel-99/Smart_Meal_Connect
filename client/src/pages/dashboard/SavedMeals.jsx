@@ -32,7 +32,7 @@ const SavedMeals = ({
       const response = await axiosInstance.get(
         `/api/recipes/get-saved-recipes`
       );
-      console.log(response.data);
+
       setSavedMeals(response.data);
     } catch (error) {
       console.log(error);
@@ -46,7 +46,7 @@ const SavedMeals = ({
       const response = await axiosInstance.post(`/api/recipes/delete-recipe`, {
         id: selectedId,
       });
-      console.log(response.data);
+
       if (response.status === 200) {
         setShowDialog(false);
         setSelectedId(null);
@@ -58,7 +58,7 @@ const SavedMeals = ({
       console.log(error);
     }
   };
-  console.log("selected Id", selectedId);
+
   useEffect(() => {
     fetchSavedRecipes();
   }, []);
