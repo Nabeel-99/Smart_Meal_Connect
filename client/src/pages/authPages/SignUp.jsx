@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import SignUpForm from "../../components/forms/SignUpForm";
 import CloseButtonHeader from "../../components/buttons/CloseButtonHeader";
-import BASE_URL from "../../../apiConfig";
+import BASE_URL, { axiosInstance } from "../../../apiConfig";
 
 const SignUp = () => {
   const [firstName, setFirstName] = useState("");
@@ -24,7 +24,7 @@ const SignUp = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post(`${BASE_URL}/api/auth/signup`, {
+      const response = await axiosInstance.post(`/api/auth/signup`, {
         firstName: firstName,
         lastName: lastName,
         email: email,
@@ -47,7 +47,7 @@ const SignUp = () => {
       }
     } catch (error) {
       setLoading(false);
-      if (error.response && error.response.status == 401) {
+      if (error.response && error.response.status === 401) {
         setError(error.response.data.message);
         setTimeout(() => {
           setError("");
