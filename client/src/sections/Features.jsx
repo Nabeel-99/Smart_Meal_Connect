@@ -137,7 +137,6 @@ const Features = ({ theme }) => {
           </div>
         </div>
       </FadeInSection>
-      {/* bigger screen */}
 
       {/* mobile screen */}
       <div className="md:hidden flex flex-col gap-44 pt-20 px-8 relative">
