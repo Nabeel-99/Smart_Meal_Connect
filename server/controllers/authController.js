@@ -39,7 +39,12 @@ export const requestResetPassword = async (req, res) => {
     const resetToken = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
       expiresIn: "1h",
     });
-    const resetLink = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+
+        const FRONTEND_URL =
+      process.env.NODE_ENV === "production"
+        ? process.env.PRODUCTION_URL
+        : process.env.FRONTEND_URL;
+    const resetLink = `${FRONTEND_URL}/reset-password/${resetToken}`;
 
     const templatePath = path.join(
       __dirname,
@@ -115,7 +120,12 @@ export const verifyEmailToken = async (req) => {
         expiresIn: "1h",
       }
     );
-    const verifyEmailLink = `${process.env.FRONTEND_URL}/verify-email/${verifyEmailToken}`;
+    const FRONTEND_URL =
+      process.env.NODE_ENV === "production"
+        ? process.env.PRODUCTION_URL
+        : process.env.FRONTEND_URL;
+
+    const verifyEmailLink = `${FRONTEND_URL}/verify-email/${verifyEmailToken}`;
     const templatePath = path.join(
       __dirname,
       "../emailTemplates/verify-email.html"
