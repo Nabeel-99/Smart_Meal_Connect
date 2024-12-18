@@ -25,8 +25,9 @@ app.use(express.json());
 app.use(
   cors({
     origin: [
+      process.env.PRODUCTION_URL || "https://smart-meal-frontend.onrender.com",
       process.env.FRONTEND_URL || "http://localhost:5173",
-      "http://51.20.120.120:8000",
+    
     ],
     credentials: true,
   })

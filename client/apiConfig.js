@@ -7,7 +7,7 @@ const BASE_URL =
     ? "http://10.0.2.2:8000" // Android Emulator
     : window.location.hostname === "localhost"
     ? "http://localhost:8000"
-    : "http://51.20.120.120:8000"; // Production URL*
+    : "https://smart-meal-backend.onrender.com"; // Production URL*
 
 export default BASE_URL;
 
