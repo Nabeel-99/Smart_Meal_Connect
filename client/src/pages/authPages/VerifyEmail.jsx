@@ -36,9 +36,9 @@ const VerifyEmail = ({ userData }) => {
         {isLoading ? (
           <p>Loading...</p>
         ) : isVerified ? (
-          <div className="flex flex-col items-center w-full gap-4">
+          <div className="flex flex-col items-center justify-center w-full gap-4">
             <IoIosCheckmarkCircle className="text-[10rem]" />
-            <h1 className="text-4xl font-bold tracking-tight">
+            <h1 className="text-4xl font-bold  text-center tracking-tight">
               Email Verification Successful
             </h1>
             <p className="text-center text-lg">
