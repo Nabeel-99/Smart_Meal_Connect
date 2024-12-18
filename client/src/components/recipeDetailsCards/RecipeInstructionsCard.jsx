@@ -12,14 +12,19 @@ const RecipeInstructionsCard = ({ recipeDetails }) => {
         <h2 className="px-6 py-2 font-semibold">Steps to Prepare</h2>
       </div>
       <div className="px-6 overflow-y-scroll hide-scrollbar pt-4">
-        <ul className="list-disc">
-          {instructions &&
-            instructions.map((instruction, index) => (
+        {instructions.length > 0 ? (
+          <ul className="list-disc">
+            {instructions.map((instruction, index) => (
               <li key={index} className="pb-2">
                 {instruction}
               </li>
             ))}
-        </ul>
+          </ul>
+        ) : (
+          <p className="text-center text-gray-500 dark:text-gray-400">
+            No instructions available
+          </p>
+        )}
       </div>
     </div>
   );
