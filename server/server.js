@@ -28,6 +28,8 @@ app.use(
       process.env.PRODUCTION_URL || "https://smart-meal-frontend.onrender.com",
       process.env.FRONTEND_URL || "http://localhost:5173",
     ],
+    methods: ["GET", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
