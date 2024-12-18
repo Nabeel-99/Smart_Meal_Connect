@@ -70,7 +70,7 @@ export const loginUser = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      // secure: false,
+      secure: true,
       sameSite: "None",
     });
 
@@ -127,9 +127,8 @@ export const logout = (req, res) => {
   try {
     res.clearCookie("token", {
       httpOnly: true,
-      // secure: "false",
-      // sameSite: "None",
-      // // domain: "51.20.120.120",
+      secure: "true",
+      sameSite: "None",
     });
     return res.status(200).json({ message: "log out successful" });
   } catch (error) {
