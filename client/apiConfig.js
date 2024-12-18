@@ -4,7 +4,7 @@ import axios from "axios";
 
 const BASE_URL =
   Capacitor.getPlatform() === "android"
-    ? "http://10.0.2.2:8000" // Android Emulator
+    ? "https://smart-meal-backend.onrender.com" // Android Emulator
     : window.location.hostname === "localhost"
     ? "http://localhost:8000"
     : "https://smart-meal-backend.onrender.com"; // Production URL*
