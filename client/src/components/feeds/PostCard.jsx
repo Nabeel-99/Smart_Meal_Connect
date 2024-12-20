@@ -1,19 +1,5 @@
 import React, { useState } from "react";
-import moment from "moment";
-import {
-  FaArrowLeft,
-  FaArrowRight,
-  FaBookmark,
-  FaChevronRight,
-  FaHeart,
-  FaRegBookmark,
-  FaRegComment,
-  FaRegHeart,
-} from "react-icons/fa6";
 import { Link } from "react-router-dom";
-import { Tooltip } from "@mui/material";
-import { FaChevronLeft } from "react-icons/fa";
-import axios from "axios";
 import UserLink from "./UserLink";
 import ImageCarousel from "./ImageCarousel";
 import LikeButton from "../buttons/LikeButton";
@@ -53,19 +39,25 @@ const PostCard = ({
     } catch (error) {
       console.log(error);
       if (error.response && error.response.status === 400) {
-        const newResponse = await axiosInstance.post(
-          `/api/recipes/delete-recipe`,
-          {
-            id: post.posts._id,
-          }
-        );
-        setIsSaved(false);
-        post.isSaved = false;
+        try {
+          const newResponse = await axiosInstance.post(
+            `/api/recipes/delete-recipe`,
+            {
+              id: post.posts._id,
+            }
+          );
+          setIsSaved(false);
+          post.isSaved = false;
 
-        if (newResponse.status === 200) {
-          setSnackbarMessage("Post removed from saved collection");
-          setShowSnackbar(true);
-        } else {
+          if (newResponse.status === 200) {
+            setSnackbarMessage("Post removed from saved collection");
+            setShowSnackbar(true);
+          } else {
+            setSnackbarMessage("Failed to delete recipe");
+            setShowSnackbar(true);
+          }
+        } catch (error) {
+          console.log(error);
           setSnackbarMessage("Failed to delete recipe");
           setShowSnackbar(true);
         }

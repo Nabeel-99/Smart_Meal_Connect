@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import axios from "axios";
 import DialogComponent from "../../components/popupCards/DialogComponent";
 import ModalComponent from "../../components/popupCards/ModalComponent";
 import PostForm from "../../components/forms/PostForm";
@@ -8,17 +7,15 @@ import AutoHideSnackbar from "../../components/popupCards/AutoHideSnackbar";
 import Content from "../../components/viewCards/Content";
 import ContentViews from "../../components/viewCards/ContentViews";
 import MainMenu from "../../components/menuCards/MainMenu";
-import BASE_URL, {
-  axiosInstance,
-  clearNativeAuthToken,
-  getNativeAuthToken,
-  isNative,
-} from "../../../apiConfig";
+import { isNative } from "../../../apiConfig";
 import NativeDialog from "../../components/popupCards/NativeDialog";
 import IconTabs from "../../components/ui/IconTabs";
 import LoadingAnimation from "../../components/animation/LoadingAnimation";
 import NotificationBar from "../../components/notificationCards/NotificationBar";
-import { Toast } from "@capacitor/toast";
+import useUserData from "../../components/hooks/useUserData";
+import useViewPreferences from "../../components/hooks/useViewPreferences";
+import useDashboardRecipes from "../../components/hooks/useDashboardRecipes";
+import useLogout from "../../components/hooks/useLogout";
 
 const DashboardLayout = ({
   userData,
@@ -28,167 +25,60 @@ const DashboardLayout = ({
   message,
   showNotificationBar,
   setShowNotificationBar,
+  setTheme,
 }) => {
   const [loading, setLoading] = useState(true);
-  const [preferences, setPreferences] = useState(false);
-  const [sideMenu, setSideMenu] = useState(false);
-  const [listView, setListView] = useState(false);
-  const [gridView, setGridView] = useState(true);
-  const [viewOptions, setViewOptions] = useState(false);
-  const [userMetrics, setUserMetrics] = useState(null);
-  const [dashboardRecipes, setDashboardRecipes] = useState([]);
-  const [fetchingInProgress, setFetchingInProgress] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
   const [viewNotifications, setViewNotifications] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
-  const [totalPosts, setTotalPosts] = useState(0);
-  const [totalLikes, setTotalLikes] = useState(0);
-  const [userProfile, setUserProfile] = useState(null);
-  const [userPosts, setUserPosts] = useState([]);
-  const [showMetricsPrompt, setShowMetricsPrompt] = useState(false);
   const [showVerifyEmail, setShowVerifyEmail] = useState(false);
   const { id: userId } = useParams();
   const anchorRef = useRef(null);
+
+  // user data
+  const {
+    userProfile,
+    userPosts,
+    totalPosts,
+    totalLikes,
+    userMetrics,
+    showMetricsPrompt,
+    setShowMetricsPrompt,
+    fetchUserPosts,
+    getUserMetrics,
+  } = useUserData(userId);
+
+  // views
+  const {
+    listView,
+    gridView,
+    viewOptions,
+    sideMenu,
+    preferences,
+    showListView,
+    showGridView,
+    showOptions,
+    showSideMenu,
+    showPreferences,
+    setSideMenu,
+    setViewOptions,
+  } = useViewPreferences();
+
+  // dashboard data
+  const { dashboardRecipes, fetchingInProgress, fetchUserDashboardRecipes } =
+    useDashboardRecipes();
 
   const showPostModal = () => setShowModal(!showModal);
   const showNotifications = () => setViewNotifications(!viewNotifications);
   const openDialog = () => {
     setShowDialog(true);
   };
-  useEffect(() => {
-    const preferredView = localStorage.getItem("preferredView");
-    if (preferredView === "list") {
-      setListView(true);
-      setGridView(false);
-    } else if (preferredView === "grid") {
-      setGridView(true);
-      setListView(false);
-    }
-  }, []);
-  const showListView = () => {
-    setListView(true);
-    setGridView(false);
-    setViewOptions(false);
-    localStorage.setItem("preferredView", "list");
-  };
-  const showGridView = () => {
-    setGridView(true);
-    setListView(false);
-    setViewOptions(false);
-    localStorage.setItem("preferredView", "grid");
-  };
-  const showOptions = () => setViewOptions(!viewOptions);
-  const showSideMenu = () => setSideMenu(!sideMenu);
-  const showPreferences = () => setPreferences(!preferences);
+
   const location = useLocation();
 
-  const fetchUserPosts = async () => {
-    setLoading(true);
-    try {
-      const response = await axiosInstance.get(
-        `/api/users/profile/${userId || ""}`
-      );
-
-      setUserProfile(response.data.userProfile);
-      setUserPosts(response.data.userPosts);
-      setTotalPosts(response.data.userPosts.length);
-      setTotalLikes(response.data.totalLikes);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleLogout = async () => {
-    setLoading(true);
-    try {
-      let token = null;
-      const response = await axiosInstance.post(`/api/auth/logout`, {});
-      if (isNative) {
-        token = await getNativeAuthToken();
-        if (token) {
-          await clearNativeAuthToken();
-        }
-      }
-      if (response.status === 200) {
-        sessionStorage.removeItem("ingredientsBased");
-        sessionStorage.removeItem("metricsBased");
-        sessionStorage.removeItem("ingredientsInput");
-        localStorage.removeItem("postFormData");
-        window.location.replace("/");
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const getUserMetrics = async () => {
-    setLoading(true);
-    try {
-      const response = await axiosInstance.get(`/api/users/get-user-metrics`);
-      if (response.status === 200) {
-        setUserMetrics(response.data.metrics);
-
-        if (response.data.metrics.defaultMetrics) {
-          setShowMetricsPrompt(true);
-        }
-      }
-    } catch (error) {
-      console.log(error);
-      if (
-        error.response &&
-        error.response.status >= 400 &&
-        error.response.status <= 500
-      ) {
-        setUserMetrics(error.response.message);
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchUserDashboardRecipes = async () => {
-    if (fetchingInProgress) return;
-    setFetchingInProgress(true);
-    try {
-      const response = await axiosInstance.get(
-        `/api/recipes/dashboard-recipes`
-      );
-      if (response.status === 200) {
-        const filteredBreakfast = (
-          response.data.recipes?.breakfast || []
-        ).filter((meal) => meal !== null);
-        const filteredLunch = (response.data.recipes?.lunch || []).filter(
-          (meal) => meal !== null
-        );
-        const filteredDinner = (response.data.recipes?.dinner || []).filter(
-          (meal) => meal !== null
-        );
-
-        setDashboardRecipes({
-          ...response.data,
-          recipes: {
-            breakfast: filteredBreakfast,
-            lunch: filteredLunch,
-            dinner: filteredDinner,
-          },
-        });
-        if (response.data.deleteConsumedCalories) {
-          localStorage.removeItem("caloriesConsumed");
-          localStorage.removeItem("checkedMeals");
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setFetchingInProgress(false);
-    }
-  };
+  const { handleLogout } = useLogout();
 
   const getCurrentView = () => {
     if (location.pathname === "/profile") return "Profile";
@@ -232,6 +122,7 @@ const DashboardLayout = ({
         userMetrics={userMetrics}
         getUserMetrics={getUserMetrics}
         updateTheme={updateTheme}
+        setTheme={setTheme}
         userId={userId}
         fetchingInProgress={fetchingInProgress}
         showModal={showModal}
@@ -250,21 +141,13 @@ const DashboardLayout = ({
   }, [userData?.isVerified]);
 
   useEffect(() => {
-    fetchUserPosts();
-  }, [userId]);
-
-  useEffect(() => {
-    getUserMetrics();
-  }, []);
-
-  useEffect(() => {
     fetchUserDashboardRecipes();
   }, []);
 
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 1000);
   }, []);
 
   useEffect(() => {

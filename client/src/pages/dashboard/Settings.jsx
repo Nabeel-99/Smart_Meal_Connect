@@ -11,6 +11,7 @@ const Settings = ({
   updateTheme,
   fetchUserDashboardRecipes,
   showVerifyEmail,
+  setTheme,
 }) => {
   const [isAccount, setIsAccount] = useState(true);
   const [isPreferenecs, setIsPreferences] = useState(false);
@@ -50,6 +51,7 @@ const Settings = ({
           showVerifyEmail={showVerifyEmail}
           userData={userData}
           theme={theme}
+          setTheme={setTheme}
           updateTheme={updateTheme}
           refreshUserData={refreshUserData}
         />

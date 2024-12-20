@@ -6,7 +6,7 @@ import IngredientsList from "../viewCards/IngredientsList";
 import TextAreaInput from "./TextAreaInput";
 
 import { isNative } from "../../../apiConfig";
-import { mealCategories } from "../../variables";
+import { mealCategories } from "../../utils/variables";
 
 const InputArea = ({
   error,

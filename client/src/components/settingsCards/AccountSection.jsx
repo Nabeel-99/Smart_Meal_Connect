@@ -12,6 +12,7 @@ const AccountSection = ({
   userData,
   theme,
   updateTheme,
+  setTheme,
   refreshUserData,
   showVerifyEmail,
 }) => {
@@ -220,7 +221,7 @@ const AccountSection = ({
         togglePasswordVisibility={togglePasswordVisibility}
         closePasswordFields={closePasswordFields}
       />
-      <ThemeInput theme={theme} updateTheme={updateTheme} />
+      <ThemeInput theme={theme} setTheme={setTheme} updateTheme={updateTheme} />
       <DeleteAccountButton openDeleteModal={openDeleteModal} />
 
       <DialogComponent

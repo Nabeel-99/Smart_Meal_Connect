@@ -41,6 +41,7 @@ const ContentViews = ({
   fetchingInProgress,
   viewNotifications,
   setViewNotifications,
+  setTheme,
 }) => {
   return (
     <Routes>
@@ -137,6 +138,7 @@ const ContentViews = ({
             userMetrics={userMetrics}
             refreshSideMenu={getUserMetrics}
             updateTheme={updateTheme}
+            setTheme={setTheme}
             theme={theme}
             fetchUserDashboardRecipes={fetchUserDashboardRecipes}
           />

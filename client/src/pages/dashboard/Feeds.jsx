@@ -9,6 +9,8 @@ import NotificationCard from "../../components/notificationCards/NotificationCar
 import MobileNotificationCard from "../../components/notificationCards/MobileNotificationCard";
 import PopperComponent from "../../components/popupCards/PopperComponent";
 import { IoIosNotifications } from "react-icons/io";
+import useFetchPosts from "../../components/hooks/useFetchPosts";
+import usePostActions from "../../components/hooks/usePostActions";
 
 const Feeds = ({
   anchorRef,
@@ -19,62 +21,28 @@ const Feeds = ({
   showPostModal,
   theme,
 }) => {
-  const [showModal, setShowModal] = useState(false);
-  const [selectedPost, setSelectedPost] = useState(null);
   const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [likedPosts, setLikedPosts] = useState({});
+  const [showModal, setShowModal] = useState(false);
   const [likers, setLikers] = useState([]);
-  const [comment, setComment] = useState("");
   const [commenters, setCommenters] = useState([]);
-  const [snackbarMsg, setSnackbarMsg] = useState("");
-  const [displaySnackbar, setDisplaySnackbar] = useState(false);
   const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const { likedPosts, fetchAllPosts, setLikedPosts, fetchLikedPosts } =
+    useFetchPosts(page, setPosts, setLoading);
 
-  const fetchAllPosts = async () => {
-    setLoading(true);
-    try {
-      const savedRecipeResponse = await axiosInstance.get(
-        `/api/recipes/get-saved-recipes`
-      );
-      const savedRecipeIds = savedRecipeResponse.data.map(
-        (recipe) => recipe._id
-      );
-      const response = await axiosInstance.get(`/api/users/posts`, {
-        params: {
-          page: page,
-          limit: 10,
-        },
-      });
+  const {
+    comment,
+    selectedPost,
+    snackbarMsg,
+    displaySnackbar,
+    setComment,
+    postUserComment,
+    deleteComment,
+    setSelectedPost,
+    likeRecipe,
+    setDisplaySnackbar,
+  } = usePostActions(fetchAllPosts, setLikedPosts, setPosts);
 
-      const feedPosts = response.data.map((post) => ({
-        ...post,
-        isSaved: savedRecipeIds.includes(post.posts._id),
-      }));
-      setPosts(feedPosts);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchLikedPosts = async () => {
-    try {
-      const response = await axiosInstance.get(`/api/users/liked-posts`);
-
-      const likedPostIds = response.data.likedPostIds;
-      const likedPostsMap = {};
-
-      likedPostIds.forEach((postId) => {
-        likedPostsMap[postId] = true;
-      });
-
-      setLikedPosts(likedPostsMap);
-    } catch (error) {
-      console.log(error);
-    }
-  };
   useEffect(() => {
     fetchLikedPosts();
   }, []);
@@ -86,85 +54,6 @@ const Feeds = ({
   const openModal = (id) => {
     setSelectedPost(id);
     setShowModal(true);
-  };
-
-  const likeRecipe = async (postId) => {
-    try {
-      setLikedPosts((prev) => ({
-        ...prev,
-        [postId]: !prev[postId],
-      }));
-      const response = await axiosInstance.post(`/api/users/like`, {
-        postId: postId,
-      });
-
-      const likesCount = response.data.likesCount;
-
-      setPosts((prevPosts) =>
-        prevPosts.map((post) =>
-          post.postId === postId ? { ...post, likesCount } : post
-        )
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const postUserComment = async (postId) => {
-    if (!comment) {
-      return;
-    }
-    try {
-      const response = await axiosInstance.post(`/api/users/post-comment`, {
-        postId: postId,
-        comment: comment,
-      });
-
-      if (response.status === 200) {
-        const newComment = response.data.comment.comments.slice(-1)[0];
-
-        setSelectedPost((prevPost) => ({
-          ...prevPost,
-          comments: [...prevPost.comments, newComment],
-        }));
-      }
-      fetchAllPosts();
-      setComment("");
-    } catch (error) {
-      console.log("Error posting comment:", error);
-    }
-  };
-
-  const deleteComment = async (postId, commentId) => {
-    try {
-      const response = await axiosInstance.post(`/api/users/delete-comment`, {
-        postId: postId,
-        commentId: commentId,
-      });
-
-      setSelectedPost((prevPost) => {
-        return {
-          ...prevPost,
-          comments: prevPost.comments.filter(
-            (comment) => comment._id !== commentId
-          ),
-        };
-      });
-      if (response.status === 200) {
-        setDisplaySnackbar(true);
-        setSnackbarMsg("Comment deleted");
-      }
-    } catch (error) {
-      console.log(error);
-      if (
-        error.response &&
-        error.response.status >= 400 &&
-        error.response.status <= 500
-      ) {
-        setDisplaySnackbar(error.response.message);
-        setDisplaySnackbar(true);
-      }
-    }
   };
 
   const fetchLikeNotifications = async () => {

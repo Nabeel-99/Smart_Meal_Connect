@@ -32,10 +32,8 @@ const SignUp = () => {
       });
       if (response.status === 200) {
         setLoading(true);
-        setTimeout(() => {
-          navigate("/login");
-          setLoading(false);
-        }, 3000);
+        navigate("/login");
+        setLoading(false);
       }
       if (response.status === 400) {
         setError("User with give email already exists");
@@ -55,6 +53,8 @@ const SignUp = () => {
         setError("Something went wrong. Please try again later.");
       }
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
   return (

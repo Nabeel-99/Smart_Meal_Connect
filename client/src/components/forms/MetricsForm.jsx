@@ -5,7 +5,11 @@ import DietaryPreferences from "../forms/DietaryPreferences";
 import SubmitButton from "../buttons/SubmitButton";
 import ErrorText from "../stateManagement/ErrorText";
 import RecipeInputCounter from "../formInputs/RecipeInputCounter";
-import { exerciseOptions, genderOptions, goalOptions } from "../../variables";
+import {
+  exerciseOptions,
+  genderOptions,
+  goalOptions,
+} from "../../utils/variables";
 
 const MetricsForm = ({
   onSubmit,

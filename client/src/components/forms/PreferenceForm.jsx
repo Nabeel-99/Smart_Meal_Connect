@@ -7,7 +7,7 @@ import {
   exerciseOptions,
   genderOptions,
   goalOptions,
-} from "../../variables";
+} from "../../utils/variables";
 
 const PreferenceForm = ({
   handleSubmit,

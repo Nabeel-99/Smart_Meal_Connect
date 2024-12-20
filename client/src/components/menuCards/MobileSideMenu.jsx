@@ -6,7 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { TbFridge } from "react-icons/tb";
 import { GoHome, GoHomeFill } from "react-icons/go";
 import { isNative } from "../../../apiConfig";
-import { mapText } from "../../variables";
+import { mapText } from "../../utils/variables";
 
 const MobileSideMenu = ({
   userMetrics,

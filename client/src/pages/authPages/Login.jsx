@@ -41,14 +41,12 @@ const Login = ({ authenticateUser }) => {
         await authenticateUser();
 
         setLoading(true);
-        setTimeout(() => {
-          if (isNewUser) {
-            navigate("/preferences");
-          } else {
-            navigate("/dashboard");
-          }
-          setLoading(false);
-        }, 3000);
+
+        if (isNewUser) {
+          navigate("/preferences");
+        } else {
+          navigate("/dashboard");
+        }
       }
     } catch (error) {
       console.log("error", error);
@@ -64,6 +62,8 @@ const Login = ({ authenticateUser }) => {
         }, 10000);
         console.log(error);
       }
+    } finally {
+      setLoading(false);
     }
   };
   console.log("base url", BASE_URL);
