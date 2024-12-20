@@ -12,8 +12,7 @@ dist
 dist-ssr
 *.local
 
-android
-ios
+
 dist
 android/app/google-services.json
 # Editor directories and files

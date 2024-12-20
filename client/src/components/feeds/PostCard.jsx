@@ -24,8 +24,9 @@ const PostCard = ({
   const saveRecipe = async (post) => {
     try {
       const response = await axiosInstance.post(`/api/recipes/save-recipe`, {
-        recipeDetails: post.posts,
+        recipeDetails: post?.posts,
       });
+      console.log(response);
       setIsSaved(true);
       post.isSaved = true;
 
@@ -37,7 +38,6 @@ const PostCard = ({
         setShowSnackbar(true);
       }
     } catch (error) {
-      console.log(error);
       if (error.response && error.response.status === 400) {
         try {
           const newResponse = await axiosInstance.post(
@@ -57,7 +57,6 @@ const PostCard = ({
             setShowSnackbar(true);
           }
         } catch (error) {
-          console.log(error);
           setSnackbarMessage("Failed to delete recipe");
           setShowSnackbar(true);
         }

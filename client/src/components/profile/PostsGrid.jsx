@@ -7,19 +7,6 @@ import ModalComponent from "../popupCards/ModalComponent";
 import PostForm from "../forms/PostForm";
 import DialogComponent from "../popupCards/DialogComponent";
 import BASE_URL, { isNative } from "../../../apiConfig";
-import { Capacitor } from "@capacitor/core";
-import {
-  IonButton,
-  IonButtons,
-  IonContent,
-  IonHeader,
-  IonInput,
-  IonItem,
-  IonModal,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-} from "@ionic/react";
 import NativeDialog from "../popupCards/NativeDialog";
 
 const PostsGrid = ({

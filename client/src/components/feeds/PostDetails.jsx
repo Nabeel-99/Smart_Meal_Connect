@@ -42,7 +42,7 @@ const PostDetails = ({
           time={selectedPost.posts.updatedAt || selectedPost.posts.createdAt}
         />
         {/* comments  */}
-        <div className="flex flex-col gap-4 pb-2  pt-8   h-96  xl:h-full overflow-y-scroll hide-scrollbar">
+        <div className="flex flex-col gap-4 pb-10  pt-8   min-h-96   xl:h-full overflow-y-scroll hide-scrollbar">
           {selectedPost.comments.length > 0 ? (
             selectedPost.comments.map((comment, index) => (
               <CommentsCard

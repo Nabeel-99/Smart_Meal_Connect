@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import ProfileCard from "../../components/profile/ProfileCard";
 import PostsGrid from "../../components/profile/PostsGrid";
 import { useParams } from "react-router-dom";
@@ -85,7 +83,7 @@ const Profile = ({
     fetchUserPosts();
   }, [userId]);
   return (
-    <div className="flex flex-col   h-full gap-8 pt-28 px-6 md:px-10 dark:text-white lg:px-20">
+    <div className="flex flex-col h-full gap-8 pt-28 px-6 md:px-10 dark:text-white lg:px-20">
       {loading ? (
         <div className="flex  flex-col gap-4 items-center justify-center h-full w-full">
           <ProfileSkeleton />

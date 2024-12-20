@@ -11,6 +11,7 @@ import PopperComponent from "../../components/popupCards/PopperComponent";
 import { IoIosNotifications } from "react-icons/io";
 import useFetchPosts from "../../components/hooks/useFetchPosts";
 import usePostActions from "../../components/hooks/usePostActions";
+import { Badge } from "@mui/material";
 
 const Feeds = ({
   anchorRef,
@@ -27,6 +28,7 @@ const Feeds = ({
   const [commenters, setCommenters] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [notificationsViewed, setNotificationsViewed] = useState(false);
   const { likedPosts, fetchAllPosts, setLikedPosts, fetchLikedPosts } =
     useFetchPosts(page, setPosts, setLoading);
 
@@ -80,6 +82,20 @@ const Feeds = ({
   useEffect(() => {
     fetchCommentNotifications();
   }, []);
+  // useEffect(() => {
+  //   const viewed = localStorage.getItem("notificationsViewed");
+  //   if (viewed === "true") {
+  //     setNotificationsViewed(true);
+  //   }
+  // }, []);
+  // useEffect(() => {
+  //   const viewed = localStorage.getItem("notificationsViewed");
+  //   if (viewed === "false" && (likers.length > 0 || commenters.length > 0)) {
+  //     setNotificationsViewed(false);
+  //     localStorage.setItem("notificationsViewed", "false");
+  //   }
+  // }, [likers, commenters]);
+
   return (
     <>
       <div className="px-4 lg:px-10 2xl:px-24 pt-14 lg:pt-0 flex flex-col gap-8 w-full">
@@ -92,19 +108,16 @@ const Feeds = ({
             onClick={(e) => {
               e.stopPropagation();
               setViewNotifications((prev) => !prev);
+              if (!notificationsViewed) {
+                setNotificationsViewed(true);
+                localStorage.setItem("notificationsViewed", "true");
+              }
             }}
           >
             <div className="relative">
-              <IoIosNotifications className="text-2xl w-6" />
-
-              {isNotification.length > 0 && (
-                <div
-                  className="absolute top-0 right-0 flex items-center justify-center bg-red-500 text-white text-sm
-            rounded-full p-1 w-4 h-4"
-                >
-                  {isNotification.length}
-                </div>
-              )}
+              <Badge badgeContent={100} color="error" variant="dot">
+                <IoIosNotifications className="text-2xl" />
+              </Badge>
             </div>
           </button>
         </div>
@@ -121,7 +134,12 @@ const Feeds = ({
           />
           {/* notification card */}
           <div className="mt-16 ">
-            <NotificationCard commenters={commenters} likers={likers} />
+            <NotificationCard
+              commenters={commenters}
+              likers={likers}
+              setNotificationsViewed={setNotificationsViewed}
+              notificationsViewed={notificationsViewed}
+            />
           </div>
           {/* mobile */}
           <PopperComponent

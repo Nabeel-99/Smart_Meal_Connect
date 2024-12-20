@@ -1,10 +1,8 @@
 import React from "react";
-import MealSkeletonLoader from "./MealSkeletonLoader";
 
 const ProfileSkeleton = () => {
-  let gridView = true;
   return (
-    <div className="flex  animate-pulse flex-col w-full h-full gap-8 px-6 md:px-10 dark:text-white lg:px-20">
+    <div className="flex  animate-pulse flex-col w-full h-full gap-8 px-6  dark:text-white">
       <div className="flex pl-4 md:pl-52 lg:pl-24 xl:pl-64 items-center gap-6 xl:gap-10">
         <div className="h-20 w-20 md:h-32 md:w-32 xl:w-44 xl:h-44 bg-[#e0e0e0] dark:bg-[#595959] text-white rounded-full flex items-center justify-center ">
           <div className="p-2 bg-[#e0e0e0] dark:bg-[#595959] rounded"></div>
@@ -21,8 +19,13 @@ const ProfileSkeleton = () => {
           </div>
         </div>
       </div>
-      <div>
-        <MealSkeletonLoader count={3} isGridView={gridView} />
+      <div className="flex  text-sm xl:text-base items-center gap-2 justify-center " />
+      <div className="grid grid-cols-3 2xl:grid-cols-4 w-full gap-2">
+        {Array.from({ length: 3 }).map((_, index) => (
+          <div
+            className={` bg-[#595959]  h-28 w-full md:h-52 lg:h-44 xl:h-80 2xl:h-96 xl:w-full border border-[#7d7d7d]  duration-1000 ease-in-out rounded-2xl`}
+          />
+        ))}
       </div>
     </div>
   );
