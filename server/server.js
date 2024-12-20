@@ -27,7 +27,6 @@ app.use(
     origin: [
       process.env.PRODUCTION_URL || "https://smart-meal-frontend.onrender.com",
       process.env.FRONTEND_URL || "http://localhost:5173",
-      "http://10.0.2.2:5173",
     ],
     methods: ["GET", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
