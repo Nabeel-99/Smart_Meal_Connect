@@ -1,8 +1,10 @@
 import express from "express";
 import {
+  getUserEmailNotificationPreference,
   requestResetPassword,
   resendVerificationEmail,
   resetPassword,
+  updateEmailNotifications,
   verifyEmail,
   verifyEmailToken,
   verifyUser,
@@ -31,5 +33,14 @@ router.get("/verify-email/:token", verifyEmail);
 router.post("/resend-verification-email", resendVerificationEmail);
 router.get("/", verifyUser, getUserData);
 router.post("/save-notification-token", verifyUser, saveNotificationToken);
-
+router.patch(
+  "/update-email-notifications",
+  verifyUser,
+  updateEmailNotifications
+);
+router.get(
+  "/get-email-notifications",
+  verifyUser,
+  getUserEmailNotificationPreference
+);
 export default router;

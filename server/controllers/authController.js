@@ -40,7 +40,7 @@ export const requestResetPassword = async (req, res) => {
       expiresIn: "1h",
     });
 
-        const FRONTEND_URL =
+    const FRONTEND_URL =
       process.env.NODE_ENV === "production"
         ? process.env.PRODUCTION_URL
         : process.env.FRONTEND_URL;
@@ -183,6 +183,42 @@ export const resendVerificationEmail = async (req, res) => {
     }
     return res.status(200).json({ message: "Verification email sent" });
   } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const updateEmailNotifications = async (req, res) => {
+  try {
+    const { userId } = req;
+    const { emailNotifications } = req.body;
+    if (userId) {
+      await User.findByIdAndUpdate(
+        userId,
+        { emailNotifications },
+        { new: true }
+      );
+    }
+    return res
+      .status(200)
+      .json({ message: "Email notifications updated successfully" });
+  } catch (error) {
+    console.log("error", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const getUserEmailNotificationPreference = async (req, res) => {
+  try {
+    const { userId } = req;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    return res
+      .status(200)
+      .json({ emailNotifications: user.emailNotifications });
+  } catch (error) {
+    console.log("error");
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };

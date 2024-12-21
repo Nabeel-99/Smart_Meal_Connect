@@ -36,14 +36,17 @@ const IngredientsBased = ({ userData, theme }) => {
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage((prev) => prev + 1);
+      console.log("Next Page:", currentPage);
       if (window.matchMedia("(max-width: 768px)").matches) {
         cardRef.current.scrollIntoView({ behavior: "smooth" });
       }
     }
   };
+
   const handlePreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage((prev) => prev - 1);
+      console.log("Previous Page:", currentPage);
       if (window.matchMedia("(max-width: 768px)").matches) {
         cardRef.current.scrollIntoView({ behavior: "smooth" });
       }
@@ -150,7 +153,9 @@ const IngredientsBased = ({ userData, theme }) => {
       setLoading(false);
     }
   };
-
+  useEffect(() => {
+    sessionStorage.setItem("currentPage", currentPage);
+  }, [currentPage]);
   useEffect(() => {
     const savedToggleState = sessionStorage.getItem("isConnected");
     if (savedToggleState) {
@@ -182,6 +187,10 @@ const IngredientsBased = ({ userData, theme }) => {
     if (storedIngredientInput && ingredients.length === 0) {
       const ingredientsInput = JSON.parse(storedIngredientInput);
       setIngredients(ingredientsInput);
+    }
+    const storedCurrentPage = sessionStorage.getItem("currentPage");
+    if (storedCurrentPage) {
+      setCurrentPage(parseInt(storedCurrentPage));
     }
   }, []);
 

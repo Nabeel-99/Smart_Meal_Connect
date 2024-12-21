@@ -28,6 +28,10 @@ const userSchema = new mongoose.Schema(
       ref: "pantry",
       required: false,
     },
+    emailNotifications: {
+      type: Boolean,
+      default: true,
+    },
     isNewUser: {
       type: Boolean,
       default: true,

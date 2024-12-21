@@ -7,6 +7,7 @@ import ChangePasswordForm from "../forms/ChangePasswordForm";
 import ThemeInput from "../formInputs/ThemeInput";
 import DeleteAccountButton from "../buttons/DeleteAccountButton";
 import BASE_URL, { axiosInstance } from "../../../apiConfig";
+import EmailToggleInput from "../formInputs/EmailToggleInput";
 
 const AccountSection = ({
   userData,
@@ -16,12 +17,13 @@ const AccountSection = ({
   refreshUserData,
   showVerifyEmail,
 }) => {
+  console.log("userData", userData);
   const [firstName, setFirstName] = useState(userData.firstName);
   const [lastName, setLastName] = useState(userData.lastName);
   const [email, setEmail] = useState(userData.email);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
+  const [emailNotifications, setEmailNotifications] = useState(false);
   const [isChangingName, setIsChangingName] = useState(false);
   const [isChangingEmail, setIsChangingEmail] = useState(false);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
@@ -73,7 +75,37 @@ const AccountSection = ({
   const toggleConfirmPasswordVisibility = () => {
     setIsConfirmPasswordVisible(!isConfirmPasswordVisible);
   };
+  const fetchNotificationPreference = async () => {
+    setLoading(true);
+    try {
+      const response = await axiosInstance.get(
+        `/api/auth/get-email-notifications`
+      );
+      setEmailNotifications(response.data.emailNotifications);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchNotificationPreference();
+  }, [userData._id]);
 
+  const toggleEmailNotifications = async () => {
+    try {
+      const response = await axiosInstance.patch(
+        `/api/auth/update-email-notifications`,
+        {
+          emailNotifications: !emailNotifications,
+        }
+      );
+      setEmailNotifications(response.data.emailNotifications);
+      console.log("respoonse.data", response.data);
+    } catch (error) {
+      console.error("Error updating email notifications:", error);
+    }
+  };
   const openDeleteModal = () => {
     setShowDialog(true);
   };
@@ -222,6 +254,10 @@ const AccountSection = ({
         closePasswordFields={closePasswordFields}
       />
       <ThemeInput theme={theme} setTheme={setTheme} updateTheme={updateTheme} />
+      <EmailToggleInput
+        handleToggle={toggleEmailNotifications}
+        emailNotifications={emailNotifications}
+      />
       <DeleteAccountButton openDeleteModal={openDeleteModal} />
 
       <DialogComponent

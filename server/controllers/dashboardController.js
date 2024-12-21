@@ -19,9 +19,37 @@ import { readFileSync } from "fs";
 const fallbackMeals = JSON.parse(
   readFileSync(new URL("../utils/fallbackmeals.json", import.meta.url))
 );
+import cron from "node-cron";
 //file helper
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+cron.schedule("0 0 * * *", async () => {
+  try {
+    const expiredDashboards = await UserDashboard.find({
+      expiresAt: { $lt: new Date() },
+    }).populate("userId");
+
+    for (const dashboard of expiredDashboards) {
+      const req = {
+        userId: dashboard.userId ? dashboard.userId._id : null,
+      };
+
+      const res = {
+        status: (statusCode) => ({
+          json: (data) => {
+            console.log("Status:", statusCode);
+            console.log("Response:", data);
+          },
+        }),
+      };
+
+      await manageDashboardRecipes(req, res);
+    }
+  } catch (error) {
+    console.error("Error in cron job:", error);
+  }
+});
 
 const prepareRecipesForInsertion = (recipes) => {
   return recipes.map((recipe) => ({
@@ -246,7 +274,7 @@ export const manageDashboardRecipes = async (req, res) => {
     };
     let htmlContent;
     const user = await User.findById(userId);
-    if (user && user.email) {
+    if (user && user.email && user.emailNotifications) {
       const templatePath = path.join(
         __dirname,
         "../emailTemplates/dashboard-ready.html"
