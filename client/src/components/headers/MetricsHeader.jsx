@@ -26,11 +26,11 @@ const MetricsHeader = () => {
           transition={{ duration: 2 }}
           className="absolute top-24"
         >
-          <div className="hidden h-[21rem] bg-[#ececec] shadow-md dark:bg-[#1e1e1e] lg:flex flex-col gap-2 p-4 rounded-xl">
+          <div className="hidden h-[21rem] bg-[#ececec] shadow-md dark:bg-[#1e1e1e] lg:flex flex-col gap-2 lg:opacity-75 xl:opacity-100 p-4 rounded-xl">
             <img
               src={metricsImgTwo}
               alt=""
-              className="hidden lg:block xl:w-64 "
+              className="hidden lg:block lg:w-64 "
             />
             <div className="font-bold text-2xl">Adjust your meals</div>
             <div className="text-sm">Eat and grow healthy</div>

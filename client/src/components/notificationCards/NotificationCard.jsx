@@ -77,7 +77,7 @@ const NotificationCard = ({
                 >
                   <div className="flex items-center gap-2 px-4">
                     <div className="min-w-12 w-12 max-w-12 h-12  text-white rounded-full font-bold text-sm text-center flex items-center justify-center bg-[#B678F0]">
-                      {notification.firstName[0]}
+                      {notification.firstName[0].toUpperCase()}
                     </div>
                     <div className="text-sm">
                       {" "}

@@ -8,7 +8,7 @@ import IngredientsList from "../viewCards/IngredientsList";
 import ErrorText from "../stateManagement/ErrorText";
 
 const IngredientsForm = ({
-  onSubmit,
+  fetchRecipes,
   setAutocompleteValue,
   setItem,
   autocompleteValue,
@@ -16,14 +16,14 @@ const IngredientsForm = ({
   error,
   ingredients,
   removeIngredient,
-  handleChecboxChange,
+  handleCheckboxChange,
   loading,
   selectedDietaryPreferences,
   theme,
 }) => {
   return (
     <form
-      onSubmit={onSubmit}
+      onSubmit={fetchRecipes}
       className="flex flex-col gap- p-8 items-center justify-center "
     >
       <div className="flex flex-col  lg:flex-row items-center  w-full ">
@@ -73,7 +73,7 @@ const IngredientsForm = ({
         </div>
       )}
       <DietaryPreferences
-        handleChecboxChange={handleChecboxChange}
+        handleCheckboxChange={handleCheckboxChange}
         selectedDietaryPreferences={selectedDietaryPreferences}
       />
       <div className="pt-10">

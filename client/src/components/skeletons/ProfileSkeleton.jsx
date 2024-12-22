@@ -23,6 +23,7 @@ const ProfileSkeleton = () => {
       <div className="grid grid-cols-3 2xl:grid-cols-4 w-full gap-2">
         {Array.from({ length: 3 }).map((_, index) => (
           <div
+            key={index}
             className={` bg-[#595959]  h-28 w-full md:h-52 lg:h-44 xl:h-80 2xl:h-96 xl:w-full border border-[#7d7d7d]  duration-1000 ease-in-out rounded-2xl`}
           />
         ))}

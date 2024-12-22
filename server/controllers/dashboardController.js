@@ -272,9 +272,15 @@ export const manageDashboardRecipes = async (req, res) => {
         savedRecipes.find((r) => r._id.equals(meal.recipeId))
       ),
     };
+    const FRONTEND_URL =
+      process.env.NODE_ENV === "production"
+        ? process.env.PRODUCTION_URL
+        : process.env.FRONTEND_URL;
+
     let htmlContent;
     const user = await User.findById(userId);
     if (user && user.email && user.emailNotifications) {
+      const unsubcribeLink = `${FRONTEND_URL}/unsubscribe-email`;
       const templatePath = path.join(
         __dirname,
         "../emailTemplates/dashboard-ready.html"
@@ -286,6 +292,7 @@ export const manageDashboardRecipes = async (req, res) => {
       }
       htmlContent = htmlContent
         .replace("{{firstName}}", user.firstName)
+        .replace("{{unsubscribe}}", unsubcribeLink)
         .replace("{{APP_NAME}}", process.env.APP_NAME);
       await sendEmail(
         user.email,

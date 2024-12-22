@@ -16,7 +16,7 @@ const MobileNotificationCard = ({ likers, commenters }) => {
             <div className="flex justify-between items-center pr-6" key={index}>
               <div className="flex items-center gap-2 px-4">
                 <div className="min-w-12 w-12 max-w-12 h-12 rounded-full font-bold text-sm text-center flex items-center text-white justify-center bg-[#B678F0]">
-                  {notification.firstName[0]}
+                  {notification.firstName[0].toUpperCase()}
                 </div>
                 <div>
                   {" "}

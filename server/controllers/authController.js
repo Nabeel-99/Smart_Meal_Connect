@@ -6,6 +6,7 @@ import fs from "fs";
 import path from "path";
 import { sendEmail } from "../config/notifications.js";
 import { fileURLToPath } from "url";
+import { updateUser } from "./userController.js";
 
 //file helper
 const __filename = fileURLToPath(import.meta.url);
@@ -192,15 +193,19 @@ export const updateEmailNotifications = async (req, res) => {
     const { userId } = req;
     const { emailNotifications } = req.body;
     if (userId) {
-      await User.findByIdAndUpdate(
+      const updatedUser = await User.findByIdAndUpdate(
         userId,
         { emailNotifications },
         { new: true }
       );
+      return res
+        .status(200)
+        .json({
+          message: "Email notifications updated successfully",
+          emailNotifications: updatedUser.emailNotifications,
+        });
     }
-    return res
-      .status(200)
-      .json({ message: "Email notifications updated successfully" });
+    return res.status(400).json({ message: "User not found" });
   } catch (error) {
     console.log("error", error);
     return res.status(500).json({ message: "Internal Server Error" });
@@ -219,6 +224,27 @@ export const getUserEmailNotificationPreference = async (req, res) => {
       .json({ emailNotifications: user.emailNotifications });
   } catch (error) {
     console.log("error");
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const unsubscribeToEmailNotifications = async (req, res) => {
+  try {
+    const { userId } = req;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    if (!user.emailNotifications) {
+      return res.status(400).json({ message: "You are already unsubscribed" });
+    }
+    user.emailNotifications = false;
+    await user.save();
+    return res
+      .status(200)
+      .json({ message: "Unsubscribed from email notifications" });
+  } catch (error) {
+    console.log(error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };

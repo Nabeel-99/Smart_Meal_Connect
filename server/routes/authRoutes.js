@@ -4,6 +4,7 @@ import {
   requestResetPassword,
   resendVerificationEmail,
   resetPassword,
+  unsubscribeToEmailNotifications,
   updateEmailNotifications,
   verifyEmail,
   verifyEmailToken,
@@ -43,4 +44,10 @@ router.get(
   verifyUser,
   getUserEmailNotificationPreference
 );
+router.post(
+  "/unsubscribe-email-notifications",
+  verifyUser,
+  unsubscribeToEmailNotifications
+);
+
 export default router;

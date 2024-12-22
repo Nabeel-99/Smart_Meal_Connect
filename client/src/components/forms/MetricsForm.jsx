@@ -12,7 +12,7 @@ import {
 } from "../../utils/variables";
 
 const MetricsForm = ({
-  onSubmit,
+  fetchRecipes,
   gender,
   setGender,
   goal,
@@ -33,11 +33,11 @@ const MetricsForm = ({
   isLoggedIn,
   error,
   loading,
-  handleChecboxChange,
+  handleCheckboxChange,
 }) => {
   return (
     <form
-      onSubmit={onSubmit}
+      onSubmit={fetchRecipes}
       className="flex flex-col gap-8 p-8 lg:px-14 items-start justify-center "
     >
       <div className="text-center text-xl">Enter your Body Metrics</div>
@@ -105,10 +105,11 @@ const MetricsForm = ({
           onChange={(e) => setExerciseLevel(e.target.value)}
           className="w-72 cursor-pointer"
           applyDarkMode={true}
+          xw
         />
       </div>
       <DietaryPreferences
-        handleChecboxChange={handleChecboxChange}
+        handleCheckboxChange={handleCheckboxChange}
         selectedDietaryPreferences={selectedDietaryPreferences}
       />
 

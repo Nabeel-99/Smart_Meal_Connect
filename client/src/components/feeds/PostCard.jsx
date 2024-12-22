@@ -26,7 +26,7 @@ const PostCard = ({
       const response = await axiosInstance.post(`/api/recipes/save-recipe`, {
         recipeDetails: post?.posts,
       });
-      console.log(response);
+
       setIsSaved(true);
       post.isSaved = true;
 

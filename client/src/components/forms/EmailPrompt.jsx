@@ -34,7 +34,7 @@ const EmailPrompt = ({ showVerifyEmail, userData, setShowVerifyEmail }) => {
       setLoading(true);
       const response = await axios.post(
         `${BASE_URL}/api/auth/resend-verification-email`,
-        { email }
+        { email: userData.email }
       );
       if (response.status === 200) {
         setShowVerifyEmail(false);
@@ -42,7 +42,7 @@ const EmailPrompt = ({ showVerifyEmail, userData, setShowVerifyEmail }) => {
         setResendTimer(60);
       }
     } catch (error) {
-      setError("An error occurred. Please try again later.");
+      console.log("error", error);
     } finally {
       setLoading(false);
     }

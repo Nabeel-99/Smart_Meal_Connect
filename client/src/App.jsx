@@ -28,6 +28,7 @@ import MaybeShowComponent from "./components/stateManagement/MaybeShowComponent"
 import ScrollToTop from "./components/stateManagement/ScrollToTop";
 import { handleMediaQueryChange, updateTheme } from "./utils/theme";
 import { requestPushNotificationPermissions } from "./utils/notification";
+import UnsubscribeEmail from "./pages/authPages/UnsubscribeEmail";
 
 const App = () => {
   const [userData, setUserData] = useState(null);
@@ -84,7 +85,11 @@ const App = () => {
     >
       <ScrollToTop />
       <MaybeShowComponent>
-        <Navbar userData={userData} updateTheme={updateTheme} />
+        <Navbar
+          userData={userData}
+          setTheme={setTheme}
+          updateTheme={updateTheme}
+        />
       </MaybeShowComponent>
 
       <Routes>
@@ -101,6 +106,7 @@ const App = () => {
           path="/verify-email/:token"
           element={<VerifyEmail userData={userData} />}
         />
+        <Route path="/unsubscribe-email" element={<UnsubscribeEmail />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route
           path="/ingredients-based"

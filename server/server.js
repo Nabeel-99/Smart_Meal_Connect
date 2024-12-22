@@ -9,9 +9,6 @@ import authRoutes from "./routes/authRoutes.js";
 import recipeRoutes from "./routes/recipeRoutes.js";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
-import { deleteFakeData, seedDatabase } from "./utils/faker.js";
-import fs from "fs";
-import Recipe from "./models/recipeModel.js";
 
 dotenv.config();
 

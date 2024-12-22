@@ -6,7 +6,7 @@ import { SiGreasyfork } from "react-icons/si";
 const RecipeResults = ({
   cardRef,
   loading,
-  fetchedRecipes,
+  fetchedRecipes = [],
   gridView,
   sourceType,
   totalRecipes,

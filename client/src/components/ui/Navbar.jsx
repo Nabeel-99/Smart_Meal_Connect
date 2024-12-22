@@ -4,7 +4,7 @@ import BurgerMenu from "../menuCards/BurgerMenu";
 import MobileNavbar from "./MobileNavbar";
 import LargerNavbar from "./LargerNavbar";
 
-const Navbar = ({ userData, updateTheme }) => {
+const Navbar = ({ userData, updateTheme, setTheme }) => {
   const location = useLocation();
   const pathNames = ["/ingredients-based", "/metrics-based"];
   const [isBurgerMenu, setIsBurgerMenu] = useState(false);
@@ -36,7 +36,7 @@ const Navbar = ({ userData, updateTheme }) => {
     }
   }, [userData]);
   const setMode = (theme) => {
-    updateTheme(theme);
+    updateTheme(theme, setTheme);
     setViewModes(false);
     setViewMobileModes(false);
   };

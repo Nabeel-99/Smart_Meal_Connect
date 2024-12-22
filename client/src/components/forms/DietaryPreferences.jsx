@@ -2,7 +2,7 @@ import React from "react";
 import { dietPreferences } from "../../utils/variables";
 
 const DietaryPreferences = ({
-  handleChecboxChange,
+  handleCheckboxChange,
   selectedDietaryPreferences,
   className,
 }) => {
@@ -23,7 +23,7 @@ const DietaryPreferences = ({
             id={pref.id}
             name={pref.id}
             checked={selectedDietaryPreferences.includes(pref.id)}
-            onChange={handleChecboxChange}
+            onChange={handleCheckboxChange}
           />
         </div>
       ))}

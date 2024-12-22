@@ -10,7 +10,7 @@ const Hero = () => {
   return (
     <div
       id="/"
-      className="bg-hero h-full pt-44 flex flex-col gap-2 justify-center items-center"
+      className="bg-hero  h-full pt-44 flex flex-col gap-2 justify-center items-center"
     >
       <motion.h1
         className="text-4xl md:text-6xl xl:text-8xl font-bold text-center tracking-tight"

@@ -7,7 +7,7 @@ import CTACard from "../components/ui/CTACard";
 
 const Home = ({ theme }) => {
   return (
-    <div className="flex flex-col w-full overflow-hidden  gap-20 ">
+    <div className="flex flex-col w-full overflow-hidden ">
       <Hero />
       <Features theme={theme} />
       {/* <About theme={theme} /> */}
