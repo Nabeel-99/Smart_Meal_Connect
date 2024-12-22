@@ -7,7 +7,7 @@ const BASE_URL =
     ? "https://smart-meal-backend.onrender.com" // Android Emulator
     : window.location.hostname === "localhost"
     ? "http://localhost:8000"
-    : "https://smart-meal-backend.onrender.com"; // Production URL*
+    : "https://smart-meal-backend.vercel.app"; // Production URL*
 
 export default BASE_URL;
 
