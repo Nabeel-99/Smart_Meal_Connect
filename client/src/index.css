@@ -1,0 +1,237 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background-color: #f7f7f8; /* Light mode default */
+  --text-color: #000000; /* Light mode default */
+}
+
+.dark {
+  --background-color: #0c0c0c; /* Dark mode background */
+  --text-color: #ffffff; /* Dark mode text color */
+}
+/* width: calc(100vw - (var(--page-padding-left) / 2) - (var(--page-padding-right) / 2)); */
+html,
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.mask-marquee {
+  mask-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 1) 20%,
+    rgba(0, 0, 0, 1) 80%,
+    rgba(0, 0, 0, 0)
+  );
+}
+
+/* body {
+  margin: 0;
+  display: flex;
+  min-width: 320px;
+  min-height: 100vh;
+  max-width: 1200px;
+  overflow: auto;
+} */
+.hide-scrollbar {
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.bg-hero {
+  position: relative;
+  background-image: url("./assets/bghero.svg");
+}
+
+.bg-hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("./assets/bghero.svg");
+  filter: brightness(2);
+}
+
+@keyframes gradient-pulse {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+.animate-gradient-pulse {
+  background-size: 200% 200%;
+  animation: gradient-pulse 5s ease-in-out infinite;
+}
+/* Center the loader */
+/* Spinning Animation */
+@keyframes spin-pulse {
+  0% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.7;
+    color: #ddd; /* Starting color */
+  }
+  50% {
+    transform: scale(1.3) rotate(180deg);
+    opacity: 1;
+    color: #f09433; /* Instagram gradient start */
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+    opacity: 0.7;
+    color: #bc2a8d; /* Instagram gradient end */
+  }
+}
+/* App name styling */
+.app-name {
+  margin-top: 1rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  opacity: 0;
+  animation: fadeIn 1.2s ease-in-out forwards 0.5s;
+  font-family: "Poppins", sans-serif;
+  letter-spacing: 0.5px;
+}
+
+/* Fade-in keyframe */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Apply the animation */
+.loading-icon {
+  animation: spin-pulse 2.2s ease-in-out infinite;
+  transition: color 0.5s ease;
+}
+
+:root {
+  --ion-background-color: transparent;
+  --ion-text-color: inherit;
+  --ion-color-primary: inherit;
+  --ion-color-secondary: inherit;
+}
+.transition-container {
+  transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  overflow: hidden;
+  opacity: 0;
+  max-height: 0;
+}
+
+.transition-container.expanded {
+  opacity: 1;
+  max-height: 500px;
+}
+/* a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+} */
+
+/* @media (min-width: 1600px) {
+  .container {
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto; 
+  }
+} */
+/* @media (min-width: 1600px) {
+  body {
+    max-width: 1400px; /* Restrict width for very large screens */
+/* } */
+
+/* body::-webkit-scrollbar {
+  display: none;
+} */
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+.bg-algorithm {
+  background-image: url("./assets/algorithm-bg.png");
+  background-size: contain;
+}
+.spin {
+  animation: spinMe 3s linear infinite;
+}
+
+.progress-bar {
+  animation: progress-animation 5s linear forwards;
+}
+
+@keyframes progress-animation {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes spinMe {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* button {
+  /* border-radius: 8px; */
+/* border: 1px solid transparent; */
+/* padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+} */
+
+/* @media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+} */

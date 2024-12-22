@@ -1,0 +1,52 @@
+PODS:
+  - Capacitor (6.1.2):
+    - CapacitorCordova
+  - CapacitorCamera (6.1.0):
+    - Capacitor
+  - CapacitorCordova (6.1.2)
+  - CapacitorPreferences (6.0.3):
+    - Capacitor
+  - CapacitorPushNotifications (6.0.2):
+    - Capacitor
+  - CapacitorStatusBar (6.0.1):
+    - Capacitor
+  - CapacitorToast (6.0.3):
+    - Capacitor
+
+DEPENDENCIES:
+  - "Capacitor (from `../../node_modules/@capacitor/ios`)"
+  - "CapacitorCamera (from `../../node_modules/@capacitor/camera`)"
+  - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
+  - "CapacitorPreferences (from `../../node_modules/@capacitor/preferences`)"
+  - "CapacitorPushNotifications (from `../../node_modules/@capacitor/push-notifications`)"
+  - "CapacitorStatusBar (from `../../node_modules/@capacitor/status-bar`)"
+  - "CapacitorToast (from `../../node_modules/@capacitor/toast`)"
+
+EXTERNAL SOURCES:
+  Capacitor:
+    :path: "../../node_modules/@capacitor/ios"
+  CapacitorCamera:
+    :path: "../../node_modules/@capacitor/camera"
+  CapacitorCordova:
+    :path: "../../node_modules/@capacitor/ios"
+  CapacitorPreferences:
+    :path: "../../node_modules/@capacitor/preferences"
+  CapacitorPushNotifications:
+    :path: "../../node_modules/@capacitor/push-notifications"
+  CapacitorStatusBar:
+    :path: "../../node_modules/@capacitor/status-bar"
+  CapacitorToast:
+    :path: "../../node_modules/@capacitor/toast"
+
+SPEC CHECKSUMS:
+  Capacitor: 679f9673fdf30597493a6362a5d5bf233d46abc2
+  CapacitorCamera: 81ce64062cd82b82cc75a79616fda4bd09d7f643
+  CapacitorCordova: f48c89f96c319101cd2f0ce8a2b7449b5fb8b3dd
+  CapacitorPreferences: 9f9935bce493977183511362131a93f7b260191a
+  CapacitorPushNotifications: ccd797926c030acad3d5498ef452c735c90a2c89
+  CapacitorStatusBar: b81d4fb5d4e0064c712018071b3ab4b810b39a63
+  CapacitorToast: 048d8cbefa6651509ed29c3e7262e9e64abe251d
+
+PODFILE CHECKSUM: f10f9b477e9b71461c706591d91165f8186d337e
+
+COCOAPODS: 1.15.2

@@ -1,0 +1,18 @@
+{
+  "appId": "com.smartmealconnect.app",
+  "appName": "Smart Meal Connect",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "ios": {
+    "contentInset": "always"
+  },
+  "plugins": {
+    "PushNotifications": {
+      "presentationOptions": ["badge", "sound", "alert"]
+    }
+  },
+  "server": {
+    "url": "http://10.0.2.2:5173",
+    "cleartext": false
+  }
+}
