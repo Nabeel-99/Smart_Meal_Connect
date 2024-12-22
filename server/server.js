@@ -39,7 +39,7 @@ app.use("/api/recipes", recipeRoutes);
 
 // make uploaded files accessible to the browser
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-app.use("/", (req, res) => {
+app.get("/", (req, res) => {
   res.json("Hello")
 })
 // connect to DB
