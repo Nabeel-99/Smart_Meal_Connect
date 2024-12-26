@@ -28,6 +28,7 @@ const Feeds = ({
   const [commenters, setCommenters] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [showDotBadge, setShowDotBadge] = useState(false);
   const [notificationsViewed, setNotificationsViewed] = useState(false);
   const { likedPosts, fetchAllPosts, setLikedPosts, fetchLikedPosts } =
     useFetchPosts(page, setPosts, setLoading);
@@ -61,40 +62,87 @@ const Feeds = ({
   const fetchLikeNotifications = async () => {
     try {
       const response = await axiosInstance.get(`/api/users/likers`);
+      const newLikers = response.data.notificationsWithNames;
+      const lastViewedTimestamp = localStorage.getItem(
+        "lastViewedNotification"
+      );
 
-      setLikers(response.data.notificationsWithNames);
+      const hasNewNotifications = newLikers.some((notification) => {
+        const notificationTime = new Date(notification.timestamp).getTime();
+        const lastViewedTime = lastViewedTimestamp
+          ? new Date(lastViewedTimestamp).getTime()
+          : 0;
+
+        return notificationTime > lastViewedTime;
+      });
+
+      setLikers(newLikers);
+
+      if (hasNewNotifications) {
+        setShowDotBadge(true);
+      }
     } catch (error) {
       console.log("error", error);
     }
   };
+
   const fetchCommentNotifications = async () => {
     try {
       const response = await axiosInstance.get(`/api/users/commenters`);
-      setCommenters(response.data.notificationsWithNames);
+      const newCommenters = response.data.notificationsWithNames;
+
+      const lastViewedTimestamp = localStorage.getItem(
+        "lastViewedNotification"
+      );
+
+      const hasNewNotifications = newCommenters.some((notification) => {
+        const notificationTime = new Date(notification.timestamp).getTime();
+        const lastViewedTime = lastViewedTimestamp
+          ? new Date(lastViewedTimestamp).getTime()
+          : 0;
+        return notificationTime > lastViewedTime;
+      });
+
+      setCommenters(newCommenters);
+
+      if (hasNewNotifications) {
+        setShowDotBadge(true);
+      }
     } catch (error) {
       console.log("error", error);
     }
   };
-  const isNotification = [...commenters, ...likers];
+
   useEffect(() => {
-    fetchLikeNotifications();
+    const fetchNotifications = () => {
+      fetchLikeNotifications();
+      fetchCommentNotifications();
+    };
+    fetchNotifications();
+
+    const intervalId = setInterval(fetchNotifications, 30000);
+
+    return () => clearInterval(intervalId);
   }, []);
-  useEffect(() => {
-    fetchCommentNotifications();
-  }, []);
-  // useEffect(() => {
-  //   const viewed = localStorage.getItem("notificationsViewed");
-  //   if (viewed === "true") {
-  //     setNotificationsViewed(true);
-  //   }
-  // }, []);
-  // useEffect(() => {
-  //   const viewed = localStorage.getItem("notificationsViewed");
-  //   if (viewed === "false" && (likers.length > 0 || commenters.length > 0)) {
-  //     setNotificationsViewed(false);
-  //     localStorage.setItem("notificationsViewed", "false");
-  //   }
-  // }, [likers, commenters]);
+
+  const handleMobileNotificationClick = (e) => {
+    e.stopPropagation();
+    setViewNotifications((prev) => !prev);
+
+    if (sortedNotifications.length > 0) {
+      localStorage.setItem(
+        "lastViewedNotification",
+        sortedNotifications[0].timestamp
+      );
+    }
+    setShowDotBadge(false);
+  };
+
+  const notifications = [...likers, ...commenters];
+
+  const sortedNotifications = notifications.sort(
+    (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+  );
 
   return (
     <>
@@ -103,19 +151,13 @@ const Feeds = ({
           For you
         </div>
         <div className="block fixed z-50 top-6 right-10  xl:hidden">
-          <button
-            ref={anchorRef}
-            onClick={(e) => {
-              e.stopPropagation();
-              setViewNotifications((prev) => !prev);
-              if (!notificationsViewed) {
-                setNotificationsViewed(true);
-                localStorage.setItem("notificationsViewed", "true");
-              }
-            }}
-          >
+          <button ref={anchorRef} onClick={handleMobileNotificationClick}>
             <div className="relative">
-              <Badge badgeContent={100} color="error" variant="dot">
+              <Badge
+                badgeContent={showDotBadge ? 100 : 0}
+                color="error"
+                variant={showDotBadge ? "dot" : "standard"}
+              >
                 <IoIosNotifications className="text-2xl" />
               </Badge>
             </div>
@@ -132,16 +174,19 @@ const Feeds = ({
             fetchAllPosts={fetchAllPosts}
             viewNotifications={viewNotifications}
           />
-          {/* notification card */}
+          {/* larger screen notification card */}
           <div className="mt-16 ">
             <NotificationCard
               commenters={commenters}
               likers={likers}
+              showDotBadge={showDotBadge}
+              sortedNotifications={sortedNotifications}
               setNotificationsViewed={setNotificationsViewed}
               notificationsViewed={notificationsViewed}
+              setShowDotBadge={setShowDotBadge}
             />
           </div>
-          {/* mobile */}
+          {/* mobile notification */}
           <PopperComponent
             viewPopper={viewNotifications}
             anchorRef={anchorRef}

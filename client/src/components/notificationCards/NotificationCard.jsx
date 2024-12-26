@@ -7,40 +7,34 @@ import { Badge } from "@mui/material";
 const NotificationCard = ({
   likers,
   commenters,
-  setNotificationsViewed,
-  notificationsViewed,
+  sortedNotifications,
+  showDotBadge,
+  setShowDotBadge,
 }) => {
   const notifications = [...likers, ...commenters];
   const [notificationList, setNotificationList] = useState(false);
 
   const showNotificationList = () => {
-    if (!notificationsViewed) {
-      setNotificationsViewed(true);
-      localStorage.setItem("notificationsViewed", "true");
-    }
     setNotificationList(!notificationList);
+    if (!notificationList) {
+      if (sortedNotifications.length > 0) {
+        const latestTimestamp = sortedNotifications[0].timestamp;
+        localStorage.setItem("lastViewedNotification", latestTimestamp);
+      }
+      setShowDotBadge(false);
+    }
   };
 
-  useEffect(() => {
-    const viewed = localStorage.getItem("notificationsViewed");
-    if (viewed === "true") {
-      setNotificationsViewed(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    const viewed = localStorage.getItem("notificationsViewed");
-    if (viewed === "false" && (likers.length > 0 || commenters.length > 0)) {
-      setNotificationsViewed(false);
-      localStorage.setItem("notificationsViewed", "false");
-    }
-  }, [likers, commenters]);
   return (
     <div className="hidden xl:sticky top-[60px] w-96 py-2 xl:flex flex-col  border dark:border-[#1d1d1d] border-[#e0e0e0] rounded-xl dark:bg-[#0f0f0f] bg-[#ededed]  ">
       <div className="flex items-center  justify-between  dark:border-b-[#2a2a2a] border-b-[#e0e0e0] px-4 py-2 text-lg gap-2">
         <div className="relative flex items-center gap-2">
           Notifications
-          <Badge badgeContent={100} color="error" variant="dot">
+          <Badge
+            badgeContent={showDotBadge ? 100 : 0}
+            color="error"
+            variant={showDotBadge ? "dot" : "standard"}
+          >
             <IoIosNotifications className="text-xl" />
           </Badge>
         </div>
@@ -70,7 +64,7 @@ const NotificationCard = ({
             className="overflow-y-scroll hide-scrollbar max-h-80  flex flex-col pt-4 pb-4 gap-6"
           >
             {notifications.length > 0 ? (
-              notifications.map((notification, index) => (
+              sortedNotifications.map((notification, index) => (
                 <div
                   key={index}
                   className="flex justify-between items-center pr-6"

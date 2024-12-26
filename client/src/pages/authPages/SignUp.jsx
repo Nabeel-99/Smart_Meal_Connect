@@ -50,7 +50,7 @@ const SignUp = () => {
           setError("");
         }, 10000);
       } else {
-        setError("Something went wrong. Please try again later.");
+        setError(error.response.data.message);
       }
       console.log(error);
     } finally {
