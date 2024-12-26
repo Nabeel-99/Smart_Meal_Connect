@@ -41,11 +41,15 @@ Smart Meal Connect is a cross-platform meal planning application designed to sim
    Create .env files for the server with necessary variables (database URI, Firebase config, etc.).
 
 5. Start the development servers:
+
    For the server:
+
    ```bash
         npm run start
    ```
+
    For the client:
+
    ```bash
         npm run dev
    ```
