@@ -42,13 +42,13 @@ Smart Meal Connect is a cross-platform meal planning application designed to sim
 
 5. Start the development servers:
    For the server:
-   `bash
+   ```bash
         npm run start
-    `
+   ```
    For the client:
-   `bash
+   ```bash
         npm run dev
-    `
+   ```
 
 ## Deployment
 
