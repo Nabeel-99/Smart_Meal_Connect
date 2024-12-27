@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { axiosInstance } from "../../../apiConfig";
 
-const useUserMetrics = (isLoggedIn, ingredientCount) => {
+const useUserMetrics = (isLoggedIn, ingredientCount, setCurrentPage) => {
   const [gender, setGender] = useState("");
   const [goal, setGoal] = useState("weight_loss");
   const [age, setAge] = useState(0);
@@ -86,6 +86,7 @@ const useUserMetrics = (isLoggedIn, ingredientCount) => {
 
         setFetchedRecipes(recipes);
         setTotalRecipes(recipes.length);
+        setCurrentPage(1);
       }
     } catch (error) {
       console.log(error);

@@ -5,7 +5,8 @@ const useFetchRecipes = (
   ingredients,
   selectedDietaryPreferences,
   isConnected,
-  isLoggedIn
+  isLoggedIn,
+  setCurrentPage
 ) => {
   const [fetchedRecipes, setFetchedRecipes] = useState([]);
   const [error, setError] = useState("");

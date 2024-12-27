@@ -17,7 +17,9 @@ const MetricsBased = ({ userData }) => {
   const [ingredientCount, setIngredientCount] = useState(() =>
     isLoggedIn ? 24 : 10
   );
-
+  const [currentPage, setCurrentPage] = useState(
+    Number(sessionStorage.getItem("metricsCurrentPage")) || 1
+  );
   const incrementCount = () => {
     setIngredientCount(ingredientCount + 1);
     if (ingredientCount >= 60) {
@@ -61,21 +63,18 @@ const MetricsBased = ({ userData }) => {
     setTotalRecipes,
     loading,
     error,
-  } = useUserMetrics(isLoggedIn, ingredientCount);
+  } = useUserMetrics(isLoggedIn, ingredientCount, setCurrentPage);
 
-  const {
-    paginatedRecipes,
-    handleNextPage,
-    handlePreviousPage,
-    currentPage,
-    totalPages,
-  } = usePagination(
-    "metricsCurrentPage",
-    "metricsBased",
-    setFetchedRecipes,
-    fetchedRecipes,
-    setTotalRecipes
-  );
+  const { paginatedRecipes, handleNextPage, handlePreviousPage, totalPages } =
+    usePagination(
+      "metricsCurrentPage",
+      "metricsBased",
+      currentPage,
+      setCurrentPage,
+      setFetchedRecipes,
+      fetchedRecipes,
+      setTotalRecipes
+    );
 
   useEffect(() => {
     if (userData) {

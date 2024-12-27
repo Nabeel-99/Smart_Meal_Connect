@@ -12,7 +12,9 @@ const IngredientsBased = ({ userData, theme }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [autocompleteValue, setAutocompleteValue] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
-
+  const [currentPage, setCurrentPage] = useState(
+    Number(sessionStorage.getItem("ingredientsCurrentPage")) || 1
+  );
   const cardRef = useRef(null);
   let gridView = true;
 
@@ -39,24 +41,22 @@ const IngredientsBased = ({ userData, theme }) => {
     ingredients,
     selectedDietaryPreferences,
     isConnected,
-    isLoggedIn
+    isLoggedIn,
+    setCurrentPage
   );
 
-  const {
-    paginatedRecipes,
-    handleNextPage,
-    handlePreviousPage,
-    currentPage,
-    totalPages,
-  } = usePagination(
-    "ingredientsCurrentPage",
-    "ingredientsBased",
-    setFetchedRecipes,
-    fetchedRecipes,
-    setTotalRecipes,
-    ingredients,
-    setIngredients
-  );
+  const { paginatedRecipes, handleNextPage, handlePreviousPage, totalPages } =
+    usePagination(
+      "ingredientsCurrentPage",
+      "ingredientsBased",
+      currentPage,
+      setCurrentPage,
+      setFetchedRecipes,
+      fetchedRecipes,
+      setTotalRecipes,
+      ingredients,
+      setIngredients
+    );
 
   const handleToggle = () => {
     setIsConnected(!isConnected);

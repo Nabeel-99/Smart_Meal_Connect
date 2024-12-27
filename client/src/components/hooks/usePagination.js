@@ -3,15 +3,14 @@ import { useEffect, useState } from "react";
 const usePagination = (
   storageKeyPage,
   featurePage,
+  currentPage,
+  setCurrentPage,
   setFetchedRecipes,
   fetchedRecipes,
   setTotalRecipes,
   ingredients = null,
   setIngredients = null
 ) => {
-  const [currentPage, setCurrentPage] = useState(
-    Number(sessionStorage.getItem(storageKeyPage)) || 1
-  );
   const recipesPerPage = 8;
 
   const totalPages = Math.ceil(fetchedRecipes.length / recipesPerPage);
