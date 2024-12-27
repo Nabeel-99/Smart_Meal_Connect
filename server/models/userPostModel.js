@@ -23,10 +23,6 @@ const userPostSchema = new mongoose.Schema(
       of: Date,
       default: {},
     },
-    isFake: {
-      type: Boolean,
-      default: false,
-    },
     comments: [
       {
         userId: {
