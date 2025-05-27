@@ -50,6 +50,13 @@ const useUserMetrics = (isLoggedIn, ingredientCount, setCurrentPage) => {
 
   const fetchRecipes = async (e) => {
     e.preventDefault();
+    if (!gender || !age || !height || !weight || !goal || !exerciseLevel) {
+      setError("Please fill out all fields.");
+      setTimeout(() => {
+        setError("");
+      }, 3000);
+      return;
+    }
     if (!isLoggedIn && tryCount >= TRY_LIMIT) {
       setError(
         "Please create an account or login to continue using this feature."
@@ -59,8 +66,8 @@ const useUserMetrics = (isLoggedIn, ingredientCount, setCurrentPage) => {
       }, 10000);
       return;
     }
+    setLoading(true);
     try {
-      setLoading(true);
       const response = await axiosInstance.post(
         `/api/recipes/get-metrics-recipes`,
         {
@@ -93,7 +100,6 @@ const useUserMetrics = (isLoggedIn, ingredientCount, setCurrentPage) => {
       if (error.response && error.response.status === 400) {
         setError("Please fill out all fields.");
       }
-      setLoading(false);
     } finally {
       setLoading(false);
     }
